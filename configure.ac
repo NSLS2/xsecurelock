@@ -102,7 +102,7 @@ AC_DEFUN([RP_CHECK_MODULE], [
                                        [AC_MSG_ERROR([--with-$4 was enabled, but test for $4 failed])])])])
           AM_CONDITIONAL([$3], [test x$have_$4 = xtrue])])
 
-# The DPMS extension is used to save power of the screen when turned off. Saves 
+# The DPMS extension is used to save power of the screen when turned off. Saves
 # electric power.
 RP_SEARCH_LIBS(DPMSQueryExtension, Xext,
                [HAVE_DPMS_EXT], [dpms], [check],
@@ -283,6 +283,38 @@ AC_ARG_WITH([default_saver_module],
 
 AC_MSG_NOTICE([Configured default saver module: $saver_executable])
 
+AC_ARG_ENABLE([any_user_auth],
+            AC_HELP_STRING([--enable-any-user-auth],
+                              [Enalbe authentication option to use any
+                              valid account on the system for screensaver
+                              authentication.]),
+            [enable_any_user_auth=$enableval],
+            [enable_any_user_auth=no])
+
+AC_ARG_ENABLE([no_blank],
+            AC_HELP_STRING([--enable-no-blank],
+                              [Enable non blanking screensaver option
+                              to enable a transparent screen lock.]),
+            [enable_no_blank=$enableval],
+            [enable_no_blank=no])
+
+AC_ARG_ENABLE([banner],
+            AC_HELP_STRING([--enable-banner],
+                              [Enalbe logon banner information
+                              defined in banner.h]),
+            [enable_banner=$enableval],
+            [enable_banner=no])
+
+AC_ARG_ENABLE([wallpaper],
+            AC_HELP_STRING([--enable-wallpaper],
+                              [Enalbe wallpaper from wallpaper.xbm]),
+            [enable_wallpaper=$enableval],
+            [enable_wallpaper=no])
+
+AC_SUBST(auth)
+AC_SUBST(no_blank)
+AC_SUBST(banner)
+
 AC_SUBST(pam_service_name)
 AC_SUBST(auth_executable)
 AC_SUBST(authproto_executable)
@@ -297,6 +329,14 @@ AM_CONDITIONAL([PAM_CHECK_ACCOUNT_TYPE],
                [test x$enable_pam_check_account_type = xyes])
 AM_CONDITIONAL([HAVE_IDLE_TIMER],
                [test x$have_xss = xtrue -o x$have_xsync = xtrue])
+AM_CONDITIONAL([ANY_USER_AUTH],
+               [test x$enable_any_user_auth = xyes])
+AM_CONDITIONAL([NO_BLANK],
+               [test x$enable_no_blank = xyes])
+AM_CONDITIONAL([BANNER],
+               [test x$enable_banner = xyes])
+AM_CONDITIONAL([WALLPAPER],
+               [test x$enable_wallpaper = xyes])
 
 AC_CONFIG_FILES([Makefile])
 AC_CONFIG_FILES([helpers/authproto_htpasswd],

@@ -71,6 +71,10 @@ limitations under the License.
 #include "wait_pgrp.h"      // for WaitPgrp
 #include "wm_properties.h"  // for SetWMProperties
 
+#ifdef WALLPAPER
+#include "wallpaper.xbm"
+#endif
+
 /*! \brief How often (in times per second) to watch child processes.
  *
  * This defines the minimum frequency to call WatchChildren().
@@ -915,6 +919,19 @@ int main(int argc, char **argv) {
   SetWMProperties(display, auth_window, "xsecurelock", "auth", argc, argv);
   my_windows[n_my_windows++] = auth_window;
 
+#ifdef WALLPAPER
+  Pixmap wallpaper = XCreatePixmapFromBitmapData(display, root_window,
+    wallpaper_bits, wallpaper_width, wallpaper_height,
+    0x101010, // WhitePixel(display, DefaultScreen(display)),
+    0x202020, // BlackPixel(display, DefaultScreen(display)),
+    DefaultDepth(display, DefaultScreen(display)));
+
+  XSetWindowBackgroundPixmap(display, background_window, wallpaper);
+  XSetWindowBackgroundPixmap(display, saver_window, wallpaper);
+  XSetWindowBackgroundPixmap(display, auth_window, wallpaper);
+  XClearWindow(display, auth_window);
+#endif
+
 // Let's get notified if we lose visibility, so we can self-raise.
 #ifdef HAVE_XCOMPOSITE_EXT
   if (composite_window != None) {
@@ -1053,9 +1070,15 @@ int main(int argc, char **argv) {
   // Map our windows.
   // This is done after grabbing so failure to grab does not blank the screen
   // yet, thereby "confirming" the screen lock.
+#ifdef NO_BLANK
+  XRaiseWindow(display, background_window);
+  XClearWindow(display, background_window);  // Workaround for bad drivers.
+  XRaiseWindow(display, saver_window);
+#else
   XMapRaised(display, background_window);
   XClearWindow(display, background_window);  // Workaround for bad drivers.
   XMapRaised(display, saver_window);
+#endif
   XRaiseWindow(display, auth_window);  // Don't map here.
 
 #ifdef HAVE_XCOMPOSITE_EXT
@@ -1271,6 +1294,9 @@ int main(int argc, char **argv) {
         case ButtonPress:
           // Mouse events launch the auth child.
           ScreenNoLongerBlanked(display);
+  #ifdef NO_BLANK
+          XMapRaised(display, background_window);
+  #endif
           if (WakeUp(display, auth_window, saver_window, NULL)) {
             goto done;
           }
@@ -1278,6 +1304,9 @@ int main(int argc, char **argv) {
         case KeyPress: {
           // Keyboard events launch the auth child.
           ScreenNoLongerBlanked(display);
+  #ifdef NO_BLANK
+          XMapRaised(display, background_window);
+  #endif
           Status status = XLookupNone;
           int have_key = 1;
           int do_wake_up = 1;
@@ -1413,6 +1442,10 @@ int main(int argc, char **argv) {
                          GrabModeAsync, GrabModeAsync, None, transparent_cursor,
                          CurrentTime);
 #endif
+#ifdef NO_BLANK
+          XUnmapWindow(display, saver_window);
+          XUnmapWindow(display, background_window);
+#else
           } else if (priv.ev.xmap.window == saver_window) {
             // This should never happen, but let's handle it anyway.
             Log("Someone unmapped the saver window. Undoing that");
@@ -1425,6 +1458,7 @@ int main(int argc, char **argv) {
             XMapRaised(display, background_window);
             XClearWindow(display,
                          background_window);  // Workaround for bad drivers.
+#endif
 #ifdef HAVE_XCOMPOSITE_EXT
           } else if (obscurer_window != None &&
                      priv.ev.xmap.window == obscurer_window) {

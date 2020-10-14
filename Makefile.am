@@ -58,6 +58,18 @@ endif
 if HAVE_XKB_EXT
 macros += -DHAVE_XKB_EXT
 endif
+if ANY_USER_AUTH
+macros += -DANY_USER_AUTH
+endif
+if NO_BLANK
+macros += -DNO_BLANK
+endif
+if BANNER
+macros += -DBANNER
+endif
+if BANNER
+macros += -DWALLPAPER
+endif
 
 bin_PROGRAMS = \
 	xsecurelock
@@ -198,7 +210,8 @@ noinst_PROGRAMS = cat_authproto nvidia_break_compositor get_compositor remap_all
 cat_authproto_SOURCES = \
 	logging.c logging.h \
 	helpers/authproto.c helpers/authproto.h \
-	test/cat_authproto.c
+	test/cat_authproto.c \
+	util.c util.h
 nvidia_break_compositor_SOURCES = \
 	test/nvidia_break_compositor.c
 nvidia_break_compositor_CPPFLAGS = $(macros)

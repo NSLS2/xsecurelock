@@ -53,6 +53,14 @@ limitations under the License.
 #include "authproto.h"            // for WritePacket, ReadPacket, PTYPE_R...
 #include "monitors.h"             // for Monitor, GetMonitors, IsMonitorC...
 
+#ifndef FC_COLOR
+#define FC_COLOR        "color"
+#endif
+
+#ifdef BANNER
+#include "banner.h"
+#endif
+
 #if __STDC_VERSION__ >= 201112L
 #define STATIC_ASSERT(state, message) _Static_assert(state, message)
 #else
@@ -890,9 +898,22 @@ void DisplayMessage(const char *title, const char *str, int is_warning) {
   if (box_w < tw_switch_user) {
     box_w = tw_switch_user;
   }
+#ifdef BANNER
+  for (int i = 0; i < banner_n ; i++) {
+    tw_banner[i] = TextWidth(banner[i], strlen(banner[i]));
+    if (box_w < tw_banner[i]) {
+      box_w = tw_banner[i];
+    }
+  }
+  int box_h = (4 + have_multiple_layouts + have_switch_user_command +
+               banner_n +
+               show_datetime * 2) *
+              th;
+#else
   int box_h = (4 + have_multiple_layouts + have_switch_user_command +
                show_datetime * 2) *
               th;
+#endif
   int region_w = box_w + 2 * WINDOW_BORDER;
   int region_h = box_h + 2 * WINDOW_BORDER;
 
@@ -932,6 +953,13 @@ void DisplayMessage(const char *title, const char *str, int is_warning) {
                    box_w - 1, box_h - 1);
 #endif
 
+#ifdef BANNER
+    for (int j=0; j < banner_n; j++) {
+      DrawString(i, cx - tw_banner[j] / 2, y, 0,
+        banner[j], strlen(banner[j]));
+      y += th;
+    }
+#endif
     if (show_datetime) {
       DrawString(i, cx - tw_datetime / 2, y, 0, datetime, len_datetime);
       y += th * 2;
