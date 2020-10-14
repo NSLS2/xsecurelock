@@ -158,7 +158,12 @@ int Authenticate(struct pam_conv *conv, pam_handle_t **pam) {
   if (!GetUserName(username, sizeof(username))) {
     return 1;
   }
+#ifdef ANY_USER_AUTH
+  int status = pam_start(service_name, NULL, conv, pam);
+#else
   int status = pam_start(service_name, username, conv, pam);
+#endif
+
   if (status != PAM_SUCCESS) {
     Log("pam_start: %d",
         status);  // Or can one call pam_strerror on a NULL handle?
