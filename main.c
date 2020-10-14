@@ -1071,9 +1071,9 @@ int main(int argc, char **argv) {
   // This is done after grabbing so failure to grab does not blank the screen
   // yet, thereby "confirming" the screen lock.
 #ifdef NO_BLANK
-    XRaiseWindow(display, background_window);
-    XClearWindow(display, background_window);  // Workaround for bad drivers.
-    XRaiseWindow(display, saver_window);
+  XRaiseWindow(display, background_window);
+  XClearWindow(display, background_window);  // Workaround for bad drivers.
+  XRaiseWindow(display, saver_window);
 #else
   XMapRaised(display, background_window);
   XClearWindow(display, background_window);  // Workaround for bad drivers.
@@ -1442,6 +1442,10 @@ int main(int argc, char **argv) {
                          GrabModeAsync, GrabModeAsync, None, transparent_cursor,
                          CurrentTime);
 #endif
+#ifdef NO_BLANK
+          XUnmapWindow(display, saver_window);
+          XUnmapWindow(display, background_window);
+#else
           } else if (priv.ev.xmap.window == saver_window) {
 #ifdef NO_BLANK
             XUnmapWindow(display, saver_window);

@@ -13,9 +13,13 @@ export DEB_BUILD_MAINT_OPTIONS = hardening=+all
 override_dh_auto_configure:
 	    dh_auto_configure -- \
 			--with-pam \
+<<<<<<< HEAD
 			--with-pam-service-name=xsecurelock \
 			--with-userfile-filename=/etc/xsecurelock/users \
 			--with-banner-filename=/etc/xsecurelock/banner \
+=======
+			--with-pam-service-name=common-auth \
+>>>>>>> Debian Packaging Info (#2)
 			--enable-any-user-auth \
 			--enable-banner \
 			--enable-wallpaper \
@@ -32,7 +36,11 @@ override_dh_auto_configure:
 			--with-xsync \
 			--with-xfixes \
 			--with-xft \
+<<<<<<< HEAD
 			--with-xkb
+=======
+			--with-xkb 
+>>>>>>> Debian Packaging Info (#2)
 
 override_dh_auto_build:
 		GIT_VERSION="$(DEB_VERSION_UPSTREAM)" dh_auto_build
@@ -43,6 +51,7 @@ override_dh_autoreconf:
 override_dh_auto_install:
 		dh_auto_install
 		find ./debian -type f -name "LICENSE" -delete
+<<<<<<< HEAD
 		dh_installpam --name xsecurelock
 		dh_install debian/banner etc/xsecurelock
 		dh_install debian/users etc/xsecurelock
@@ -50,6 +59,8 @@ override_dh_auto_install:
 		dh_install debian/saver-xsecurelock usr/bin
 		dh_install debian/nsls2-lock.png usr/share/nsls2/icons
 		dh_install debian/xsecurelock.desktop etc/xdg/autostart
+=======
+>>>>>>> Debian Packaging Info (#2)
 
 override_dh_auto_clean:
 		dh_auto_clean

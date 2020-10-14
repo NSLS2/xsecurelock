@@ -3,7 +3,11 @@ Maintainer: Stuart B. Wilkins <swilkins@bnl.gov>
 Section: x11
 Priority: optional
 Standards-Version: 3.9.6
+<<<<<<< HEAD
 Build-Depends: debhelper (>= 9),
+=======
+Build-Depends: debhelper (>= 9), 
+>>>>>>> Debian Packaging Info (#2)
   libc6,
   libpam-dev,
   libx11-dev,
@@ -22,7 +26,11 @@ Vcs-Git: https://github.com/NSLS-II/xsecurelock.git -b debian
 
 Package: xsecurelock-nsls2
 Architecture: any
+<<<<<<< HEAD
 Depends: dash, x11-xserver-utils, feh, xautolock, ${shlibs:Depends}, ${misc:Depends}
+=======
+Depends: dash, x11-xserver-utils, feh, ${shlibs:Depends}, ${misc:Depends}
+>>>>>>> Debian Packaging Info (#2)
 Suggests: mplayer,
   mpv,
   xscreensaver-data,
