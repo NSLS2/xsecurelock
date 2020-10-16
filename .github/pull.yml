@@ -1,0 +1,14 @@
+version: "1"
+rules:
+  - base: master
+    upstream: google:xsecurelock
+    mergeMethod: rebase
+    mergeUnstable: false
+    assignees:
+      - stuwilkins
+    reviewers:
+      - stuwilkins
+    conflictReviewers:
+      - stuwilkins
+
+label: ":arrow_heading_down: pull"
