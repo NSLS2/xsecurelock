@@ -314,6 +314,7 @@ AC_ARG_ENABLE([wallpaper],
 AC_SUBST(auth)
 AC_SUBST(no_blank)
 AC_SUBST(banner)
+AC_SUBST(banner_filename)
 
 AC_SUBST(pam_service_name)
 AC_SUBST(auth_executable)
@@ -337,6 +338,18 @@ AM_CONDITIONAL([BANNER],
                [test x$enable_banner = xyes])
 AM_CONDITIONAL([WALLPAPER],
                [test x$enable_wallpaper = xyes])
+
+banner_filename=
+AS_IF([test x$enable_banner = xyes], [
+  AC_ARG_WITH([banner_filename],
+              AC_HELP_STRING([--with-banner-filename],
+                             [The path for the banner filename to
+                              display on the unlock screen above the login or
+                              password prompt. This flag is mandatory when the
+                              logon banner is enabled.]),
+              [banner_filename=$withval],
+              [AC_MSG_ERROR([--with-banner-filename is mandatory.])])
+])
 
 AC_CONFIG_FILES([Makefile])
 AC_CONFIG_FILES([helpers/authproto_htpasswd],

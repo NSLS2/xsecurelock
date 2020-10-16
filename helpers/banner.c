@@ -18,13 +18,13 @@ int ReadBannerFile(char **banner, int *num_lines, int max_lines) {
     int rtn = 0;
 
     const char *filename =
-        GetStringSetting("XSECURELOCK_BANNER_FILE", BANNER_FILE);
+        GetStringSetting("XSECURELOCK_BANNER_FILE", BANNER_FILENAME);
 
     FILE *fp;
     fp = fopen(filename, "r");
     if (fp == NULL) {
         *num_lines = 0;
-        Log("Failed to open banner file");
+        Log("Failed to open banner file %s", filename);
         return 1;
     }
 

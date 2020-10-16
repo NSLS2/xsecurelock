@@ -21,7 +21,9 @@ macros = \
 	-DAUTHPROTO_EXECUTABLE=\"@authproto_executable@\" \
 	-DGLOBAL_SAVER_EXECUTABLE=\"@global_saver_executable@\" \
 	-DSAVER_EXECUTABLE=\"@saver_executable@\" \
-	-DPAM_SERVICE_NAME=\"@pam_service_name@\"
+	-DPAM_SERVICE_NAME=\"@pam_service_name@\" \
+	-DBANNER_FILENAME=\"@banner_filename@\"
+
 if HAVE_LIBBSD
 macros += -DHAVE_LIBBSD
 endif
