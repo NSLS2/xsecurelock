@@ -204,6 +204,11 @@ char hostname[256];
 //! The username to authenticate as.
 char username[256];
 
+#ifdef BANNER
+char *banner[BANNER_MAX_LINES]; // Maximum 50 Lines
+int banner_n;
+#endif
+
 //! The X11 display.
 Display *display;
 
@@ -899,26 +904,17 @@ void DisplayMessage(const char *title, const char *str, int is_warning) {
     box_w = tw_switch_user;
   }
 #ifdef BANNER
-  char *banner[50]; // Maximum 50 Lines
-  int tw_banner[50];
-  int banner_n;
-  int box_h;
-  if (!ReadBannerFile(banner, &banner_n, 50)) {
-    for (int i = 0; i < banner_n ; i++) {
-      tw_banner[i] = TextWidth(banner[i], strlen(banner[i]));
-      if (box_w < tw_banner[i]) {
-        box_w = tw_banner[i];
-      }
+  int tw_banner[BANNER_MAX_LINES];
+  for (int i = 0; i < banner_n ; i++) {
+    tw_banner[i] = TextWidth(banner[i], strlen(banner[i]));
+    if (box_w < tw_banner[i]) {
+      box_w = tw_banner[i];
     }
-    box_h = (4 + have_multiple_layouts + have_switch_user_command +
-             banner_n +
-             show_datetime * 2) *
-             th;
-  } else {
-    box_h = (4 + have_multiple_layouts + have_switch_user_command +
-            show_datetime * 2) *
-            th;
   }
+  int box_h = (4 + have_multiple_layouts + have_switch_user_command +
+               banner_n +
+               show_datetime * 2) *
+               th;
 #else
   int box_h = (4 + have_multiple_layouts + have_switch_user_command +
                show_datetime * 2) *
@@ -1676,6 +1672,15 @@ int main(int argc_local, char **argv_local) {
     return 1;
   }
 
+#ifdef BANNER
+  banner_n = 0;
+  for (int i=0; i < BANNER_MAX_LINES; i++) {
+    banner[i] = NULL;
+  }
+
+  ReadBannerFile(banner, &banner_n, BANNER_MAX_LINES);
+#endif
+
   main_window = ReadWindowID();
   if (main_window == None) {
     Log("Invalid/no window ID in XSCREENSAVER_WINDOW");
@@ -1791,6 +1796,14 @@ int main(int argc_local, char **argv_local) {
   XFreeColors(display, colormap, &xcolor_warning.pixel, 1, 0);
   XFreeColors(display, colormap, &xcolor_foreground.pixel, 1, 0);
   XFreeColors(display, colormap, &xcolor_background.pixel, 1, 0);
+
+#ifdef BANNER
+  for (int i=0; i < banner_n; i++) {
+    if (banner[i] != NULL) {
+      free(banner[i]);
+    }
+  }
+#endif
 
   return status;
 }
