@@ -1798,7 +1798,7 @@ int main(int argc_local, char **argv_local) {
   XFreeColors(display, colormap, &xcolor_background.pixel, 1, 0);
 
 #ifdef BANNER
-  for (int i=0; i < banner_n; i++) {
+  for (int i=0; i < BANNER_MAX_LINES; i++) {
     if (banner[i] != NULL) {
       free(banner[i]);
     }
