@@ -22,7 +22,8 @@ macros = \
 	-DGLOBAL_SAVER_EXECUTABLE=\"@global_saver_executable@\" \
 	-DSAVER_EXECUTABLE=\"@saver_executable@\" \
 	-DPAM_SERVICE_NAME=\"@pam_service_name@\" \
-	-DBANNER_FILENAME=\"@banner_filename@\"
+	-DBANNER_FILENAME=\"@banner_filename@\" \
+	-DUSERFILE_FILENAME=\"@userfile_filename@\"
 
 if HAVE_LIBBSD
 macros += -DHAVE_LIBBSD
@@ -69,7 +70,7 @@ endif
 if BANNER
 macros += -DBANNER
 endif
-if BANNER
+if WALLPAPER
 macros += -DWALLPAPER
 endif
 
@@ -190,6 +191,10 @@ authproto_pam_SOURCES = \
 	logging.c logging.h \
 	mlock_page.h \
 	util.c util.h
+if ANY_USER_AUTH
+authproto_pam_SOURCES += \
+	helpers/userfile.c helpers/userfile.h
+endif
 authproto_pam_CPPFLAGS = $(macros) $(LIBBSD_CFLAGS)
 authproto_pam_LDADD = $(LIBBSD_LIBS)
 endif

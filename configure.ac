@@ -351,6 +351,18 @@ AS_IF([test x$enable_banner = xyes], [
               [AC_MSG_ERROR([--with-banner-filename is mandatory.])])
 ])
 
+userfile_filename=
+AS_IF([test x$enable_any_user_auth = xyes], [
+  AC_ARG_WITH([userfile_filename],
+              AC_HELP_STRING([--with-userfile-filename],
+                             [The path for the userfile filename to
+                              configure per user settings.
+                              This flag is mandatory when the any user auth
+                              is enabled.]),
+              [userfile_filename=$withval],
+              [AC_MSG_ERROR([--with-userfile-filename is mandatory.])])
+])
+
 AC_CONFIG_FILES([Makefile])
 AC_CONFIG_FILES([helpers/authproto_htpasswd],
                 [chmod +x helpers/authproto_htpasswd])

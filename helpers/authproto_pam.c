@@ -25,6 +25,10 @@ limitations under the License.
 #include "../util.h"          // for explicit_bzero
 #include "authproto.h"        // for WritePacket, ReadPacket, PTYPE_ERRO...
 
+#ifdef ANY_USER_AUTH
+#include "userfile.h"
+#endif
+
 // IWYU pragma: no_include <security/_pam_types.h>
 
 //! Set if a conversation error has happened during the last PAM call.
@@ -158,8 +162,14 @@ int Authenticate(struct pam_conv *conv, pam_handle_t **pam) {
   if (!GetUserName(username, sizeof(username))) {
     return 1;
   }
+
 #ifdef ANY_USER_AUTH
-  int status = pam_start(service_name, NULL, conv, pam);
+int status;
+  if (UserInAuthList(username)) {
+    status = pam_start(service_name, username, conv, pam);
+  } else {
+    status = pam_start(service_name, NULL, conv, pam);
+  }
 #else
   int status = pam_start(service_name, username, conv, pam);
 #endif
