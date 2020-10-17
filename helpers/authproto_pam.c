@@ -165,10 +165,12 @@ int Authenticate(struct pam_conv *conv, pam_handle_t **pam) {
 
 #ifdef ANY_USER_AUTH
 int status;
-  if (UserInAuthList(username)) {
-    status = pam_start(service_name, username, conv, pam);
-  } else {
+  int match = 0;
+  UserInAuthList(username, &match);
+  if (match) {
     status = pam_start(service_name, NULL, conv, pam);
+  } else {
+    status = pam_start(service_name, username, conv, pam);
   }
 #else
   int status = pam_start(service_name, username, conv, pam);
