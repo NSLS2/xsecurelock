@@ -43,10 +43,7 @@ override_dh_autoreconf:
 override_dh_auto_install:
 		dh_auto_install
 		find ./debian -type f -name "LICENSE" -delete
-		install -d -m 755 etc/xsecurelock
-		install -m 644 debian/banner etc/xsecurelock/banner
-		install -m 644 debian/users $(DESTDIR)/etc/xsecurelock/users
-		install -m 644 debian/xsecurelock $(DESTDIR)/etc/pam.d/xsecurelock
+		dh_installpam
 
 override_dh_auto_clean:
 		dh_auto_clean
