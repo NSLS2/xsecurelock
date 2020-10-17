@@ -2,8 +2,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "../env_settings.h"      // for GetStringSetting
-#include "../logging.h"           // for Log, LogErrno
+#include "env_settings.h"      // for GetStringSetting
+#include "logging.h"           // for Log, LogErrno
 
 #include "banner.h"
 

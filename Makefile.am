@@ -95,6 +95,12 @@ nodist_xsecurelock_SOURCES = \
 xsecurelock_CPPFLAGS = $(macros) $(LIBBSD_CFLAGS)
 xsecurelock_LDADD = $(LIBBSD_LIBS)
 
+if NO_BLANK
+xsecurelock_SOURCES += \
+	userfile.c userfile.h \
+	env_info.c env_info.h
+endif
+
 helpersdir = $(pkglibexecdir)
 helpers_SCRIPTS = \
 	helpers/saver_blank
@@ -177,7 +183,7 @@ auth_x11_LDADD = $(FONTCONFIG_LIBS) $(XFT_LIBS) $(LIBBSD_LIBS)
 
 if BANNER
 auth_x11_SOURCES += \
-	helpers/banner.c helpers/banner.h
+	banner.c banner.h
 endif
 
 if HAVE_PAM
@@ -193,7 +199,7 @@ authproto_pam_SOURCES = \
 	util.c util.h
 if ANY_USER_AUTH
 authproto_pam_SOURCES += \
-	helpers/userfile.c helpers/userfile.h
+	userfile.c userfile.h
 endif
 authproto_pam_CPPFLAGS = $(macros) $(LIBBSD_CFLAGS)
 authproto_pam_LDADD = $(LIBBSD_LIBS)

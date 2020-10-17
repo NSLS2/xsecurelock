@@ -6,8 +6,8 @@
 #include <grp.h>
 #include <unistd.h>
 
-#include "../env_settings.h"      // for GetStringSetting
-#include "../logging.h"           // for Log, LogErrno
+#include "env_settings.h"      // for GetStringSetting
+#include "logging.h"           // for Log, LogErrno
 
 #include "userfile.h"
 
@@ -74,33 +74,39 @@ int UserInAuthList(const char* username, int *match) {
         line[strcspn(line, "\r\n")] = 0;
 
         // Tokenize
-        const char *token = "\t :";
-        char *tok = strtok(line, token);
-        if (tok[0] != '#') {
-            if(tok[0] == '@') {
+        const char *tokens = "\t :";
+        char *_line;
+        char *token = strtok_r(line, tokens, &_line);
+        if (token[0] != '#') {
+            if(token[0] == '@') {
                 // Process a group
-                tok++; // Remove @
+                token++; // Remove @
 
-                if (IsMemberOfGroup(username, tok, match) != USERFILE_SUCCESS) {
-                    *match = 0;
+                if (IsMemberOfGroup(username, token, match) != USERFILE_SUCCESS) {
+                    *match = USERFILE_NO_MATCH;
                     rtn = USERFILE_ERROR;
                 } else {
-                    Log("user %s is in group %s", username, tok);
+                    *match = USERFILE_GROUP_MATCH;
                     rtn = USERFILE_SUCCESS;
-                    break;
                 }
             } else {
-                if (strcmp(username, tok) == 0) {
+                if (strcmp(username, token) == 0) {
                     // We have a match
-                    *match = 1;
+                    *match = USERFILE_USER_MATCH;
                     rtn = USERFILE_SUCCESS;
-                    break;
                 }
+            }
+
+            if (*match) {
+                while ((token = strtok_r(NULL, tokens, &_line)) != NULL) {
+                    if (!strcmp(token, "noblank")) {
+                        *match |= USERFILE_NO_BLANK;
+                    }
+                }
+                break;
             }
         }
     }
-
-    Log("match = %d", *match);
 
     free(line);
     fclose(fp);
