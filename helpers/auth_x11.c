@@ -225,6 +225,9 @@ XFontStruct *core_font;
 //! The Xft font for the PAM messages.
 XftColor xft_color_foreground;
 XftColor xft_color_warning;
+#ifdef BANNER
+XftColor xft_color_banner;
+#endif
 XftFont *xft_font;
 #endif
 
@@ -236,6 +239,11 @@ XColor xcolor_foreground;
 
 //! The warning color (used as foreground).
 XColor xcolor_warning;
+
+#ifdef BANNER
+//! The banner color (used as foreground).
+XColor xcolor_banner;
+#endif
 
 //! The cursor character displayed at the end of the masked password input.
 static const char cursor[] = "_";
@@ -283,6 +291,11 @@ GC gcs[MAX_WINDOWS];
 
 //! The X11 graphics contexts to draw warnings with.
 GC gcs_warning[MAX_WINDOWS];
+
+#ifdef BANNER
+//! The X11 graphics contexts to draw the banner with.
+GC gcs_banner[MAX_WINDOWS];
+#endif
 
 #ifdef HAVE_XFT_EXT
 //! The Xft draw contexts to draw with.
@@ -560,6 +573,9 @@ void DestroyPerMonitorWindows(size_t keep_windows) {
     XftDrawDestroy(xft_draws[i]);
 #endif
     XFreeGC(display, gcs_warning[i]);
+#ifdef BANNER
+    XFreeGC(display, gcs_banner[i]);
+#endif
     XFreeGC(display, gcs[i]);
     if (i == MAIN_WINDOW) {
       XUnmapWindow(display, windows[i]);
@@ -651,6 +667,17 @@ void CreateOrUpdatePerMonitorWindow(size_t i, const Monitor *monitor,
                              GCFunction | GCForeground | GCBackground |
                                  (core_font != NULL ? GCFont : 0),
                              &gcattrs);
+#ifdef BANNER
+  gcattrs.foreground = xcolor_banner.pixel;
+  gcs_banner[i] = XCreateGC(display, windows[i],
+                            GCFunction | GCForeground | GCBackground |
+                                (core_font != NULL ? GCFont : 0),
+                            &gcattrs);
+  gcs_banner[i] = XCreateGC(display, windows[i],
+                            GCFunction | GCForeground | GCBackground |
+                                (core_font != NULL ? GCFont : 0),
+                            &gcattrs);
+#endif
 #ifdef HAVE_XFT_EXT
   xft_draws[i] = XftDrawCreate(
       display, windows[i], DefaultVisual(display, DefaultScreen(display)),
@@ -775,16 +802,48 @@ void DrawString(int monitor, int x, int y, int is_warning, const char *string,
     XGlyphInfo extents;
     XftTextExtentsUtf8(display, xft_font, (const FcChar8 *)string, len,
                        &extents);
+#ifdef BANNER
+    XftColor *_color = &xft_color_warning;
+    if (is_warning == 0) {
+      _color = &xft_color_foreground;
+    } else if (is_warning == 1) {
+      _color = &xft_color_warning;
+    } else if (is_warning == 2) {
+      _color = &xft_color_banner;
+    }
+
+    XftDrawStringUtf8(xft_draws[monitor], _color,
+                      xft_font, x + XGlyphInfoExpandAmount(&extents), y,
+                      (const FcChar8 *)string, len);
+#else
     XftDrawStringUtf8(xft_draws[monitor],
                       is_warning ? &xft_color_warning : &xft_color_foreground,
                       xft_font, x + XGlyphInfoExpandAmount(&extents), y,
                       (const FcChar8 *)string, len);
+#endif
     return;
   }
 #endif
+
+#ifdef BANNER
+  if (is_warning == 0) {
+    XDrawString(display, windows[monitor],
+                gcs[monitor], x, y, string,
+                len);
+  } else if (is_warning == 1) {
+    XDrawString(display, windows[monitor],
+                gcs_warning[monitor], x, y, string,
+                len);
+  } else if (is_warning == 2) {
+    XDrawString(display, windows[monitor],
+                gcs_banner[monitor], x, y, string,
+                len);
+  }
+#else
   XDrawString(display, windows[monitor],
               is_warning ? gcs_warning[monitor] : gcs[monitor], x, y, string,
               len);
+#endif
 }
 
 void StrAppend(char **output, size_t *output_size, const char *input,
@@ -961,7 +1020,7 @@ void DisplayMessage(const char *title, const char *str, int is_warning) {
 
 #ifdef BANNER
     for (int j=0; j < banner_n; j++) {
-      DrawString(i, cx - tw_banner[j] / 2, y, 0,
+      DrawString(i, cx - tw_banner[j] / 2, y, 2,
         banner[j], strlen(banner[j]));
       y += th;
     }
@@ -1707,6 +1766,11 @@ int main(int argc_local, char **argv_local) {
   XAllocNamedColor(display, DefaultColormap(display, DefaultScreen(display)),
                    GetStringSetting("XSECURELOCK_AUTH_WARNING_COLOR", "red"),
                    &xcolor_warning, &dummy);
+#ifdef BANNER
+  XAllocNamedColor(display, DefaultColormap(display, DefaultScreen(display)),
+                   GetStringSetting("XSECURELOCK_AUTH_BANNER_COLOR", "white"),
+                   &xcolor_banner, &dummy);
+#endif
 
   core_font = NULL;
 #ifdef HAVE_XFT_EXT
@@ -1769,6 +1833,14 @@ int main(int argc_local, char **argv_local) {
     XftColorAllocValue(display, DefaultVisual(display, DefaultScreen(display)),
                        DefaultColormap(display, DefaultScreen(display)),
                        &xrcolor, &xft_color_warning);
+#ifdef BANNER
+    xrcolor.red = xcolor_banner.red;
+    xrcolor.green = xcolor_banner.green;
+    xrcolor.blue = xcolor_banner.blue;
+    XftColorAllocValue(display, DefaultVisual(display, DefaultScreen(display)),
+                       DefaultColormap(display, DefaultScreen(display)),
+                       &xrcolor, &xft_color_banner);
+#endif
   }
 #endif
 
@@ -1789,6 +1861,11 @@ int main(int argc_local, char **argv_local) {
     XftColorFree(display, DefaultVisual(display, DefaultScreen(display)),
                  DefaultColormap(display, DefaultScreen(display)),
                  &xft_color_foreground);
+#ifdef BANNER
+    XftColorFree(display, DefaultVisual(display, DefaultScreen(display)),
+                 DefaultColormap(display, DefaultScreen(display)),
+                 &xft_color_banner);
+#endif
     XftFontClose(display, xft_font);
   }
 #endif
@@ -1798,6 +1875,7 @@ int main(int argc_local, char **argv_local) {
   XFreeColors(display, colormap, &xcolor_background.pixel, 1, 0);
 
 #ifdef BANNER
+  XFreeColors(display, colormap, &xcolor_banner.pixel, 1, 0);
   for (int i=0; i < BANNER_MAX_LINES; i++) {
     if (banner[i] != NULL) {
       free(banner[i]);
