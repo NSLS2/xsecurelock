@@ -1,0 +1,6 @@
+# Userlist for xsecurelock
+#
+# format is <username/@groupname> <noblank>
+#
+# any user listed here
+@blgroups       noblank
