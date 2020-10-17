@@ -12,7 +12,7 @@ int UserInAuthList(const char* username) {
     int rtn = 0;
 
     const char *filename =
-        GetStringSetting("XSECURELOCK_USER_FILE", "");
+        GetStringSetting("XSECURELOCK_USER_FILE", USERFILE_FILENAME);
 
     FILE *fp;
     fp = fopen(filename, "r");
