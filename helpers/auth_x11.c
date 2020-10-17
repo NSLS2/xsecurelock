@@ -58,7 +58,7 @@ limitations under the License.
 #endif
 
 #ifdef BANNER
-#include "banner.h"
+#include "../banner.h"
 #endif
 
 #if __STDC_VERSION__ >= 201112L
