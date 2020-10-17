@@ -315,6 +315,7 @@ AC_SUBST(auth)
 AC_SUBST(no_blank)
 AC_SUBST(banner)
 AC_SUBST(banner_filename)
+AC_SUBST(userfile_filename)
 
 AC_SUBST(pam_service_name)
 AC_SUBST(auth_executable)
