@@ -46,8 +46,8 @@ override_dh_auto_install:
 		dh_installpam --name xsecurelock
 		dh_install debian/banner etc/xsecurelock
 		dh_install debian/users etc/xsecurelock
-		dh_install debian/run-xsecurelock ${prefix}/lib/$(DEB_HOST_MULTIARCH)
-		dh_install debian/saver-xsecurelock ${prefix}/lib/$(DEB_HOST_MULTIARCH)
+		dh_install debian/run-xsecurelock usr/lib/$(DEB_HOST_MULTIARCH)
+		dh_install debian/saver-xsecurelock usr/lib/$(DEB_HOST_MULTIARCH)
 		dh_install debian/nsls2-lock.png usr/share/nsls2/icons
 		dh_install debian/xsecurelock.desktop etc/xdg/autostart
 
