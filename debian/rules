@@ -44,7 +44,8 @@ override_dh_auto_install:
 		dh_auto_install
 		find ./debian -type f -name "LICENSE" -delete
 		dh_installpam --name xsecurelock
-		dh_install debian/banner etc/xsecurelock/banner
+		dh_install debian/banner etc/xsecurelock
+		dh_install debian/users etc/xsecurelock
 
 override_dh_auto_clean:
 		dh_auto_clean
