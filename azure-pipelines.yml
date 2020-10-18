@@ -55,3 +55,7 @@ steps:
 - script: |
     make
   displayName: Build
+
+- script: |
+    cd tests && ./run-tests.sh
+  displayName: Run Tests
