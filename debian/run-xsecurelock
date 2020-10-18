@@ -1,18 +1,23 @@
 #!/bin/bash -
 set -o nounset
 
+GSETTINGS=/usr/bin/gsettings
+XSET=/usr/bin/xset
+
 # Disable the built in screensaver and show wallpaper
-if command -v gsettings
+if command -v ${GSETTINGS}
 then
-  gsettings set org.gnome.desktop.session idle-delay 0
-  gsettings set org.cinnamon.desktop.session idle-delay 0
-  gsettings set org.mate.screensaver idle-activation-enabled false
+  ${GSETTINGS} set org.gnome.desktop.session idle-delay 0
+  ${GSETTINGS} set org.gnome.desktop.screensaver idle-activation-enabled false
+  ${GSETTINGS} set org.gnome.desktop.screensaver lock-enabled false
+  ${GSETTINGS} set org.cinnamon.desktop.session idle-delay 0
+  ${GSETTINGS} set org.mate.screensaver idle-activation-enabled false
 fi
 
 if command -v xset
 then
-  sleep 1; xset s off
-  sleep 1; xset s noblank
+  sleep 10; ${XSET} s off
+  sleep 10; ${XSET} s noblank
 fi
 
 export XSECURELOCK_NO_COMPOSITE=1
