@@ -46,6 +46,7 @@ override_dh_auto_install:
 		dh_auto_install
 		find ./debian -type f -name "LICENSE" -delete
 		envsubst '$${DEB_HOST_MULTIARCH}' < debian/xsecurelock.desktop.in > debian/xsecurelock.desktop
+		envsubst '$${DEB_HOST_MULTIARCH}' < debian/run-xsecurelock.in > debian/run-xsecurelock
 		dh_installpam --name xsecurelock
 		dh_install debian/banner etc/xsecurelock
 		dh_install debian/users etc/xsecurelock
