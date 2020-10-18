@@ -2,6 +2,6 @@
 Type=Application
 Name=xsecurelock-nsls2
 NoDisplay=true
-Exec=/usr/lib/${DEB_HOST_HULTIARCH}/xsecurelock/run-xsecurelock
+Exec=/usr/lib/${DEB_HOST_MULTIARCH}/xsecurelock/run-xsecurelock
 Terminal=false
 X-GNOME-AutoRestart=true
