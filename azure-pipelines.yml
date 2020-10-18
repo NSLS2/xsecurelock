@@ -50,4 +50,8 @@ steps:
       --with-xfixes \
       --with-xft \
       --with-xkb
-  displayName: 'Run Configure'
+  displayName: Run Configure
+
+- script: |
+    make
+  displayName: Build
