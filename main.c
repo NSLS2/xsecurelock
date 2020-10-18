@@ -71,11 +71,6 @@ limitations under the License.
 #include "wait_pgrp.h"      // for WaitPgrp
 #include "wm_properties.h"  // for SetWMProperties
 
-#ifdef NO_BLANK
-#include "userfile.h"
-#include "env_info.h"
-#endif
-
 #ifdef WALLPAPER
 #include "wallpaper.xbm"
 #endif
@@ -167,11 +162,6 @@ struct timeval time_to_blank;
 
 //! Whether the screen is currently blanked by us.
 int blanked = 0;
-
-#ifdef NO_BLANK
-//! Should we blank the screen?
-int blank_screen = 1;
-#endif
 
 #ifdef HAVE_DPMS_EXT
 //! Whether DPMS needs to be disabled when unblanking. Set when blanking.
@@ -810,18 +800,6 @@ int main(int argc, char **argv) {
         "Only locking the default screen.\n");
   }
 
-#ifdef NO_BLANK
-  char username[256];
-  GetUserName(username, sizeof(username));
-  int match;
-  UserInAuthList(username, &match);
-  if (match & USERFILE_NO_BLANK) {
-    blank_screen = 0;
-  } else {
-    blank_screen = 1;
-  }
-#endif
-
   // My windows.
   Window my_windows[4];
   unsigned int n_my_windows = 0;
@@ -1093,15 +1071,9 @@ int main(int argc, char **argv) {
   // This is done after grabbing so failure to grab does not blank the screen
   // yet, thereby "confirming" the screen lock.
 #ifdef NO_BLANK
-  if (!blank_screen) {
     XRaiseWindow(display, background_window);
     XClearWindow(display, background_window);  // Workaround for bad drivers.
     XRaiseWindow(display, saver_window);
-  } else {
-    XMapRaised(display, background_window);
-    XClearWindow(display, background_window);  // Workaround for bad drivers.
-    XMapRaised(display, saver_window);
-  }
 #else
   XMapRaised(display, background_window);
   XClearWindow(display, background_window);  // Workaround for bad drivers.
@@ -1109,14 +1081,10 @@ int main(int argc, char **argv) {
 #endif
   XRaiseWindow(display, auth_window);  // Don't map here.
 
-#ifdef NO_BLANK
-  if (blank_screen) {
-#endif
+#ifndef NO_BLANK
   if (obscurer_window != None) {
     // Map the obscurer window last so it should never become visible.
     XMapRaised(display, obscurer_window);
-  }
-#ifdef NO_BLANK
   }
 #endif
 
@@ -1476,31 +1444,23 @@ int main(int argc, char **argv) {
 #endif
           } else if (priv.ev.xmap.window == saver_window) {
 #ifdef NO_BLANK
-            if (!blank_screen) {
-              XUnmapWindow(display, saver_window);
-            } else {
-#endif
+            XUnmapWindow(display, saver_window);
+#else
             // This should never happen, but let's handle it anyway.
             Log("Someone unmapped the saver window. Undoing that");
             saver_window_mapped = 0;
             XMapWindow(display, saver_window);
-#ifdef NO_BLANK
-            }
 #endif
           } else if (priv.ev.xmap.window == background_window) {
 #ifdef NO_BLANK
-            if (!blank_screen) {
-              XUnmapWindow(display, background_window);
-            } else {
-#endif
+            XUnmapWindow(display, background_window);
+#else
             // This should never happen, but let's handle it anyway.
             Log("Someone unmapped the background window. Undoing that");
             background_window_mapped = 0;
             XMapRaised(display, background_window);
             XClearWindow(display,
                          background_window);  // Workaround for bad drivers.
-#ifdef NO_BLANK
-            }
 #endif
 #ifdef HAVE_XCOMPOSITE_EXT
           } else if (obscurer_window != None &&
