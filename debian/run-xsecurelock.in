@@ -34,6 +34,4 @@ export XSECURELOCK_AUTH_BANNER_COLOR="Dark Grey"
 export XSECURELOCK_AUTH_FOREGROUND_COLOR="Yellow"
 export XSECURELOCK_SAVER=/usr/lib/${DEB_HOST_MULTIARCH}/xsecurelock/saver-xsecurelock
 
-/usr/bin/xautolock -time 15 \
-  -secure \
-  -locker /usr/bin/xsecurelock
+exec /usr/bin/xautolock -time 15 -secure -locker /usr/bin/xsecurelock
