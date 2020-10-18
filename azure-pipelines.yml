@@ -10,6 +10,21 @@ pool:
   vmImage: 'ubuntu-latest'
 
 steps:
+- script: sudo apt-get install x11-xserver-utils \
+                feh \
+                xautolock \
+                libc6 \
+                libfontconfig1 \
+                libpam0g \
+                libx11-6 \
+                libxcomposite1 \
+                libxext6 \
+                libxfixes3 \
+                libxft2 \
+                libxmuu1 \
+                libxrandr2 \
+                libxss1
+  displayName: Install Dependencies
 - script: ./autogen.sh
   displayName: 'Run autogen.sh'
 
