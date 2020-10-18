@@ -962,22 +962,21 @@ void DisplayMessage(const char *title, const char *str, int is_warning) {
   if (box_w < tw_switch_user) {
     box_w = tw_switch_user;
   }
+  int box_h = (4 + have_multiple_layouts + have_switch_user_command +
+               show_datetime * 2) *
+              th;
+
 #ifdef BANNER
+  int tw_banner[BANNER_MAX_LINES];
   for (int i = 0; i < banner_n ; i++) {
     tw_banner[i] = TextWidth(banner[i], strlen(banner[i]));
     if (box_w < tw_banner[i]) {
       box_w = tw_banner[i];
     }
   }
-  int box_h = (4 + have_multiple_layouts + have_switch_user_command +
-               banner_n +
-               show_datetime * 2) *
-              th;
-#else
-  int box_h = (4 + have_multiple_layouts + have_switch_user_command +
-               show_datetime * 2) *
-              th;
+  box_h += (banner_n * th);
 #endif
+
   int region_w = box_w + 2 * WINDOW_BORDER;
   int region_h = box_h + 2 * WINDOW_BORDER;
 
