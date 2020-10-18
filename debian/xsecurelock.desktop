@@ -1,0 +1,7 @@
+[Desktop Entry]
+Type=Application
+Name=xsecurelock-nsls2
+NoDisplay=true
+Exec=/usr/bin/run-xsecurelock
+Terminal=false
+X-GNOME-AutoRestart=true
