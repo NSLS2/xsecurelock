@@ -10,10 +10,30 @@ pool:
   vmImage: 'ubuntu-latest'
 
 steps:
-- script: echo Hello, world!
-  displayName: 'Run a one-line script'
+- script: ./autogen.sh
+  displayName: 'Run autogen.sh'
 
 - script: |
-    echo Add other tasks to build, test, and deploy your project.
-    echo See https://aka.ms/yaml
-  displayName: 'Run a multi-line script'
+    ./configure -- \
+			--with-pam \
+			--with-pam-service-name=xsecurelock \
+			--with-userfile-filename=/etc/xsecurelock/users \
+			--with-banner-filename=/etc/xsecurelock/banner \
+			--enable-any-user-auth \
+			--enable-banner \
+			--enable-wallpaper \
+			--enable-no-blank \
+			--with-fontconfig \
+			--with-htpasswd=no \
+			--with-mplayer=/usr/bin/mplayer \
+			--with-mpv=/usr/bin/mpv \
+			--with-pamtester=no \
+			--with-xcomposite \
+			--with-xf86misc=no \
+			--with-xrandr \
+			--with-xss \
+			--with-xsync \
+			--with-xfixes \
+			--with-xft \
+			--with-xkb
+  displayName: 'Run Configure'
