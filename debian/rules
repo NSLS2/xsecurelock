@@ -43,7 +43,7 @@ override_dh_autoreconf:
 override_dh_auto_install:
 		dh_auto_install
 		find ./debian -type f -name "LICENSE" -delete
-		dh_installpam
+		dh_installpam --name xsecurelock
 
 override_dh_auto_clean:
 		dh_auto_clean
