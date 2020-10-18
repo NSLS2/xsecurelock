@@ -99,9 +99,7 @@ int UserInAuthList(const char* username, int *match) {
 
             if (*match) {
                 while ((token = strtok_r(NULL, tokens, &_line)) != NULL) {
-                    if (!strcmp(token, "noblank")) {
-                        *match |= USERFILE_NO_BLANK;
-                    }
+                    // Proces tokens
                 }
                 break;
             }

@@ -95,12 +95,6 @@ nodist_xsecurelock_SOURCES = \
 xsecurelock_CPPFLAGS = $(macros) $(LIBBSD_CFLAGS)
 xsecurelock_LDADD = $(LIBBSD_LIBS)
 
-if NO_BLANK
-xsecurelock_SOURCES += \
-	userfile.c userfile.h \
-	env_info.c env_info.h
-endif
-
 helpersdir = $(pkglibexecdir)
 helpers_SCRIPTS = \
 	helpers/saver_blank
