@@ -22,7 +22,7 @@ steps:
                 libxft-dev \
                 libxmuu-dev \
                 libxrandr-dev \
-                libxss1
+                libxss-dev
   displayName: Install Dependencies
 - script: ./autogen.sh
   displayName: 'Run autogen.sh'
