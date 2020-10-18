@@ -85,9 +85,12 @@ int UserInAuthList(const char* username, int *match) {
                 if (IsMemberOfGroup(username, token, match) != USERFILE_SUCCESS) {
                     *match = USERFILE_NO_MATCH;
                     rtn = USERFILE_ERROR;
+                    break;
                 } else {
-                    *match = USERFILE_GROUP_MATCH;
-                    rtn = USERFILE_SUCCESS;
+                    if (match) {
+                        *match = USERFILE_GROUP_MATCH;
+                        rtn = USERFILE_SUCCESS;
+                    }
                 }
             } else {
                 if (strcmp(username, token) == 0) {
