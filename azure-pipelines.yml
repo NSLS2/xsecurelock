@@ -14,7 +14,7 @@ steps:
   displayName: 'Run autogen.sh'
 
 - script: |
-		./configure -- \
+		./configure \
 			--with-pam \
 			--with-pam-service-name=xsecurelock \
 			--with-userfile-filename=/etc/xsecurelock/users \
