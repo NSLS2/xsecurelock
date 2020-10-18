@@ -87,7 +87,7 @@ int UserInAuthList(const char* username, int *match) {
                     rtn = USERFILE_ERROR;
                     break;
                 } else {
-                    if (match) {
+                    if (*match) {
                         *match = USERFILE_GROUP_MATCH;
                         rtn = USERFILE_SUCCESS;
                     }
