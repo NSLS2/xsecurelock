@@ -46,7 +46,7 @@ override_dh_auto_install:
 		dh_installpam --name xsecurelock
 		dh_install debian/banner etc/xsecurelock
 		dh_install debian/users etc/xsecurelock
-		dh_install debian/xsecurelock-nsls2 usr/bin
+		dh_install debian/run-xsecurelock usr/bin
 
 override_dh_auto_clean:
 		dh_auto_clean
