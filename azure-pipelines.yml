@@ -62,9 +62,9 @@ steps:
     make
   displayName: Build
 
-- script: |
-    cd test && ./run-tests.sh
-  displayName: Run Tests
+#- script: |
+#    cd test && ./run-tests.sh
+#  displayName: Run Tests
 
 - script: |
     make -p build
