@@ -77,7 +77,7 @@ steps:
       -uc -us \
       --git-export-dir=build \
       --git-tarball-dir=build
-  condition: eq(variables['BuildSourceBranch'], 'debian')
+  condition: eq(variables['Build.SourceBranch'], 'debian')
   displayName: 'Build Debian Package'
 
 - task: GithubRelease@0
