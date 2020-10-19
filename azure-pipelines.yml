@@ -4,7 +4,13 @@
 # https://aka.ms/yaml
 
 trigger:
-- master
+  branches:
+    include:
+    - master
+    - releases/*
+  tags:
+    include:
+    - v*
 
 pool:
   vmImage: 'ubuntu-latest'
@@ -59,3 +65,30 @@ steps:
 - script: |
     cd tests && ./run-tests.sh
   displayName: Run Tests
+
+- script: |
+    make -p build
+    uscan --force-download \
+          --destdir build
+    gbp buildpackage \
+      --git-debian-branch=debian \
+      --git-ignore-new \
+      --git-ignore-branch \
+      -uc -us \
+      --git-export-dir=build \
+      --git-tarball-dir=build
+  condition: eq(variables['BuildSourceBranch'], 'debian')
+  displayName: 'Build Debian Package'
+
+- task: GithubRelease@0
+  displayName: 'Attach debian package to release'
+  condition: startsWith(variables['Build.SourceBranch'], 'refs/tags/v')
+  inputs:
+    gitHubConnection: github.com_stuwilkins
+    repositoryName: NSLS-II/xsecurelock
+    assets: build/*.deb
+    action: edit
+    target: '$(Build.SourceVersion)'
+    tag: '$(Build.SourceBranchName)'
+    addChangeLog: false
+    assetUploadMode: replace
