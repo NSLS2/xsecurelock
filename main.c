@@ -1071,9 +1071,9 @@ int main(int argc, char **argv) {
   // This is done after grabbing so failure to grab does not blank the screen
   // yet, thereby "confirming" the screen lock.
 #ifdef NO_BLANK
-    XRaiseWindow(display, background_window);
-    XClearWindow(display, background_window);  // Workaround for bad drivers.
-    XRaiseWindow(display, saver_window);
+  XRaiseWindow(display, background_window);
+  XClearWindow(display, background_window);  // Workaround for bad drivers.
+  XRaiseWindow(display, saver_window);
 #else
   XMapRaised(display, background_window);
   XClearWindow(display, background_window);  // Workaround for bad drivers.
@@ -1081,7 +1081,7 @@ int main(int argc, char **argv) {
 #endif
   XRaiseWindow(display, auth_window);  // Don't map here.
 
-#ifndef NO_BLANK
+#ifdef HAVE_XCOMPOSITE_EXT
   if (obscurer_window != None) {
     // Map the obscurer window last so it should never become visible.
     XMapRaised(display, obscurer_window);
@@ -1442,19 +1442,16 @@ int main(int argc, char **argv) {
                          GrabModeAsync, GrabModeAsync, None, transparent_cursor,
                          CurrentTime);
 #endif
-          } else if (priv.ev.xmap.window == saver_window) {
 #ifdef NO_BLANK
-            XUnmapWindow(display, saver_window);
+          XUnmapWindow(display, saver_window);
+          XUnmapWindow(display, background_window);
 #else
+          } else if (priv.ev.xmap.window == saver_window) {
             // This should never happen, but let's handle it anyway.
             Log("Someone unmapped the saver window. Undoing that");
             saver_window_mapped = 0;
             XMapWindow(display, saver_window);
-#endif
           } else if (priv.ev.xmap.window == background_window) {
-#ifdef NO_BLANK
-            XUnmapWindow(display, background_window);
-#else
             // This should never happen, but let's handle it anyway.
             Log("Someone unmapped the background window. Undoing that");
             background_window_mapped = 0;
