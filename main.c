@@ -1442,6 +1442,10 @@ int main(int argc, char **argv) {
                          GrabModeAsync, GrabModeAsync, None, transparent_cursor,
                          CurrentTime);
 #endif
+#ifdef NO_BLANK
+          XUnmapWindow(display, saver_window);
+          XUnmapWindow(display, background_window);
+#else
           } else if (priv.ev.xmap.window == saver_window) {
 #ifdef NO_BLANK
             XUnmapWindow(display, saver_window);

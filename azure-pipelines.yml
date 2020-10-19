@@ -1,0 +1,94 @@
+# Starter pipeline
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
+
+trigger:
+  branches:
+    include:
+    - master
+    - releases/*
+  tags:
+    include:
+    - v*
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+steps:
+- script: |
+    sudo apt-get update
+    sudo apt-get install x11-xserver-utils \
+                feh \
+                xautolock \
+                libfontconfig-dev \
+                libpam-dev \
+                libx11-dev \
+                libxcomposite-dev \
+                libxft-dev \
+                libxmuu-dev \
+                libxrandr-dev \
+                libxss-dev
+  displayName: Install Dependencies
+- script: ./autogen.sh
+  displayName: 'Run autogen.sh'
+
+- script: |
+    ./configure \
+      --with-pam \
+      --with-pam-service-name=xsecurelock \
+      --with-userfile-filename=/etc/xsecurelock/users \
+      --with-banner-filename=/etc/xsecurelock/banner \
+      --enable-any-user-auth \
+      --enable-banner \
+      --enable-wallpaper \
+      --enable-no-blank \
+      --with-fontconfig \
+      --with-htpasswd=no \
+      --with-mplayer=/usr/bin/mplayer \
+      --with-mpv=/usr/bin/mpv \
+      --with-pamtester=no \
+      --with-xcomposite \
+      --with-xf86misc=no \
+      --with-xrandr \
+      --with-xss \
+      --with-xsync \
+      --with-xfixes \
+      --with-xft \
+      --with-xkb
+  displayName: Run Configure
+
+- script: |
+    make
+  displayName: Build
+
+#- script: |
+#    cd test && ./run-tests.sh
+#  displayName: Run Tests
+
+- script: |
+    make -p build
+    uscan --force-download \
+          --destdir build
+    gbp buildpackage \
+      --git-debian-branch=debian \
+      --git-ignore-new \
+      --git-ignore-branch \
+      -uc -us \
+      --git-export-dir=build \
+      --git-tarball-dir=build
+  condition: eq(variables['Build.SourceBranch'], 'debian')
+  displayName: 'Build Debian Package'
+
+- task: GithubRelease@0
+  displayName: 'Attach debian package to release'
+  condition: startsWith(variables['Build.SourceBranch'], 'refs/tags/v')
+  inputs:
+    gitHubConnection: github.com_stuwilkins
+    repositoryName: NSLS-II/xsecurelock
+    assets: build/*.deb
+    action: edit
+    target: '$(Build.SourceVersion)'
+    tag: '$(Build.SourceBranchName)'
+    addChangeLog: false
+    assetUploadMode: replace

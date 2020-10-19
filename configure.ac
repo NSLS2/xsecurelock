@@ -20,13 +20,13 @@ AC_PROG_CC
 AC_PROG_CC_C99
 
 AC_DEFUN([RP_TRY_CC_FLAG], [
-	AC_MSG_CHECKING([whether the compiler supports $1])
-	saved_CFLAGS=$CFLAGS
-	CFLAGS="$CFLAGS $1"
-	AC_COMPILE_IFELSE([AC_LANG_PROGRAM([])],
-	                  [AC_MSG_RESULT([yes])],
-	                  [AC_MSG_RESULT([no])
-	                   CFLAGS_$saved_CFLAGS])])
+  AC_MSG_CHECKING([whether the compiler supports $1])
+  saved_CFLAGS=$CFLAGS
+  CFLAGS="$CFLAGS $1"
+  AC_COMPILE_IFELSE([AC_LANG_PROGRAM([])],
+                    [AC_MSG_RESULT([yes])],
+                    [AC_MSG_RESULT([no])
+                     CFLAGS_$saved_CFLAGS])])
 RP_TRY_CC_FLAG([-Wall])
 RP_TRY_CC_FLAG([-Wextra])
 AC_DEFINE([_POSIX_C_SOURCE], [200112L])
