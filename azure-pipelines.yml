@@ -63,7 +63,7 @@ steps:
   displayName: Build
 
 - script: |
-    cd tests && ./run-tests.sh
+    cd test && ./run-tests.sh
   displayName: Run Tests
 
 - script: |
