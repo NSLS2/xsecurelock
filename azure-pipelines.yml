@@ -23,8 +23,8 @@ steps:
   displayName: Set Git Describe to Variable
 
 - script: |
-    sudo apt-get update
-    sudo apt-get install x11-xserver-utils \
+     apt-get update
+     apt-get install x11-xserver-utils \
                 feh \
                 xautolock \
                 libfontconfig-dev \
@@ -73,8 +73,8 @@ steps:
 #  displayName: Run Tests
 
 - script: |
-    sudo apt-get install git-buildpackage
-    sudo apt-get install debhelper debmake dh-exec
+     apt-get install git-buildpackage
+     apt-get install debhelper debmake dh-exec
   condition: or(eq(variables['Build.TargetBranch'], 'debian'), eq(variables['System.PullRequest.SourceBranch'], 'debian'))
   displayName: 'Install Dependencies for Debian Package Build'
 
