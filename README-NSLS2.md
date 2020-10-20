@@ -9,6 +9,11 @@
  and changed versions to both be built through the same code base. It also
  allows for better auditing of changes.
 
+In addition to these changes, CI is provided an Azure Pipelines and upstream
+changes are automatically included.
+
+Debian packaging is provided on the `debian` branch. 
+
  ## Any User Authentication
 
 The screen locker can be configured to not pass the logged in username to the
