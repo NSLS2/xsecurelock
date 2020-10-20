@@ -12,7 +12,7 @@ trigger:
     include:
     - v*
 
-container: ubuntu:18.04
+container: debian:stable
 
 pool:
   vmImage: 'ubuntu-latest'
