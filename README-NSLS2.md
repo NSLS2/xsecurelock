@@ -10,7 +10,7 @@ The screen locker can be configured to not pass the logged in username to the
 PAM stack, enabling the unlocking (authentication) by a user that is not the
 user running the screen locker process. This is governed by the use of a file
 `/etc/xsecurelock/users` which is set by the
-``--with-userfile-filename=<filename>` option passed to `configure`. 
+`--with-userfile-filename=<filename>` option passed to `configure`. 
 An example of this file is shown below:
 ```
 # Userlist for xsecurelock
@@ -22,14 +22,12 @@ swilkins
 @blgroups
 ```
 
-This would cause `xsecurelock` to ask for a username if the process is
-running as either the user `swilkins` or if the process is running as a user
-who is in the `blgroups` group. If restrictions on authentication are
-required, this should be done via PAM by modifying the PAM service file (for
-example `/etc/pam.d/xsecurelock`)
-
-For example, the PAM stack could contain the `pam_listfile` module to
-restrict unlocking to a subset of users.
+This would cause _xsecurelock_ to ask for a username if the process is
+running as either the user _swilkins_ or if the process is running as a user
+who is in the _blgroups_ group. If restrictions on authentication are
+required, this should be done via PAM by modifying the PAM service file For
+example, the PAM stack could contain the _pam_listfile_ module to restrict
+unlocking to a subset of users.
 
 ## Banner text
 
