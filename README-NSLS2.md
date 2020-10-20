@@ -44,5 +44,5 @@ Passing the option `--enable-wallpaper` enables the background pixmap `wallpaper
 ## No Blank
 Passing the option `--enable-no-blank` causes the locker to be "transparant".
 This is acomplished by never raising the blanker and screensaver windows
-although they are there. The screensaver process is still run, so a lock icon
-(for example) can be shown when the screensaver is run.
+although they are still mapped. The screensaver process is still run, so a
+lock icon (for example) can be shown when the screensaver is run.
