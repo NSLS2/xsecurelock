@@ -29,7 +29,7 @@ required, this should be done via PAM by modifying the PAM service file For
 example, the PAM stack could contain the _pam_listfile_ module to restrict
 unlocking to a subset of users.
 
-## Banner text
+## Banner Text
 
 Using the configure options `--enable-banner` and `--with-banner-filename` a
 logon banner can be included at the unlock prompt. The color of that banner
