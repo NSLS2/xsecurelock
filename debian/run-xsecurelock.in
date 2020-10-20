@@ -1,0 +1,37 @@
+#!/bin/bash -
+set -o nounset
+
+GSETTINGS=/usr/bin/gsettings
+XSET=/usr/bin/xset
+
+# Disable the built in screensaver and show wallpaper
+if command -v ${GSETTINGS}
+then
+  ${GSETTINGS} set org.gnome.desktop.session idle-delay 0
+  ${GSETTINGS} set org.gnome.desktop.screensaver idle-activation-enabled false
+  ${GSETTINGS} set org.gnome.desktop.screensaver lock-enabled false
+  ${GSETTINGS} set org.cinnamon.desktop.session idle-delay 0
+  ${GSETTINGS} set org.mate.screensaver idle-activation-enabled false
+fi
+
+if command -v xset
+then
+  sleep 10; ${XSET} s off
+  sleep 10; ${XSET} s noblank
+fi
+
+export XSECURELOCK_NO_COMPOSITE=1
+export XSECURELOCK_SHOW_USERNAME=1
+export XSECURELOCK_SHOW_DATETIME=0
+export XSECURELOCK_AUTH_TIMEOUT=15
+export XSECURELOCK_AUTH_SOUNDS=1
+export XSECURELOCK_BLANK_TIMEOUT=-1
+export XSECURELOCK_BLANK_DPMS_STATE="on"
+export XSECURELOCK_PASSWORD_PROMPT="asterisks"
+export XSECURELOCK_FONT="-*-helvetica-medium-r-normal-*-18-*-*-*-*-*-*"
+export XSECURELOCK_COMPOSITE_OBSCURER=0
+export XSECURELOCK_AUTH_BANNER_COLOR="Dark Grey"
+export XSECURELOCK_AUTH_FOREGROUND_COLOR="Yellow"
+export XSECURELOCK_SAVER=/usr/lib/${DEB_HOST_MULTIARCH}/xsecurelock/saver-xsecurelock
+
+exec /usr/bin/xautolock -time 15 -secure -locker /usr/bin/xsecurelock

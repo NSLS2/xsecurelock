@@ -1,0 +1,2 @@
+# PAM Configuration for xsecurelock
+@include common-auth

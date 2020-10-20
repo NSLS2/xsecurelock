@@ -1,0 +1,42 @@
+Source: xsecurelock-nsls2
+Maintainer: Stuart B. Wilkins <swilkins@bnl.gov>
+Section: x11
+Priority: optional
+Standards-Version: 3.9.6
+Build-Depends: debhelper (>= 9),
+  libc6,
+  libpam-dev,
+  libx11-dev,
+  libxcomposite-dev,
+  libxext-dev,
+  libxfixes-dev,
+  libxft-dev,
+  libxmuu-dev,
+  libxrandr-dev,
+  libxss-dev,
+  pandoc,
+  x11proto-core-dev
+Homepage: https://github.com/NSLS-II/xsecurelock
+Vcs-Browser: https://github.com/NSLS-II/xsecurelock/tree/debian
+Vcs-Git: https://github.com/NSLS-II/xsecurelock.git -b debian
+
+Package: xsecurelock-nsls2
+Architecture: any
+Depends: dash, x11-xserver-utils, feh, xautolock, ${shlibs:Depends}, ${misc:Depends}
+Suggests: mplayer,
+  mpv,
+  xscreensaver-data,
+  xscreensaver-data-extra,
+  xscreensaver-gl,
+  xscreensaver-gl-extra
+Description: X11 screen lock utility with the primary goal of security
+ Screen lock utilities are widespread. However, in the past they often had
+ security issues regarding authentication bypass (a crashing screen locker
+ would unlock the screen), information disclosure (notifications may appear on
+ top of the screen saver), or sometimes even worse.
+ .
+ In XSecureLock, security is achieved using a modular design to avoid the usual
+ pitfalls of screen locking utility design on X11.
+ .
+ This version is modified for NSLS-II to have any user auth, logon banners
+ and a transparent screensaver mode.

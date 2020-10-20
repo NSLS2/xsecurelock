@@ -1,0 +1,2 @@
+# Don't store changes on png files
+extend-diff-ignore = "(^|/)(.*\.png)$"
