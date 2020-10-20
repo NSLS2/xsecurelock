@@ -14,7 +14,6 @@ Build-Depends: debhelper (>= 9),
   libxmuu-dev,
   libxrandr-dev,
   libxss-dev,
-  pandoc,
   x11proto-core-dev
 Homepage: https://github.com/NSLS-II/xsecurelock
 Vcs-Browser: https://github.com/NSLS-II/xsecurelock/tree/debian
