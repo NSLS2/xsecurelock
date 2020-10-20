@@ -17,6 +17,14 @@ pool:
 
 steps:
 - script: |
+    echo '##vso[task.setvariable variable=gitdesc]`git describe`'
+  displayName: Set Git Describe to Variable
+
+- script: |
+    echo $(gitdesc)
+  displayName: Debug Print
+
+- script: |
     sudo apt-get update
     sudo apt-get install x11-xserver-utils \
                 feh \
