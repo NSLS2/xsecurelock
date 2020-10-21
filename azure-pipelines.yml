@@ -23,6 +23,9 @@ strategy:
     debian9:
       containerImage: stuwilkins/xsecurelock-build-deb9:latest
       debrelease: debian9
+    debian10:
+      containerImage: stuwilkins/xsecurelock-build-deb9:latest
+      debrelease: debian10
 
 container: $[ variables['containerImage'] ]
 
