@@ -79,8 +79,8 @@ steps:
       -uc -us \
       --git-export-dir=build \
       --git-tarball-dir=build
-    debfile=$(ls build/*.deb | sed '/\.deb/-$(debrelease).deb/')
-    echo ${debfile}
+    debfile=$(ls build/*.deb | sed "s/\.deb/-$(debrelease).deb/")
+    echo '##[debug]${debfile}'
     echo '##vso[task.setvariable variable=debfile]${debfile}'
   condition: or(eq(variables['Build.TargetBranch'], 'debian'), eq(variables['System.PullRequest.SourceBranch'], 'debian'))
   displayName: 'Build Debian Package'
