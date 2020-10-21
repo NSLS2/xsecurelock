@@ -91,6 +91,7 @@ steps:
 
 - script: |
     echo "##[debug] debfile = $(debfile)"
+    echo "##[debug] gitdesc = $(gitdesc)"
   condition: or(eq(variables['Build.TargetBranch'], 'debian'), eq(variables['System.PullRequest.SourceBranch'], 'debian'))
   displayName: 'Debian Debug Output'
 
