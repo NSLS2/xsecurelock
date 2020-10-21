@@ -23,6 +23,7 @@ steps:
   displayName: Set Git Describe to Variable
 
 - script: |
+    ./autogen.sh
     ./configure \
       --with-pam \
       --with-pam-service-name=xsecurelock \
