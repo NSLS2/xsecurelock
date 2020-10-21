@@ -73,6 +73,9 @@ endif
 if WALLPAPER
 macros += -DWALLPAPER
 endif
+if SYSLOG
+macros += -DSYSLOG
+endif
 
 bin_PROGRAMS = \
 	xsecurelock
