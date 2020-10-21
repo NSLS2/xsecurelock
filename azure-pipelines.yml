@@ -15,7 +15,14 @@ trigger:
 pool:
   vmImage: 'ubuntu-latest'
 
-container: stuwilkins/xsecurelock-build-deb8:latest
+strategy:
+  matrix:
+    debian8:
+      containerImage: stuwilkins/xsecurelock-build-deb8:latest
+    debian9:
+      containerImage: stuwilkins/xsecurelock-build-deb9:latest
+
+container: $[ variables['containerImage'] ]
 
 steps:
 - script: |
