@@ -12,10 +12,10 @@ trigger:
     include:
     - v*
 
-container: debian:stable
-
 pool:
   vmImage: 'ubuntu-latest'
+
+container: stuwilkins/xsecurelock-build-deb8:initial
 
 steps:
 - script: |
