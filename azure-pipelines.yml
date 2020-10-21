@@ -89,6 +89,11 @@ steps:
   condition: or(eq(variables['Build.TargetBranch'], 'debian'), eq(variables['System.PullRequest.SourceBranch'], 'debian'))
   displayName: 'Build Debian Package'
 
+- script: |
+    echo "##[debug] debfile = $(debfile)"
+  condition: or(eq(variables['Build.TargetBranch'], 'debian'), eq(variables['System.PullRequest.SourceBranch'], 'debian'))
+  displayName: 'Debian Debug Output'
+
 - task: GithubRelease@0
   displayName: 'Attach debian package to release'
   condition: startsWith(variables['Build.SourceBranch'], 'debian')
