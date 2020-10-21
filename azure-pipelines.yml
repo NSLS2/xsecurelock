@@ -84,7 +84,7 @@ steps:
     echo "##[debug] old_debfile = ${old_debfile}"
     echo "##[debug] new_debfile = ${new_debfile}"
     mv "${old_debfile}" "${new_debfile}"
-    echo "##[debug] $(ls -1 | tr '\n' ' ')"
+    echo "##[debug] $(ls -1 build | tr '\n' ' ')"
     echo "##vso[task.setvariable variable=debfile]${new_debfile}"
   condition: or(eq(variables['Build.TargetBranch'], 'debian'), eq(variables['System.PullRequest.SourceBranch'], 'debian'))
   displayName: 'Build Debian Package'
