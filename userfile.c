@@ -11,6 +11,12 @@
 
 #include "userfile.h"
 
+const char *userfile_match_string[] = {
+    "NO_MATCH",
+    "USERNAME_MATCH",
+    "GROUP_MATCH"
+};
+
 int IsMemberOfGroup(const char *username, const char *grname, int *match) {
     int i, ngroups;
     gid_t *groups;

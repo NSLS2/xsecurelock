@@ -12,6 +12,8 @@ enum userfile_tokens {
     USERFILE_GROUP_MATCH    = 0x02,
 };
 
+extern const char *userfile_match_string[];
+
 int UserInAuthList(const char* username, int* match);
 
 #endif
