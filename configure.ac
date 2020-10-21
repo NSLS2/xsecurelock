@@ -311,9 +311,17 @@ AC_ARG_ENABLE([wallpaper],
             [enable_wallpaper=$enableval],
             [enable_wallpaper=no])
 
+AC_ARG_ENABLE([syslog],
+            AC_HELP_STRING([--enable-syslog],
+                           [Enable syslog integration for logging authentication]),
+            [enable_syslog=$enableval],
+            [enable_syslog=no])
+
 AC_SUBST(auth)
 AC_SUBST(no_blank)
 AC_SUBST(banner)
+AC_SUBST(wallpaper)
+AC_SUBST(syslog)
 AC_SUBST(banner_filename)
 AC_SUBST(userfile_filename)
 
@@ -339,6 +347,8 @@ AM_CONDITIONAL([BANNER],
                [test x$enable_banner = xyes])
 AM_CONDITIONAL([WALLPAPER],
                [test x$enable_wallpaper = xyes])
+AM_CONDITIONAL([SYSLOG],
+               [test x$enable_syslog = xyes])
 
 banner_filename=
 AS_IF([test x$enable_banner = xyes], [
