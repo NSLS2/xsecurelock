@@ -19,8 +19,10 @@ strategy:
   matrix:
     debian8:
       containerImage: stuwilkins/xsecurelock-build-deb8:latest
+      reltag: 'debian8'
     debian9:
       containerImage: stuwilkins/xsecurelock-build-deb9:latest
+      reltag: 'debian9'
 
 container: $[ variables['containerImage'] ]
 
@@ -74,6 +76,10 @@ steps:
       -uc -us \
       --git-export-dir=build \
       --git-tarball-dir=build
+
+      debfile=$(ls build/*.deb | sed "s/\.deb/\-${{ reltag }}.deb/"
+      echo ${debfile}
+      echo '##vso[task.setvariable variable=debfile] ${debfile}
   condition: or(eq(variables['Build.TargetBranch'], 'debian'), eq(variables['System.PullRequest.SourceBranch'], 'debian'))
   displayName: 'Build Debian Package'
 
@@ -85,7 +91,7 @@ steps:
     repositoryName: NSLS-II/xsecurelock
     assets: build/*.deb
     action: edit
-    target: '$(Build.SourceVersion)'
+    target: '$(debfile)'
     tag: '$(gitdesc)'
     addChangeLog: false
     assetUploadMode: replace
