@@ -15,29 +15,12 @@ trigger:
 pool:
   vmImage: 'ubuntu-latest'
 
-container: stuwilkins/xsecurelock-build-deb8:initial
+container: stuwilkins/xsecurelock-build-deb8:latest
 
 steps:
 - script: |
     echo '##vso[task.setvariable variable=gitdesc]`git describe`'
   displayName: Set Git Describe to Variable
-
-- script: |
-     sudo apt-get update
-     sudo apt-get install x11-xserver-utils \
-                feh \
-                xautolock \
-                libfontconfig-dev \
-                libpam-dev \
-                libx11-dev \
-                libxcomposite-dev \
-                libxft-dev \
-                libxmuu-dev \
-                libxrandr-dev \
-                libxss-dev
-  displayName: Install Dependencies
-- script: ./autogen.sh
-  displayName: 'Run autogen.sh'
 
 - script: |
     ./configure \
@@ -71,12 +54,6 @@ steps:
 #- script: |
 #    cd test && ./run-tests.sh
 #  displayName: Run Tests
-
-- script: |
-     apt-get install git-buildpackage
-     apt-get install debhelper debmake dh-exec
-  condition: or(eq(variables['Build.TargetBranch'], 'debian'), eq(variables['System.PullRequest.SourceBranch'], 'debian'))
-  displayName: 'Install Dependencies for Debian Package Build'
 
 - script: |
     make -p build
