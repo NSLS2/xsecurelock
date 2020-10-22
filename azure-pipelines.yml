@@ -26,6 +26,9 @@ strategy:
     debian10:
       containerImage: stuwilkins/xsecurelock-build-deb9:latest
       debrelease: debian10
+    ubuntu-groovy:
+      containerImage: stuwilkins/xsecurelock-build-ubuntu:latest
+      debrelease: ubuntu-groovy
 
 container: $[ variables['containerImage'] ]
 
