@@ -56,3 +56,9 @@ Passing the option `--enable-no-blank` causes the locker to be "transparent".
 This is acomplished by never raising the blanker and screensaver windows
 although they are still mapped. The screensaver process is still run, so a
 lock icon (for example) can be shown when the screensaver is run.
+
+## Syslog
+
+Passing the option `--enable-syslog` will enable the syslog logging in the
+`authproto_pam.c` module. This adds some syslog messages (in the auth context)
+for logging the authentication.
