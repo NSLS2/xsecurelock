@@ -103,7 +103,7 @@ steps:
     repositoryName: NSLS-II/xsecurelock
     assets: build/*.deb
     action: edit
-    target: '$(debfile)'
-    tag: '$(gitdesc)'
+    target: '$[variables.debfile]'
+    tag: '$[variables.gitdesc]'
     addChangeLog: false
     assetUploadMode: replace
