@@ -21,7 +21,10 @@ macros = \
 	-DAUTHPROTO_EXECUTABLE=\"@authproto_executable@\" \
 	-DGLOBAL_SAVER_EXECUTABLE=\"@global_saver_executable@\" \
 	-DSAVER_EXECUTABLE=\"@saver_executable@\" \
-	-DPAM_SERVICE_NAME=\"@pam_service_name@\"
+	-DPAM_SERVICE_NAME=\"@pam_service_name@\" \
+	-DBANNER_FILENAME=\"@banner_filename@\" \
+	-DUSERFILE_FILENAME=\"@userfile_filename@\"
+
 if HAVE_LIBBSD
 macros += -DHAVE_LIBBSD
 endif
@@ -67,8 +70,11 @@ endif
 if BANNER
 macros += -DBANNER
 endif
-if BANNER
+if WALLPAPER
 macros += -DWALLPAPER
+endif
+if SYSLOG
+macros += -DSYSLOG
 endif
 
 bin_PROGRAMS = \
@@ -168,8 +174,14 @@ auth_x11_SOURCES = \
 	wait_pgrp.c wait_pgrp.h \
 	wm_properties.c wm_properties.h \
 	xscreensaver_api.c xscreensaver_api.h
+
 auth_x11_CPPFLAGS = $(macros) $(FONTCONFIG_CFLAGS) $(XFT_CFLAGS) $(LIBBSD_CFLAGS)
 auth_x11_LDADD = $(FONTCONFIG_LIBS) $(XFT_LIBS) $(LIBBSD_LIBS)
+
+if BANNER
+auth_x11_SOURCES += \
+	banner.c banner.h
+endif
 
 if HAVE_PAM
 helpers_PROGRAMS += \
@@ -182,6 +194,10 @@ authproto_pam_SOURCES = \
 	logging.c logging.h \
 	mlock_page.h \
 	util.c util.h
+if ANY_USER_AUTH
+authproto_pam_SOURCES += \
+	userfile.c userfile.h
+endif
 authproto_pam_CPPFLAGS = $(macros) $(LIBBSD_CFLAGS)
 authproto_pam_LDADD = $(LIBBSD_LIBS)
 endif

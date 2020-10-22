@@ -1081,11 +1081,13 @@ int main(int argc, char **argv) {
 #endif
   XRaiseWindow(display, auth_window);  // Don't map here.
 
+#ifndef NO_BLANK
 #ifdef HAVE_XCOMPOSITE_EXT
   if (obscurer_window != None) {
     // Map the obscurer window last so it should never become visible.
     XMapRaised(display, obscurer_window);
   }
+#endif
 #endif
 
   if (MLOCK_PAGE(&priv, sizeof(priv)) < 0) {
