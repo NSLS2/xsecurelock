@@ -76,7 +76,6 @@ steps:
     uscan --force-download \
           --destdir build
     gbp buildpackage \
-      --git-debian-branch=debian \
       --git-ignore-new \
       --git-ignore-branch \
       -uc -us \
