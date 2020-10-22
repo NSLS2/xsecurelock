@@ -1,6 +1,6 @@
 # NSLS-II Specific Changes
 
-[![Build Status](https://dev.azure.com/nsls-ii/xsecurelock/_apis/build/status/NSLS-II.xsecurelock?branchName=refs%2Fpull%2F3%2Fmerge)](https://dev.azure.com/nsls-ii/xsecurelock/_build/latest?definitionId=5&branchName=refs%2Fpull%2F3%2Fmerge)
+[![Build Status](https://dev.azure.com/nsls-ii/xsecurelock/_apis/build/status/NSLS-II.xsecurelock?branchName=master)](https://dev.azure.com/nsls-ii/xsecurelock/_build/latest?definitionId=5&branchName=master)
 
  This outlines the changes made to this version for NSLS-II specific changes.
  
@@ -9,7 +9,7 @@
  and changed versions to both be built through the same code base. It also
  allows for better auditing of changes.
 
-In addition to these changes, CI is provided an Azure Pipelines and upstream
+In addition to these changes, CI is provided on Azure Pipelines and upstream
 changes are automatically included.
 
 Debian packaging is provided on the `debian` branch. 
