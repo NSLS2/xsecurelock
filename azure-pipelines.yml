@@ -102,9 +102,9 @@ steps:
   inputs:
     gitHubConnection: github.com_stuwilkins
     repositoryName: NSLS-II/xsecurelock
-    assets: build/*.deb
+    assets: $(debfile)
     action: edit
-    target: $(debfile)
+    target: '$(Build.SourceVersion)'
     tag: $(gitdesc)
     addChangeLog: false
     assetUploadMode: replace
