@@ -1,9 +1,4 @@
-xsecurelock-nsls2 (1.7.0~10.gbp168de4) UNRELEASED; urgency=medium
-
-  ** SNAPSHOT build @168de47f66d7915e0f26c3791050dbd8a0b75f9b **
-
-  [ Stuart B. Wilkins ]
-  ** SNAPSHOT build @77188a2a98ece1f3c9c44d7173d8c40310f2919d **
+xsecurelock-nsls2 (1.7.1) UNRELEASED; urgency=medium
 
   [ Rudolf Polzer ]
   * Fix memory leak in authproto.
@@ -63,5 +58,117 @@ xsecurelock-nsls2 (1.7.0~10.gbp168de4) UNRELEASED; urgency=medium
   * Remove tests
   * Initial NSLS-II debian checkin
   * Updated instructions for autogenerationg changelog
+  * Ignore vscode
 
- -- Stuart B. Wilkins <swilkins@bnl.gov>  Tue, 20 Oct 2020 05:40:30 -0400
+  [ Stuart Wilkins ]
+  * Set up CI with Azure Pipelines
+  * Update azure-pipelines.yml
+
+  [ Stuart B. Wilkins ]
+  * Fixed tabs
+  * Fix more tabs
+  * Actually remove tabs
+  * Add Deps
+  * Add update
+  * Convert to dev packages
+  * Fix for dev package
+  * Add build step
+  * Added tests
+  * Added build step for debian branch
+  * Fix path
+  * Fix variable name
+  * Remove tests
+  * Snapshot 10
+  * Build on pull to debian
+  * Build on pull to debian
+  * Added debian package build deps
+  * Added debian package build deps
+  * Remove pandoc
+  * Set Git Describe Var
+  * Added git describe tag to release
+  * Set Git Describe Var
+  * Added git describe tag to release
+  * Added status badge for Azure Pipeline
+  * Added Readme for changes
+  * Document NSLS-II changes
+  * Fixed formatting
+  * Fixed typo
+  * Corrected mapping
+  * Added pre-processor note
+  * Insert newline
+  * Add CI and debian info
+  * Fix spelling
+  * Added docker container
+  * Removed sudo
+  * Move to debian
+  * Added sudo
+  * Add image from docker
+  * Remove apt-install, change to latest
+  * Add autogen
+  * Added status badge for Azure Pipeline
+  * Added docker container
+  * Removed sudo
+  * Move to debian
+  * Added sudo
+  * Add image from docker
+  * Remove apt-install, change to latest
+  * Add autogen
+  * Build on debian 8 and 9
+  * Add rename of package
+  * Build on debian 8 and 9
+  * Added variable for version
+  * Add rename of package
+  * Added variable for version
+  * Fix variable
+  * Fix variable
+  * Add debian 10
+  * Fixed )
+  * Add debian 10
+  * Fixed )
+  * Fixed sed
+  * Fixed sed
+  * Fixed quote type
+  * Fixed quote type
+  * Added debug
+  * Added debug
+  * Corrected directory
+  * Corrected directory
+  * Added debug
+  * Added debug
+  * Added debug for gitdesc
+  * Added debug for gitdesc
+  * Add match string
+  * Added syslog to log PAM authentication
+  * Added newline at end of file
+  * Fixed typos
+  * Added badges
+  * Add ubuntu image
+  * Add badge table
+  * Move badges to main
+  * Added syslog info
+  * Add debian branch badges
+  * Added Readme for changes
+  * Document NSLS-II changes
+  * Fixed formatting
+  * Fixed typo
+  * Corrected mapping
+  * Added pre-processor note
+  * Insert newline
+  * Add CI and debian info
+  * Fix spelling
+  * Add match string
+  * Added syslog to log PAM authentication
+  * Added newline at end of file
+  * Fixed typos
+  * Added badges
+  * Add badge table
+  * Added table of builds
+  * Move badges to main
+  * Added syslog info
+  * Add debian branch badges
+  * Add ubuntu image
+  * Remove debian branch
+  * Remove Debian Branch
+  * Remove branch info
+
+ -- Stuart B. Wilkins <swilkins@catbert.nsls2.bnl.gov>  Thu, 22 Oct 2020 14:47:02 -0400
