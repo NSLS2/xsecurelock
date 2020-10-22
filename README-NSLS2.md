@@ -1,13 +1,5 @@
 # NSLS-II Specific Changes
 
-| Distribution           | Build Status |
-| ---------------------- | -------------|
-| Overall Build          | [![Build Status](https://dev.azure.com/nsls-ii/xsecurelock/_apis/build/status/NSLS-II.xsecurelock?branchName=master)](https://dev.azure.com/nsls-ii/xsecurelock/_build/latest?definitionId=5&branchName=master)
-| Debian 8  (Jessie)     | [![Build Status](https://dev.azure.com/nsls-ii/xsecurelock/_apis/build/status/NSLS-II.xsecurelock?branchName=master&jobName=Job&configuration=Job%20debian8)](https://dev.azure.com/nsls-ii/xsecurelock/_build/latest?definitionId=5&branchName=master) |
-| Debian 9  (Stretch)    | [![Build Status](https://dev.azure.com/nsls-ii/xsecurelock/_apis/build/status/NSLS-II.xsecurelock?branchName=master&jobName=Job&configuration=Job%20debian9)](https://dev.azure.com/nsls-ii/xsecurelock/_build/latest?definitionId=5&branchName=master) |
-| Debian 10 (Buster)     | [![Build Status](https://dev.azure.com/nsls-ii/xsecurelock/_apis/build/status/NSLS-II.xsecurelock?branchName=master&jobName=Job&configuration=Job%20debian10)](https://dev.azure.com/nsls-ii/xsecurelock/_build/latest?definitionId=5&branchName=master) |
-| Ubuntu 20.4 (groovy)   | [![Build Status](https://dev.azure.com/nsls-ii/xsecurelock/_apis/build/status/NSLS-II.xsecurelock?branchName=master&jobName=Job&configuration=Job%20ubuntu-groovy)](https://dev.azure.com/nsls-ii/xsecurelock/_build/latest?definitionId=5&branchName=master) |
-
  This outlines the changes made to this version for NSLS-II specific changes.
 
  All changes to the upstream code are contained within compiler
