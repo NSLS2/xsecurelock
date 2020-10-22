@@ -34,7 +34,8 @@ container: $[ variables['containerImage'] ]
 
 steps:
 - script: |
-    echo '##vso[task.setvariable variable=gitdesc]`git describe`'
+    GITDESC=`git describe`
+    echo '##vso[task.setvariable variable=gitdesc]$GITDESC
   displayName: Set Git Describe to Variable
 
 - script: |
