@@ -1,0 +1,112 @@
+# Starter pipeline
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
+
+trigger:
+  branches:
+    include:
+    - master
+    - releases/*
+  tags:
+    include:
+    - v*
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+strategy:
+  matrix:
+    debian8:
+      containerImage: stuwilkins/xsecurelock-build-deb8:latest
+      debrelease: debian8
+    debian9:
+      containerImage: stuwilkins/xsecurelock-build-deb9:latest
+      debrelease: debian9
+    debian10:
+      containerImage: stuwilkins/xsecurelock-build-deb9:latest
+      debrelease: debian10
+    ubuntu-groovy:
+      containerImage: stuwilkins/xsecurelock-build-ubuntu:latest
+      debrelease: ubuntu-groovy
+
+container: $[ variables['containerImage'] ]
+
+steps:
+- script: |
+    echo '##vso[task.setvariable variable=gitdesc]`git describe`'
+  displayName: Set Git Describe to Variable
+
+- script: |
+    ./autogen.sh
+    ./configure \
+      --with-pam \
+      --with-pam-service-name=xsecurelock \
+      --with-userfile-filename=/etc/xsecurelock/users \
+      --with-banner-filename=/etc/xsecurelock/banner \
+      --enable-any-user-auth \
+      --enable-banner \
+      --enable-wallpaper \
+      --enable-no-blank \
+      --with-fontconfig \
+      --with-htpasswd=no \
+      --with-mplayer=/usr/bin/mplayer \
+      --with-mpv=/usr/bin/mpv \
+      --with-pamtester=no \
+      --with-xcomposite \
+      --with-xf86misc=no \
+      --with-xrandr \
+      --with-xss \
+      --with-xsync \
+      --with-xfixes \
+      --with-xft \
+      --with-xkb
+  displayName: Run Configure
+
+- script: |
+    make
+  displayName: Build
+
+#- script: |
+#    cd test && ./run-tests.sh
+#  displayName: Run Tests
+
+- script: |
+    make -p build
+    uscan --force-download \
+          --destdir build
+    gbp buildpackage \
+      --git-debian-branch=debian \
+      --git-ignore-new \
+      --git-ignore-branch \
+      -uc -us \
+      --git-export-dir=build \
+      --git-tarball-dir=build
+    old_debfile=$(ls build/*.deb | head -1)
+    new_debfile=$(echo ${old_debfile} | sed "s/\.deb/-$(debrelease).deb/")
+    echo "##[debug] old_debfile = ${old_debfile}"
+    echo "##[debug] new_debfile = ${new_debfile}"
+    mv "${old_debfile}" "${new_debfile}"
+    echo "##[debug] $(ls -1 build | tr '\n' ' ')"
+    echo "##vso[task.setvariable variable=debfile]${new_debfile}"
+  condition: or(eq(variables['Build.TargetBranch'], 'debian'), eq(variables['System.PullRequest.SourceBranch'], 'debian'))
+  displayName: 'Build Debian Package'
+
+- script: |
+    echo "##[debug] debfile = $(debfile)"
+    echo "##[debug] gitdesc = $(gitdesc)"
+  condition: or(eq(variables['Build.TargetBranch'], 'debian'), eq(variables['System.PullRequest.SourceBranch'], 'debian'))
+  displayName: 'Debian Debug Output'
+
+- task: GithubRelease@0
+  displayName: 'Attach debian package to release'
+  condition: startsWith(variables['Build.SourceBranch'], 'debian')
+  inputs:
+    gitHubConnection: github.com_stuwilkins
+    repositoryName: NSLS-II/xsecurelock
+    assets: build/*.deb
+    action: edit
+    target: '$(debfile)'
+    tag: '$(gitdesc)'
+    addChangeLog: false
+    assetUploadMode: replace
