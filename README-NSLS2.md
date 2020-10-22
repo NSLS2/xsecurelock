@@ -1,9 +1,16 @@
 # NSLS-II Specific Changes
 
-[![Build Status](https://dev.azure.com/nsls-ii/xsecurelock/_apis/build/status/NSLS-II.xsecurelock?branchName=master)](https://dev.azure.com/nsls-ii/xsecurelock/_build/latest?definitionId=5&branchName=master)
+
+
+| Distribution           | Build Status |
+| ---------------------- | -------------|
+| Overall Build          | [![Build Status](https://dev.azure.com/nsls-ii/xsecurelock/_apis/build/status/NSLS-II.xsecurelock?branchName=master)](https://dev.azure.com/nsls-ii/xsecurelock/_build/latest?definitionId=5&branchName=master)
+| Debian 8  (Jessie)     | [![Build Status](https://dev.azure.com/nsls-ii/xsecurelock/_apis/build/status/NSLS-II.xsecurelock?branchName=master&jobName=Job&configuration=Job%20debian8)](https://dev.azure.com/nsls-ii/xsecurelock/_build/latest?definitionId=5&branchName=master) |
+| Debian 9  (Stretch)    | [![Build Status](https://dev.azure.com/nsls-ii/xsecurelock/_apis/build/status/NSLS-II.xsecurelock?branchName=master&jobName=Job&configuration=Job%20debian9)](https://dev.azure.com/nsls-ii/xsecurelock/_build/latest?definitionId=5&branchName=master) |
+| Debian 10 (Buster)     | [![Build Status](https://dev.azure.com/nsls-ii/xsecurelock/_apis/build/status/NSLS-II.xsecurelock?branchName=master&jobName=Job&configuration=Job%20debian10)](https://dev.azure.com/nsls-ii/xsecurelock/_build/latest?definitionId=5&branchName=master) |
 
  This outlines the changes made to this version for NSLS-II specific changes.
- 
+
  All changes to the upstream code are contained within compiler
  pre-processing directives set through _autoconf_. This enables the upstream
  and changed versions to both be built through the same code base. It also
@@ -12,17 +19,18 @@
 In addition to these changes, CI is provided on Azure Pipelines and upstream
 changes are automatically included.
 
-Debian packaging is provided on the `debian` branch. 
+Debian packaging is provided on the `debian` branch.
 
- ## Any User Authentication
+## Any User Authentication
 
 The screen locker can be configured to not pass the logged in username to the
 PAM stack, enabling the unlocking (authentication) by a user that is not the
 user running the screen locker process. This is governed by the use of a file
 `/etc/xsecurelock/users` which is set by the
-`--with-userfile-filename=<filename>` option passed to `configure`. 
+`--with-userfile-filename=<filename>` option passed to `configure`.
 An example of this file is shown below:
-```
+
+```config
 # Userlist for xsecurelock
 #
 # format is <username/@groupname>
@@ -52,6 +60,7 @@ to make it more (or less) prominent. Alternatively the environmental variable
 Passing the option `--enable-wallpaper` enables the background pixmap `wallpaper.xbm` to provide a more "textured" background to the unlock page.
 
 ## No Blank
+
 Passing the option `--enable-no-blank` causes the locker to be "transparent".
 This is acomplished by never raising the blanker and screensaver windows
 although they are still mapped. The screensaver process is still run, so a
