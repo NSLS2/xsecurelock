@@ -82,7 +82,7 @@ steps:
       -uc -us \
       --git-export-dir=build \
       --git-tarball-dir=build
-    old_debfile=$(ls build/*.deb | head -1)
+    old_debfile=$(ls build/xsecurelock-nsls2_*.deb | head -1)
     new_debfile=$(echo ${old_debfile} | sed "s/\.deb/-$(debrelease).deb/")
     echo "##[debug] old_debfile = ${old_debfile}"
     echo "##[debug] new_debfile = ${new_debfile}"
