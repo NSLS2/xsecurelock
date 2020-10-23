@@ -5,6 +5,10 @@
 #include <stdio.h>   // for fputs, stderr, vfprintf, perror, NULL
 #include <time.h>
 #include <unistd.h>
+#ifdef SYSLOG
+#include <syslog.h>
+#define SYSLOG_LOG_NAME     "xsecurelock"
+#endif
 
 static void PrintLogPrefix(void) {
   time_t t = time(NULL);
@@ -20,9 +24,15 @@ static void PrintLogPrefix(void) {
 void Log(const char *format, ...) {
   va_list args;
   va_start(args, format);
+#ifdef SYSLOG
+  openlog(SYSLOG_LOG_NAME, LOG_PID | LOG_NDELAY | LOG_PERROR, LOG_AUTH);
+  vsyslog(LOG_INFO, format, args);
+  closelog();
+#else
   PrintLogPrefix();
   vfprintf(stderr, format, args);
   fputs(".\n", stderr);
+#endif
   va_end(args);
 }
 
