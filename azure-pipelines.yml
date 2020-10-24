@@ -39,7 +39,7 @@ steps:
   displayName: Set Git Describe to Variable
 
 - script: |
-    set -e
+    set -e -x
     ./autogen.sh
     ./configure \
       --with-pam \
@@ -74,7 +74,7 @@ steps:
 #  displayName: Run Tests
 
 - script: |
-    set -e
+    set -e -x
     make -p build
     uscan --force-download \
           --destdir build
