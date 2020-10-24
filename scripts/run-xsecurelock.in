@@ -27,7 +27,7 @@ export XSECURELOCK_AUTH_SOUNDS=0
 export XSECURELOCK_BLANK_TIMEOUT=-1
 export XSECURELOCK_BLANK_DPMS_STATE="on"
 export XSECURELOCK_PASSWORD_PROMPT="asterisks"
-export XSECURELOCK_FONT="Verdana:style=Bold:size=18"
+export XSECURELOCK_FONT="DejaVu Sans Mono:style=Bold:size=18"
 export XSECURELOCK_AUTH_BANNER_COLOR="Dark Grey"
 export XSECURELOCK_AUTH_FOREGROUND_COLOR="Yellow"
 export XSECURELOCK_SAVER=@libexecdir@/xsecurelock/saver-xsecurelock
