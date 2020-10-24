@@ -339,7 +339,6 @@ endif
 
 if ANY_USER_AUTH
 xsecurelocksysconf_DATA += config/users
-CLEANFILES += config/users
 endif
 
 if HAVE_PAM
