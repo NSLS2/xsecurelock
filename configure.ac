@@ -18,6 +18,8 @@ AC_INIT([xsecurelock],thisversion,[rpolzer@google.com])
 AM_INIT_AUTOMAKE([-Wall subdir-objects foreign])
 AC_PROG_CC
 AC_PROG_CC_C99
+AC_PROG_SED
+AC_PROG_AWK
 
 AC_DEFUN([RP_TRY_CC_FLAG], [
 	AC_MSG_CHECKING([whether the compiler supports $1])
@@ -323,6 +325,7 @@ AC_SUBST(banner)
 AC_SUBST(wallpaper)
 AC_SUBST(syslog)
 AC_SUBST(banner_filename)
+AC_SUBST(banner_width)
 AC_SUBST(userfile_filename)
 
 AC_SUBST(pam_service_name)
@@ -351,6 +354,7 @@ AM_CONDITIONAL([SYSLOG],
                [test x$enable_syslog = xyes])
 
 banner_filename=
+banner_width=
 AS_IF([test x$enable_banner = xyes], [
   AC_ARG_WITH([banner_filename],
               AC_HELP_STRING([--with-banner-filename],
@@ -360,6 +364,14 @@ AS_IF([test x$enable_banner = xyes], [
                               logon banner is enabled.]),
               [banner_filename=$withval],
               [AC_MSG_ERROR([--with-banner-filename is mandatory.])])
+  AC_ARG_WITH([banner_width],
+              AC_HELP_STRING([--with-banner-width],
+                             [The banner width in characters to justify to.]),
+              [banner_width=$withval],
+              [banner_width=60])
+  AC_CHECK_PROGS([PAR], [par], [])
+  AS_IF([test -z "$PAR"],
+        [AC_MSG_ERROR([par needed to format banner])])
 ])
 
 userfile_filename=

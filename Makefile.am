@@ -293,3 +293,57 @@ all-local: doxyfile.stamp
 clean-local:
 	$(RM) -r $(top_srcdir)/doxy
 endif
+
+scripts/run-xsecurelock: scripts/run-xsecurelock.in
+	@$(SED) \
+		-e 's|[@]libexecdir@|$(libexecdir)|g' \
+		< "$<" > "$@"
+
+scripts/saver-xsecurelock: scripts/saver-xsecurelock.in
+	@$(SED) \
+		-e 's|[@]datarootdir@|$(datarootdir)|g' \
+		< "$<" > "$@"
+
+autostart/xsecurelock.desktop: autostart/xsecurelock.desktop.in
+	@$(SED) \
+		-e 's|[@]libexecdir@|$(libexecdir)|g' \
+		< "$<" > "$@"
+
+if BANNER
+config/banner: config/banner.in
+	@$(PAR) j1w@banner_width@ < "$<" | \
+			$(AWK) -v w=@banner_width@ '{if (NR>1) {printf "%-*s\n", $$w, $$0} else {printf "%s\n", $$0}}'  >\
+			"$@"
+endif
+
+autolockdir = $(pkglibexecdir)
+autolock_SCRIPTS = \
+	scripts/run-xsecurelock \
+	scripts/saver-xsecurelock
+
+autostartdir = $(sysconfdir)/xdg/autostart
+autostart_DATA = \
+	autostart/xsecurelock.desktop
+
+CLEANFILES += scripts/run-xsecurelock \
+							scripts/saver-xsecurelock
+
+xsecurelocksysconfdir=$(sysconfdir)/xsecurelock
+xsecurelocksysconf_DATA =
+
+if BANNER
+xsecurelocksysconf_DATA += config/banner
+CLEANFILES += config/banner
+endif
+
+if ANY_USER_AUTH
+xsecurelocksysconf_DATA += config/users
+endif
+
+if HAVE_PAM
+xsecurelockpamdir=$(sysconfdir)/pam.d
+xsecurelockpam_DATA = config/xsecurelock-nsls2
+endif
+
+iconsdir = $(datadir)/xsecurelock
+icons_DATA = icons/lock.png

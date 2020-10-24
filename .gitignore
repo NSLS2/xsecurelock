@@ -29,6 +29,10 @@ build
 /env_helpstr.inc
 /xsecurelock.1
 /xsecurelock.1.md
+/config/banner
+/scripts/run-xsecurelock
+/scripts/saver-xsecurelock
+/autostart/xsecurelock.desktop
 
 # Object files.
 *.o
