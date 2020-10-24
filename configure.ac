@@ -366,7 +366,7 @@ AS_IF([test x$enable_banner = xyes], [
               AC_HELP_STRING([--with-banner-width],
                              [The banner width in characters to justify to.]),
               [banner_width=$withval],
-              [banner_width=60])])
+              [banner_width=60])
   AC_CHECK_PROGS([PAR], [par], [])
   AS_IF([test -z "$PAR"],
         [AC_MSG_ERROR([par needed to format banner])])
