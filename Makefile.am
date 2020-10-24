@@ -312,7 +312,7 @@ autostart/xsecurelock.desktop: autostart/xsecurelock.desktop.in
 if BANNER
 banner_width=60
 config/banner: config/banner.in
-	par j1w$(banner_width) < "$<" | \
+	$(PAR) j1w$(banner_width) < "$<" | \
 			$(AWK) -v w=$(banner_width) '{if (NR>1) {printf "%-*s\n", $$w, $$0} else {printf "%s\n", $$0}}'  >\
 			"$@"
 endif
