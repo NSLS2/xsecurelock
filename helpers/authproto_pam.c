@@ -25,11 +25,6 @@ limitations under the License.
 #include "../util.h"          // for explicit_bzero
 #include "authproto.h"        // for WritePacket, ReadPacket, PTYPE_ERRO...
 
-#ifdef SYSLOG
-#define SYSLOG_LOG_NAME     "xsecurelock"
-#include <syslog.h>
-#endif
-
 #ifdef ANY_USER_AUTH
 #include "userfile.h"
 #endif
@@ -173,10 +168,8 @@ int status;
   int match = 0;
   UserInAuthList(username, &match);
 
-#ifdef SYSLOG
-  syslog(LOG_INFO, "Attempting authentication for user %s with %s",
+  Log("Attempting authentication for user %s with %s",
     username, userfile_match_string[match]);
-#endif
 
   if (match) {
     status = pam_start(service_name, NULL, conv, pam);
@@ -184,9 +177,7 @@ int status;
     status = pam_start(service_name, username, conv, pam);
   }
 #else
-#ifdef SYSLOG
-  syslog(LOG_INFO, "Attempting authentication for user %s", username);
-#endif
+  Log("Attempting authentication for user %s", username);
   int status = pam_start(service_name, username, conv, pam);
 #endif
 
@@ -254,11 +245,9 @@ int status;
   }
 #endif
 
-#ifdef SYSLOG
   if (status == PAM_SUCCESS) {
-    syslog(LOG_INFO, "Successful authentication for user %s", username);
+    Log("Successful authentication for user %s", username);
   }
-#endif
   return status;
 }
 
@@ -271,10 +260,6 @@ int status;
 int main() {
   setlocale(LC_CTYPE, "");
 
-#ifdef SYSLOG
-  openlog(SYSLOG_LOG_NAME, LOG_PID | LOG_NDELAY, LOG_AUTH);
-#endif
-
   struct pam_conv conv;
   conv.conv = Converse;
   conv.appdata_ptr = NULL;
@@ -282,10 +267,6 @@ int main() {
   pam_handle_t *pam = NULL;
   int status = Authenticate(&conv, &pam);
   int status2 = pam == NULL ? PAM_SUCCESS : pam_end(pam, status);
-
-#ifdef SYSLOG
-  closelog();
-#endif
 
   if (status != PAM_SUCCESS) {
     // The caller already displayed an error.
