@@ -45,19 +45,6 @@ override_dh_autoreconf:
 override_dh_auto_install:
 		dh_auto_install
 		find ./debian -type f -name "LICENSE" -delete
-		envsubst '$${DEB_HOST_MULTIARCH}' < debian/xsecurelock.desktop.in > debian/xsecurelock.desktop
-		envsubst '$${DEB_HOST_MULTIARCH}' < debian/run-xsecurelock.in > debian/run-xsecurelock
-		par j1w$(BANNER_WIDTH) < debian/banner.in | \
-			gawk -v w=$(BANNER_WIDTH) '{if (NR>1) {printf "%-*s\n", $$w, $$0} else {printf "%s\n", $$0}}'  >\
-			debian/banner
-		chmod 755 debian/run-xsecurelock
-		dh_installpam --name xsecurelock
-		dh_install debian/banner etc/xsecurelock
-		dh_install debian/users etc/xsecurelock
-		dh_install debian/run-xsecurelock usr/lib/$(DEB_HOST_MULTIARCH)/xsecurelock
-		dh_install debian/saver-xsecurelock usr/lib/$(DEB_HOST_MULTIARCH)/xsecurelock
-		dh_install debian/nsls2-lock.png usr/share/nsls2/icons
-		dh_install debian/xsecurelock.desktop etc/xdg/autostart
 
 override_dh_auto_clean:
 		dh_auto_clean
