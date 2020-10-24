@@ -1,4 +1,4 @@
-xsecurelock-nsls2 (1.7.3) UNRELEASED; urgency=medium
+xsecurelock-nsls2 (1.7.4) UNRELEASED; urgency=medium
 
   [ Rudolf Polzer ]
   * Fix memory leak in authproto.
@@ -180,5 +180,48 @@ xsecurelock-nsls2 (1.7.3) UNRELEASED; urgency=medium
   * REL: v1.7.2-nsls2
   * Fix glob for deb file
   * REL: v1.7.3-nsls2
+  * REL: v1.7.3-nsls2
+  * Add formatter for banenr
+  * Fix escape for $
+  * Better env defaults
+  * Added suggested vscode build tasks
+  * Moved syslog logging into logging.*
+  * Added syslog to LogError
+  * Added suggested vscode build tasks
+  * Add formatter for banenr
+  * Fix escape for $
+  * Better env defaults
+  * Rebuilt scripts/data install
+  * Remove envs
+  * Added variable for par
+  * Add Par Variable
+  * Don't remove users
+  * Make banner width optional
+  * Fix AS_IF
+  * Propagate banner_width
+  * Remove gawk as dep
+  * Set scripts to fail on any command
+  * Add debug output
+  * Remove debug
+  * Fix line
+  * Cleanup
+  * Remove uscan
+  * Remove uscan
+  * Rebuilt scripts/data install
+  * Remove envs
+  * Added variable for par
+  * Add Par Variable
+  * Don't remove users
+  * Make banner width optional
+  * Fix AS_IF
+  * Propagate banner_width
+  * Remove gawk as dep
+  * Set scripts to fail on any command
+  * Add debug output
+  * Remove debug
+  * Fix line
+  * Cleanup
+  * Remove uscan
+  * Remove uscan
 
- -- Stuart B. Wilkins <swilkins@catbert.nsls2.bnl.gov>  Thu, 22 Oct 2020 20:09:34 -0400
+ -- Stuart B. Wilkins <swilkins@catbert.nsls2.bnl.gov>  Sat, 24 Oct 2020 14:18:21 -0400
