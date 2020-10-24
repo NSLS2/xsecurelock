@@ -75,7 +75,7 @@ steps:
 
 - script: |
     set -e -x
-    make -p build
+    mkdir -p build
     uscan --force-download \
           --destdir build
     gbp buildpackage \
