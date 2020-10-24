@@ -39,7 +39,7 @@ steps:
   displayName: Set Git Describe to Variable
 
 - script: |
-    set -e -x
+    set -e
     ./autogen.sh
     ./configure \
       --with-pam \
@@ -66,6 +66,7 @@ steps:
   displayName: Run Configure
 
 - script: |
+    set -e
     make
   displayName: Build
 
@@ -74,7 +75,7 @@ steps:
 #  displayName: Run Tests
 
 - script: |
-    set -e -x
+    set -e
     mkdir -p build
     uscan --force-download \
           --destdir build
@@ -86,11 +87,10 @@ steps:
       --git-tarball-dir=build
     old_debfile=$(ls build/xsecurelock-nsls2_*.deb | head -1)
     new_debfile=$(echo ${old_debfile} | sed "s/\.deb/-$(debrelease).deb/")
+    mv "${old_debfile}" "${new_debfile}"
+    echo "##vso[task.setvariable variable=debfile]${new_debfile}"
     echo "##[debug] old_debfile = ${old_debfile}"
     echo "##[debug] new_debfile = ${new_debfile}"
-    mv "${old_debfile}" "${new_debfile}"
-    echo "##[debug] $(ls -1 build | tr '\n' ' ')"
-    echo "##vso[task.setvariable variable=debfile]${new_debfile}"
   displayName: 'Build Debian Package'
 
 - script: |
