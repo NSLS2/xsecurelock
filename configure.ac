@@ -18,6 +18,8 @@ AC_INIT([xsecurelock],thisversion,[rpolzer@google.com])
 AM_INIT_AUTOMAKE([-Wall subdir-objects foreign])
 AC_PROG_CC
 AC_PROG_CC_C99
+AC_PROG_SED
+AC_PROG_AWK
 
 AC_DEFUN([RP_TRY_CC_FLAG], [
 	AC_MSG_CHECKING([whether the compiler supports $1])
