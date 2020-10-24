@@ -362,6 +362,9 @@ AS_IF([test x$enable_banner = xyes], [
                               logon banner is enabled.]),
               [banner_filename=$withval],
               [AC_MSG_ERROR([--with-banner-filename is mandatory.])])
+  AC_CHECK_PROGS([PAR], [par], [])
+  AS_IF([test -z "$PAR"],
+        [AC_MSG_ERROR([par needed to format banner])])
 ])
 
 userfile_filename=
