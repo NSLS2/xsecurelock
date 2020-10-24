@@ -325,6 +325,7 @@ AC_SUBST(banner)
 AC_SUBST(wallpaper)
 AC_SUBST(syslog)
 AC_SUBST(banner_filename)
+AC_SUBST(banner_width)
 AC_SUBST(userfile_filename)
 
 AC_SUBST(pam_service_name)
@@ -353,6 +354,7 @@ AM_CONDITIONAL([SYSLOG],
                [test x$enable_syslog = xyes])
 
 banner_filename=
+banner_width=
 AS_IF([test x$enable_banner = xyes], [
   AC_ARG_WITH([banner_filename],
               AC_HELP_STRING([--with-banner-filename],

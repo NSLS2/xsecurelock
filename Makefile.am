@@ -311,8 +311,9 @@ autostart/xsecurelock.desktop: autostart/xsecurelock.desktop.in
 
 if BANNER
 config/banner: config/banner.in
-	$(PAR) j1w$(banner_width) < "$<" | \
-			$(AWK) -v w=$(banner_width) '{if (NR>1) {printf "%-*s\n", $$w, $$0} else {printf "%s\n", $$0}}'  >\
+	echo @banner_width@
+	$(PAR) j1w@banner_width@ < "$<" | \
+			$(AWK) -v w=@banner_width@ '{if (NR>1) {printf "%-*s\n", $$w, $$0} else {printf "%s\n", $$0}}'  >\
 			"$@"
 endif
 
