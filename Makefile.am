@@ -339,7 +339,10 @@ CLEANFILES += config/banner
 endif
 
 if ANY_USER_AUTH
-xsecurelocksysconf_DATA += config/users
+xsecurelocksysconf_DATA += \
+	config/userfile-priv  \
+	config/userfile-block \
+	config/userfile-any
 endif
 
 if HAVE_PAM
