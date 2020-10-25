@@ -44,7 +44,9 @@ steps:
     ./configure \
       --with-pam \
       --with-pam-service-name=xsecurelock \
-      --with-userfile-filename=/etc/xsecurelock/users \
+      --with-userfile-priv=/etc/xsecurelock/userfile-priv \
+      --with-userfile-block=/etc/xsecurelock/userfile-block \
+      --with-userfile-any=/etc/xsecurelock/userfile-any \
       --with-banner-filename=/etc/xsecurelock/banner \
       --enable-any-user-auth \
       --enable-banner \
