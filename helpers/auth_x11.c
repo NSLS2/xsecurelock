@@ -93,7 +93,7 @@ int prompt_timeout;
 #define PARANOID_PASSWORD_MIN_CHANGE 4
 
 //! Border of the window around the text.
-#define WINDOW_BORDER 16
+#define WINDOW_BORDER 64
 
 //! Draw border rectangle (mainly for debugging).
 #undef DRAW_BORDER
@@ -1594,6 +1594,9 @@ done:
   if (status == 0) {
     PlaySound(SOUND_SUCCESS);
   }
+
+  Log("authproto returned %d", status);
+
   return status != 0;
 }
 

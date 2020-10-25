@@ -58,12 +58,9 @@ int IsMemberOfGroup(const char *username, const char *grname, int *match) {
     return USERFILE_SUCCESS;
 }
 
-int UserInAuthList(const char* username, int *match) {
+int UserInAuthListFile(const char * filename, const char* username, int *match) {
     int rtn = USERFILE_ERROR;
     *match = 0;
-
-    const char *filename =
-        GetStringSetting("XSECURELOCK_USER_FILE", USERFILE_FILENAME);
 
     FILE *fp;
     fp = fopen(filename, "r");
@@ -117,5 +114,23 @@ int UserInAuthList(const char* username, int *match) {
 
     free(line);
     fclose(fp);
+    return rtn;
+}
+
+int UserInAuthListPriv(const char* username, int *match) {
+    int rtn;
+    rtn = UserInAuthListFile(USERFILE_PRIV, username, match);
+    return rtn;
+}
+
+int UserInAuthListBlock(const char* username, int *match) {
+    int rtn;
+    rtn = UserInAuthListFile(USERFILE_BLOCK, username, match);
+    return rtn;
+}
+
+int UserInAuthListAny(const char* username, int *match) {
+    int rtn;
+    rtn = UserInAuthListFile(USERFILE_ANY, username, match);
     return rtn;
 }

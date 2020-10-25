@@ -164,20 +164,8 @@ int Authenticate(struct pam_conv *conv, pam_handle_t **pam) {
   }
 
 #ifdef ANY_USER_AUTH
-int status;
-  int match = 0;
-  UserInAuthList(username, &match);
-
-  Log("Attempting authentication for user %s with %s",
-    username, userfile_match_string[match]);
-
-  if (match) {
-    status = pam_start(service_name, NULL, conv, pam);
-  } else {
-    status = pam_start(service_name, username, conv, pam);
-  }
+  int status = pam_start(service_name, NULL, conv, pam);
 #else
-  Log("Attempting authentication for user %s", username);
   int status = pam_start(service_name, username, conv, pam);
 #endif
 
@@ -185,6 +173,16 @@ int status;
     Log("pam_start: %d",
         status);  // Or can one call pam_strerror on a NULL handle?
     return status;
+  }
+
+  const char *prompt =
+    GetStringSetting("XSECURELOCK_PAM_PROMPT", "");
+
+  if  (strlen(prompt)) {
+    status = pam_set_item(*pam, PAM_USER_PROMPT, prompt);
+    if (status != PAM_SUCCESS) {
+      Log("Unable to set username prompt");
+    }
   }
 
   if (!GetIntSetting("XSECURELOCK_NO_PAM_RHOST", 0)) {
@@ -245,9 +243,6 @@ int status;
   }
 #endif
 
-  if (status == PAM_SUCCESS) {
-    Log("Successful authentication for user %s", username);
-  }
   return status;
 }
 
@@ -260,12 +255,69 @@ int status;
 int main() {
   setlocale(LC_CTYPE, "");
 
+#ifdef ANY_USER_AUTH
+  char username[256];
+  if (!GetUserName(username, sizeof(username))) {
+    return 1;
+  }
+#endif
+
   struct pam_conv conv;
   conv.conv = Converse;
   conv.appdata_ptr = NULL;
 
   pam_handle_t *pam = NULL;
   int status = Authenticate(&conv, &pam);
+
+#ifdef ANY_USER_AUTH
+  int rtn = 1;
+  char *pam_user;
+  if (pam_get_item(pam, PAM_USER, (const void **)&pam_user) == PAM_SUCCESS) {
+    if (pam_user != NULL) {
+      if (status == PAM_SUCCESS) {
+        Log("Successful PAM authentication as user %s", pam_user);
+        // Here is now where we do the logic.
+        // Is this user on the restricted list?
+        int match_block, match_priv, match_any;
+        UserInAuthListBlock(pam_user, &match_block);
+        UserInAuthListPriv(pam_user, &match_priv);
+        UserInAuthListAny(username, &match_any);
+
+        if (match_block == USERFILE_NO_MATCH) {
+          // User is not blocked.
+          // Are we a priv user
+          if(match_priv == USERFILE_NO_MATCH) {
+            // This is a non priviledged user
+            if (!strcmp(pam_user, username)) {
+              // This is the current logged in user
+              rtn = 0;
+              Log("PAM user matches logged in user %s, unlocking", username);
+            } else {
+              if (match_any != USERFILE_NO_MATCH) {
+                // The user is matched in the unlock
+                Log("Logged in user %s is any unlock, unlocking", username);
+                rtn = 0;
+              }
+            }
+          } else {
+            Log("User %s is in priviledged users, unlocking", pam_user);
+            rtn = 0;
+          }
+        } else {
+          Log("User %s is in restricted list, not unlocking.", pam_user);
+        }
+      } else {
+        Log("Unsuccessful PAM authentication for user %s", pam_user);
+      }
+    } else {
+      Log("Failed to get user from PAM (NULL)");
+    }
+  } else {
+    Log("Failed to get user from PAM");
+  }
+
+#endif
+
   int status2 = pam == NULL ? PAM_SUCCESS : pam_end(pam, status);
 
   if (status != PAM_SUCCESS) {
@@ -277,5 +329,9 @@ int main() {
     return 1;
   }
 
+#ifdef ANY_USER_AUTH
+  return rtn;
+#else
   return 0;
+#endif
 }
