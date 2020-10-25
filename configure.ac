@@ -326,7 +326,9 @@ AC_SUBST(wallpaper)
 AC_SUBST(syslog)
 AC_SUBST(banner_filename)
 AC_SUBST(banner_width)
-AC_SUBST(userfile_filename)
+AC_SUBST(userfile_block)
+AC_SUBST(userfile_priv)
+AC_SUBST(userfile_any)
 
 AC_SUBST(pam_service_name)
 AC_SUBST(auth_executable)
@@ -374,16 +376,35 @@ AS_IF([test x$enable_banner = xyes], [
         [AC_MSG_ERROR([par needed to format banner])])
 ])
 
-userfile_filename=
+userfile_priv=
+userfile_block=
+userfile_any=
 AS_IF([test x$enable_any_user_auth = xyes], [
-  AC_ARG_WITH([userfile_filename],
-              AC_HELP_STRING([--with-userfile-filename],
+  AC_ARG_WITH([userfile_priv],
+              AC_HELP_STRING([--with-userfile-priv],
                              [The path for the userfile filename to
-                              configure per user settings.
+                              configure privalidged users
                               This flag is mandatory when the any user auth
                               is enabled.]),
-              [userfile_filename=$withval],
-              [AC_MSG_ERROR([--with-userfile-filename is mandatory.])])
+              [userfile_priv=$withval],
+              [AC_MSG_ERROR([--with-userfile-priv is mandatory.])])
+  AC_ARG_WITH([userfile_block],
+              AC_HELP_STRING([--with-userfile-block],
+                             [The path for the userfile filename to
+                              configure blocked users
+                              This flag is mandatory when the any user auth
+                              is enabled.]),
+              [userfile_priv=$withval],
+              [AC_MSG_ERROR([--with-userfile-priv is mandatory.])])
+  AC_ARG_WITH([userfile_any],
+              AC_HELP_STRING([--with-userfile-any],
+                             [The path for the userfile filename to
+                              configure users which will allow for any
+                              valid user to unlock.
+                              This flag is mandatory when the any user auth
+                              is enabled.]),
+              [userfile_any=$withval],
+              [AC_MSG_ERROR([--with-userfile-any is mandatory.])])
 ])
 
 AC_CONFIG_FILES([Makefile])

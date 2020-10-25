@@ -23,7 +23,9 @@ macros = \
 	-DSAVER_EXECUTABLE=\"@saver_executable@\" \
 	-DPAM_SERVICE_NAME=\"@pam_service_name@\" \
 	-DBANNER_FILENAME=\"@banner_filename@\" \
-	-DUSERFILE_FILENAME=\"@userfile_filename@\"
+	-DUSERFILE_BLOCK=\"@userfile_block@\" \
+	-DUSERFILE_PRIV=\"@userfile_priv@\" \
+	-DUSERFILE_ANY=\"@userfile_any@\"
 
 if HAVE_LIBBSD
 macros += -DHAVE_LIBBSD
