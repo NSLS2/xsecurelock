@@ -272,43 +272,47 @@ int main() {
 #ifdef ANY_USER_AUTH
   int rtn = 1;
   if (status == PAM_SUCCESS) {
-    Log("Successful PAM authentication as user %s", pam_user);
-
     char *pam_user;
     if (pam_get_item(pam, PAM_USER, (const void **)&pam_user) == PAM_SUCCESS) {
       if (pam_user != NULL) {
+        Log("Successful PAM authentication as user %s", pam_user);
         // Read the config files....
 
         int match_block, match_priv, match_any;
-        UserInAuthListBlock(pam_user, &match_block);
-        UserInAuthListPriv(pam_user, &match_priv);
-        UserInAuthListAny(username, &match_any);
+        int userstatus;
+        userstatus  = UserInAuthListBlock(pam_user, &match_block);
+        userstatus |= UserInAuthListPriv(pam_user, &match_priv);
+        userstatus |= UserInAuthListAny(username, &match_any);
 
-        // Here is now where we do the logic.
-        // Is this user on the restricted list?
-        if (match_block == USERFILE_NO_MATCH) {
-          // User is not blocked.
-          // Are we a priv user
-          if(match_priv == USERFILE_NO_MATCH) {
-            // This is a non priviledged user
-            if (!strcmp(pam_user, username)) {
-              // This is the current logged in user
-              rtn = 0;
-              Log("PAM user matches logged in user %s, unlocking", username);
-            } else {
-              if (match_any != USERFILE_NO_MATCH) {
-                // The user is matched in the unlock
-                Log("Logged in user %s is any unlock, unlocking", username);
+        if (!userstatus) {
+          // Here is now where we do the logic.
+          // Is this user on the restricted list?
+          if (match_block == USERFILE_NO_MATCH) {
+            // User is not blocked.
+            // Are we a priv user
+            if(match_priv == USERFILE_NO_MATCH) {
+              // This is a non priviledged user
+              if (!strcmp(pam_user, username)) {
+                // This is the current logged in user
                 rtn = 0;
+                Log("PAM user matches logged in user %s, unlocking", username);
+              } else {
+                if (match_any != USERFILE_NO_MATCH) {
+                  // The user is matched in the unlock
+                  Log("Logged in user %s is any unlock, unlocking", username);
+                  rtn = 0;
+                }
               }
+            } else {
+              // This is a priviledged user!
+              Log("User %s is in priviledged users, unlocking", pam_user);
+              rtn = 0;
             }
           } else {
-            // This is a priviledged user!
-            Log("User %s is in priviledged users, unlocking", pam_user);
-            rtn = 0;
+            Log("User %s is in blocked list, not unlocking.", pam_user);
           }
         } else {
-          Log("User %s is in blocked list, not unlocking.", pam_user);
+          Log("Failed to read userfiles, not unlocking");
         }
       } else {
         Log("Failed to get user from PAM (null returned)");
@@ -317,7 +321,7 @@ int main() {
       Log("Failed to get user from PAM");
     }
   } else {
-    Log("Unsuccessful PAM authentication for user %s", pam_user);
+    Log("Unsuccessful PAM authentication");
   }
 
 #endif
