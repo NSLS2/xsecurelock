@@ -20,17 +20,22 @@ strategy:
     debian8:
       containerImage: stuwilkins/xsecurelock-build-deb8:latest
       debrelease: debian8
+      pkg_type: debian
     debian9:
       containerImage: stuwilkins/xsecurelock-build-deb9:latest
       debrelease: debian9
+      pkg_type: debian
     debian10:
       containerImage: stuwilkins/xsecurelock-build-deb9:latest
       debrelease: debian10
+      pkg_type: debian
     ubuntu-groovy:
       containerImage: stuwilkins/xsecurelock-build-ubuntu:latest
       debrelease: ubuntu-groovy
+      pkg_type: debian
     centos8:
       containerImage: stuwilkins/xsecurelock-build-centos8:latest
+      pkg_type: debian
       rpmrelease: centos8
 
 container: $[ variables['containerImage'] ]
@@ -93,15 +98,17 @@ steps:
     echo "##[debug] old_debfile = ${old_debfile}"
     echo "##[debug] new_debfile = ${new_debfile}"
   displayName: 'Build Debian Package'
+  condiition: eq(variables.pkg_type, 'debian')
 
 - script: |
     echo "##[debug] debfile = $(debfile)"
     echo "##[debug] gitdesc = $(gitdesc)"
   displayName: 'Debian Debug Output'
+  condiition: eq(variables.pkg_type, 'debian')
 
 - task: GithubRelease@0
   displayName: 'Attach debian package to release'
-  condition: startsWith(variables['Build.SourceBranch'], 'refs/tags/v')
+  condition: and(startsWith(variables['Build.SourceBranch'], 'refs/tags/v'), eq(variables.pkg_type, 'debian'))
   inputs:
     gitHubConnection: github.com_stuwilkins
     repositoryName: NSLS-II/xsecurelock
