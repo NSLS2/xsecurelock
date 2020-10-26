@@ -23,16 +23,31 @@ Secure screen locker for X11 systems.
 
 
 %build
-%configure  --with-pam-service-name=system-auth \
-            --with-userfile-filename=/etc/xsecurelock/users  \
-            --with-banner-filename=/etc/xsecurelock/banner  \
-            --enable-any-user-auth  \
-            --enable-banner  \
-            --enable-wallpaper  \
-            --enable-no-blank  \
-            --enable-syslog  \
+%configure  \
+      --with-pam \
+      --with-pam-service-name=system-auth \
+      --with-banner-filename=/etc/xsecurelock/banner \
+      --with-userfile-priv=/etc/xsecurelock/userfile-priv \
+      --with-userfile-block=/etc/xsecurelock/userfile-block \
+      --with-userfile-any=/etc/xsecurelock/userfile-any \
+      --enable-any-user-auth \
+      --enable-banner \
+      --enable-wallpaper \
+      --enable-no-blank \
+      --enable-secure \
       --with-fontconfig \
+      --without-htpasswd \
+      --with-mplayer=/usr/bin/mplayer \
+      --with-mpv=/usr/bin/mpv \
+      --with-pamtester=no \
+      --with-xcomposite \
+      --with-xf86misc=no \
+      --with-xrandr \
+      --with-xss \
+      --with-xsync \
+      --with-xfixes \
       --with-xft \
+      --with-xkb \
       --libdir=$RPM_BUILD_ROOT%{_libdir}
 
 GIT_VERSION="%{version}" make %{?_smp_mflags}

@@ -57,7 +57,7 @@ steps:
       --enable-no-blank \
       --enable-secure \
       --with-fontconfig \
-      --with-htpasswd=no \
+      --without-htpasswd \
       --with-fontconfig \
       --with-mplayer=/usr/bin/mplayer \
       --with-mpv=/usr/bin/mpv \
