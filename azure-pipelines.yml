@@ -101,6 +101,12 @@ steps:
   condition: eq(variables.pkg_type, 'debian')
 
 - script: |
+    set -e -x
+    rpmbuild -bb --define 'version 1.7.5' xsecurelock-nsls2.spec
+  displayName: 'Build rpm Package'
+  condition: eq(variables.pkg_type, 'redhat')
+
+- script: |
     echo "##[debug] debfile = $(debfile)"
     echo "##[debug] gitdesc = $(gitdesc)"
   displayName: 'Debian Debug Output'
