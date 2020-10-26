@@ -1,11 +1,12 @@
-Name:		xsecurelock-nsls2
-Version:	%{version}
-Release:	6%{?dist}
-Summary:	xsecurelock nsls2 version
+Name:    xsecurelock-nsls2
+Version:  %{version}
+Release:  6%{?dist}
+Summary:  xsecurelock nsls2 version
 
-License:	apache
-URL:		https://github.com/NSLS-II/xsecurelock
-Source0:	https://github.com/NSLS-II/xsecurelock/archive/v%{version}-nsls2/xsecurelock-v%{version}-nsls2.tar.gz
+License:  apache
+URL:    https://github.com/NSLS-II/xsecurelock
+%undefine   _disable_source_fetch
+Source0:  https://github.com/NSLS-II/xsecurelock/archive/v%{version}-nsls2/xsecurelock-v%{version}-nsls2.tar.gz
 
 BuildRequires: autoconf automake libX11-devel libXmu-devel libXcomposite-devel pam-devel libXft-devel
 Requires: libX11 libXmu libXcomposite pam libXft
@@ -30,9 +31,9 @@ Secure screen locker for X11 systems.
             --enable-wallpaper  \
             --enable-no-blank  \
             --enable-syslog  \
-			--with-fontconfig \
-			--with-xft \
-			--libdir=$RPM_BUILD_ROOT%{_libdir}
+      --with-fontconfig \
+      --with-xft \
+      --libdir=$RPM_BUILD_ROOT%{_libdir}
 
 GIT_VERSION="%{version}" make %{?_smp_mflags}
 
