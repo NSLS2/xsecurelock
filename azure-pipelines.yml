@@ -107,7 +107,7 @@ steps:
 - script: |
     set -e -x
     mkdir -p ~/rpmbuild/SOURCES
-    git archive --format=tar --output=~/rpmbuild/SOURCES/xsecurelock-v${version}.tar.gz HEAD
+    git archive --format=tar --output=~/rpmbuild/SOURCES/xsecurelock-v${gitversion}.tar.gz HEAD
     rpmbuild -bb --define "version ${version}" xsecurelock-nsls2.spec
     rpmfile=$(ls -1 ~/rpmbuild/RPMS/x86_64/xsecurelock-nsls2*.rpm | head -1)
     echo "##vso[task.setvariable variable=releasefile]${rpmfile}"
