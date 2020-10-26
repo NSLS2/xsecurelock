@@ -20,26 +20,29 @@ strategy:
     debian8:
       containerImage: stuwilkins/xsecurelock-build-deb8:latest
       debrelease: debian8
+      pkg_type: debian
     debian9:
       containerImage: stuwilkins/xsecurelock-build-deb9:latest
       debrelease: debian9
+      pkg_type: debian
     debian10:
       containerImage: stuwilkins/xsecurelock-build-deb9:latest
       debrelease: debian10
+      pkg_type: debian
     ubuntu-groovy:
       containerImage: stuwilkins/xsecurelock-build-ubuntu:latest
       debrelease: ubuntu-groovy
+      pkg_type: debian
+    centos8:
+      containerImage: stuwilkins/xsecurelock-build-centos8:latest
+      pkg_type: redhat
+      rpmrelease: centos8
 
 container: $[ variables['containerImage'] ]
 
 steps:
 - script: |
-    GITDESC=`git describe`
-    echo "##vso[task.setvariable variable=gitdesc]$GITDESC"
-  displayName: Set Git Describe to Variable
-
-- script: |
-    set -e
+    set -e -x
     ./autogen.sh
     ./configure \
       --with-pam \
@@ -50,8 +53,8 @@ steps:
       --enable-banner \
       --enable-wallpaper \
       --enable-no-blank \
+      --without-htpasswd \
       --with-fontconfig \
-      --with-htpasswd=no \
       --with-mplayer=/usr/bin/mplayer \
       --with-mpv=/usr/bin/mpv \
       --with-pamtester=no \
@@ -70,9 +73,10 @@ steps:
     make
   displayName: Build
 
-#- script: |
-#    cd test && ./run-tests.sh
-#  displayName: Run Tests
+- script: |
+    GITDESC=`git describe`
+    echo "##vso[task.setvariable variable=gitdesc]$GITDESC"
+  displayName: Set Git Describe to Variable
 
 - script: |
     set -e
@@ -83,28 +87,37 @@ steps:
       -uc -us \
       --git-export-dir=build \
       --git-tarball-dir=build
-    old_debfile=$(ls build/xsecurelock-nsls2_*.deb | head -1)
+    old_debfile=$(ls -1 build/xsecurelock-nsls2_*.deb | head -1)
     new_debfile=$(echo ${old_debfile} | sed "s/\.deb/-$(debrelease).deb/")
     mv "${old_debfile}" "${new_debfile}"
-    echo "##vso[task.setvariable variable=debfile]${new_debfile}"
+    echo "##vso[task.setvariable variable=releasefile]${new_debfile}"
     echo "##[debug] old_debfile = ${old_debfile}"
     echo "##[debug] new_debfile = ${new_debfile}"
   displayName: 'Build Debian Package'
+  condition: eq(variables.pkg_type, 'debian')
 
 - script: |
-    echo "##[debug] debfile = $(debfile)"
+    set -e -x
+    rpmbuild -bb --define 'version 1.7.5' xsecurelock-nsls2.spec
+    rpmfile=$(ls -1 ~/rpmbuild/RPMS/x86_64/xsecurelock-nsls2*.rpm | head -1)
+    echo "##vso[task.setvariable variable=releasefile]${rpmfile}"
+  displayName: 'Build rpm Package'
+  condition: eq(variables.pkg_type, 'redhat')
+
+- script: |
+    echo "##[debug] releasefile = $(releasefile)"
     echo "##[debug] gitdesc = $(gitdesc)"
-  displayName: 'Debian Debug Output'
+  displayName: 'Debug Output'
 
 - task: GithubRelease@0
-  displayName: 'Attach debian package to release'
-  condition: startsWith(variables['Build.SourceBranch'], 'refs/tags/v')
   inputs:
     gitHubConnection: github.com_stuwilkins
     repositoryName: NSLS-II/xsecurelock
-    assets: $(debfile)
+    assets: $(releasefile)
     action: edit
     target: '$(Build.SourceVersion)'
     tag: $(gitdesc)
     addChangeLog: false
     assetUploadMode: replace
+  displayName: 'Attach package to release'
+  condition: startsWith(variables['Build.SourceBranch'], 'refs/tags/v')

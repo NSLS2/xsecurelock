@@ -20,7 +20,7 @@ override_dh_auto_configure:
 			--enable-wallpaper \
 			--enable-no-blank \
 			--with-fontconfig \
-			--with-htpasswd=no \
+			--without-htpasswd \
 			--with-mplayer=/usr/bin/mplayer \
 			--with-mpv=/usr/bin/mpv \
 			--with-pamtester=no \
