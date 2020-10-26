@@ -29,6 +29,9 @@ strategy:
     ubuntu-groovy:
       containerImage: stuwilkins/xsecurelock-build-ubuntu:latest
       debrelease: ubuntu-groovy
+    centos8:
+      containerImage: stuwilkins/xsecurelock-build-centos8:latest
+      rpmrelease: centos8
 
 container: $[ variables['containerImage'] ]
 
