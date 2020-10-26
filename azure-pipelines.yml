@@ -103,13 +103,15 @@ steps:
 - script: |
     set -e -x
     rpmbuild -bb --define 'version 1.7.5' xsecurelock-nsls2.spec
+    rpmfile=$(ls ~/rpmbuild/RPMS/x86_64/xsecurelock-nsls2*.rpm | head -1)
+    echo "##vso[task.setvariable variable=releasefile]${rpmfile}"
   displayName: 'Build rpm Package'
   condition: eq(variables.pkg_type, 'redhat')
 
 - script: |
     echo "##[debug] releasefile = $(releasefile)"
     echo "##[debug] gitdesc = $(gitdesc)"
-  displayName: 'Debian Debug Output'
+  displayName: 'Debug Output'
 
 - task: GithubRelease@0
   inputs:
