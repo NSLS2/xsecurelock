@@ -42,7 +42,7 @@ container: $[ variables['containerImage'] ]
 
 steps:
 - script: |
-    set -e
+    set -e -x
     ./autogen.sh
     ./configure \
       --with-pam \
