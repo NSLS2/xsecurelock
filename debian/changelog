@@ -1,4 +1,4 @@
-xsecurelock-nsls2 (1.7.6) UNRELEASED; urgency=medium
+xsecurelock-nsls2 (1.7.7) UNRELEASED; urgency=medium
 
   [ Rudolf Polzer ]
   * Fix memory leak in authproto.
@@ -247,5 +247,51 @@ xsecurelock-nsls2 (1.7.6) UNRELEASED; urgency=medium
   * Move to release file
   * Fix labels
   * Ensure 1 file per line
+  * Added userfiles to configure
+  * Added configure options
+  * Added new user logic
+  * Added env variables
+  * Added new configure options
+  * Reorder logic
+  * Fix logic
+  * Add new config files
+  * Added secure option
+  * Update build with secure option
+  * Modified for sudo gropu
+  * Added run script
+  * REL: v1.7.6-nsls2
+  * Add Centos Image
+  * Added logic to not build debian on centos
+  * Fixup merge errors
+  * Fixed conflicts
+  * Remove XSS
+  * Fix configure options
+  * Add job
+  * Remove jobs
+  * Add debug
+  * Add back xss
+  * Remove tests
+  * Added spec file for RPM build
+  * Change to without
+  * Add rpm build step
+  * Add download of source
+  * Added source fetch
+  * Move to release file
+  * Fix labels
+  * Ensure 1 file per line
+  * Updated to version 1.7.6-nsls2
+  * Fixup configure options
+  * Update for version info
+  * Updated version variables
+  * Fix directory
+  * Fixed variable name
+  * Fix variables, add path
+  * Fix rpmbuild
+  * Fix source tarball
+  * Add dir end
+  * Fixed userfile
+  * Added missing files
+  * Update readme for NSLS-II
+  * Add nsls-ii readme
 
- -- Stuart B. Wilkins <swilkins@catbert.nsls2.bnl.gov>  Mon, 26 Oct 2020 11:50:45 -0400
+ -- Stuart B. Wilkins <swilkins@catbert.nsls2.bnl.gov>  Mon, 26 Oct 2020 17:40:45 -0400
