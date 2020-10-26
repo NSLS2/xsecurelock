@@ -21,6 +21,7 @@ override_dh_auto_configure:
 			--enable-banner \
 			--enable-wallpaper \
 			--enable-no-blank \
+			--enable-secure \
 			--with-fontconfig \
 			--with-htpasswd=no \
 			--with-mplayer=/usr/bin/mplayer \
