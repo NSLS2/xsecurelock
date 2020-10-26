@@ -13,12 +13,15 @@ override_dh_auto_configure:
 	    dh_auto_configure -- \
 			--with-pam \
 			--with-pam-service-name=xsecurelock \
-			--with-userfile-filename=/etc/xsecurelock/users \
 			--with-banner-filename=/etc/xsecurelock/banner \
+      --with-userfile-priv=/etc/xsecurelock/userfile-priv \
+      --with-userfile-block=/etc/xsecurelock/userfile-block \
+      --with-userfile-any=/etc/xsecurelock/userfile-any \
 			--enable-any-user-auth \
 			--enable-banner \
 			--enable-wallpaper \
 			--enable-no-blank \
+			--enable-secure \
 			--with-fontconfig \
 			--without-htpasswd \
 			--with-mplayer=/usr/bin/mplayer \

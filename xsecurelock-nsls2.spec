@@ -5,7 +5,6 @@ Summary:  xsecurelock nsls2 version
 
 License:  apache
 URL:    https://github.com/NSLS-II/xsecurelock
-%undefine   _disable_source_fetch
 Source0:  https://github.com/NSLS-II/xsecurelock/archive/v%{version}-nsls2/xsecurelock-v%{version}-nsls2.tar.gz
 
 BuildRequires: autoconf automake libX11-devel libXmu-devel libXcomposite-devel pam-devel libXft-devel
@@ -23,16 +22,31 @@ Secure screen locker for X11 systems.
 
 
 %build
-%configure  --with-pam-service-name=system-auth \
-            --with-userfile-filename=/etc/xsecurelock/users  \
-            --with-banner-filename=/etc/xsecurelock/banner  \
-            --enable-any-user-auth  \
-            --enable-banner  \
-            --enable-wallpaper  \
-            --enable-no-blank  \
-            --enable-syslog  \
+%configure  \
+      --with-pam \
+      --with-pam-service-name=system-auth \
+      --with-banner-filename=/etc/xsecurelock/banner \
+      --with-userfile-priv=/etc/xsecurelock/userfile-priv \
+      --with-userfile-block=/etc/xsecurelock/userfile-block \
+      --with-userfile-any=/etc/xsecurelock/userfile-any \
+      --enable-any-user-auth \
+      --enable-banner \
+      --enable-wallpaper \
+      --enable-no-blank \
+      --enable-secure \
       --with-fontconfig \
+      --without-htpasswd \
+      --with-mplayer=/usr/bin/mplayer \
+      --with-mpv=/usr/bin/mpv \
+      --with-pamtester=no \
+      --with-xcomposite \
+      --with-xf86misc=no \
+      --with-xrandr \
+      --with-xss \
+      --with-xsync \
+      --with-xfixes \
       --with-xft \
+      --with-xkb \
       --libdir=$RPM_BUILD_ROOT%{_libdir}
 
 GIT_VERSION="%{version}" make %{?_smp_mflags}
@@ -47,7 +61,9 @@ make install DESTDIR=$RPM_BUILD_ROOT
 %{_sysconfdir}/pam.d/xsecurelock-nsls2
 %{_sysconfdir}/xdg/autostart/xsecurelock.desktop
 %{_sysconfdir}/xsecurelock/banner
-%{_sysconfdir}/xsecurelock/users
+%{_sysconfdir}/xsecurelock/userfile-any
+%{_sysconfdir}/xsecurelock/userfile-priv
+%{_sysconfdir}/xsecurelock/userfile-block
 %{_bindir}/xsecurelock
 %{_libexecdir}/xsecurelock/auth_x11
 %{_libexecdir}/xsecurelock/authproto_pam
@@ -58,6 +74,8 @@ make install DESTDIR=$RPM_BUILD_ROOT
 %{_libexecdir}/xsecurelock/saver_blank
 %{_libexecdir}/xsecurelock/saver_multiplex
 %{_libexecdir}/xsecurelock/until_nonidle
+%{_libexecdir}/xsecurelock/saver_mplayer
+%{_libexecdir}/xsecurelock/saver_mpv
 %{_docdir}/xsecurelock/CONTRIBUTING
 %{_docdir}/xsecurelock/LICENSE
 %{_docdir}/xsecurelock/README.md

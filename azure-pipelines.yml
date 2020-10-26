@@ -47,12 +47,16 @@ steps:
     ./configure \
       --with-pam \
       --with-pam-service-name=xsecurelock \
-      --with-userfile-filename=/etc/xsecurelock/users \
+      --with-userfile-priv=/etc/xsecurelock/userfile-priv \
+      --with-userfile-block=/etc/xsecurelock/userfile-block \
+      --with-userfile-any=/etc/xsecurelock/userfile-any \
       --with-banner-filename=/etc/xsecurelock/banner \
       --enable-any-user-auth \
       --enable-banner \
       --enable-wallpaper \
       --enable-no-blank \
+      --enable-secure \
+      --with-fontconfig \
       --without-htpasswd \
       --with-fontconfig \
       --with-mplayer=/usr/bin/mplayer \
@@ -74,8 +78,12 @@ steps:
   displayName: Build
 
 - script: |
-    GITDESC=`git describe`
+    GITDESC=$(git describe --abbrev=0)
+    VERSION=$(git describe --abbrev=0 | sed -En 's/v([0-9]+\.)([0-9]+\.)?([0-9]+)-.*/\1\2\3/p')
     echo "##vso[task.setvariable variable=gitdesc]$GITDESC"
+    echo "##vso[task.setvariable variable=gitversion]$VERSION"
+    echo "##[debug] GITDESC = $GITDESC"
+    echo "##[debug] VERSION = $VERSION"
   displayName: Set Git Describe to Variable
 
 - script: |
@@ -98,7 +106,13 @@ steps:
 
 - script: |
     set -e -x
-    rpmbuild -bb --define 'version 1.7.5' xsecurelock-nsls2.spec
+    SOURCES=${HOME}/rpmbuild/SOURCES
+    mkdir -p ${SOURCES}
+    git archive --format=tar \
+      --prefix=xsecurelock-$(gitversion)-nsls2/ \
+      --output=${SOURCES}/xsecurelock-v$(gitversion)-nsls2.tar.gz \
+      HEAD
+    rpmbuild -bb --define "version $(gitversion)" xsecurelock-nsls2.spec
     rpmfile=$(ls -1 ~/rpmbuild/RPMS/x86_64/xsecurelock-nsls2*.rpm | head -1)
     echo "##vso[task.setvariable variable=releasefile]${rpmfile}"
   displayName: 'Build rpm Package'

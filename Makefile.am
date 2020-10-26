@@ -23,7 +23,9 @@ macros = \
 	-DSAVER_EXECUTABLE=\"@saver_executable@\" \
 	-DPAM_SERVICE_NAME=\"@pam_service_name@\" \
 	-DBANNER_FILENAME=\"@banner_filename@\" \
-	-DUSERFILE_FILENAME=\"@userfile_filename@\"
+	-DUSERFILE_BLOCK=\"@userfile_block@\" \
+	-DUSERFILE_PRIV=\"@userfile_priv@\" \
+	-DUSERFILE_ANY=\"@userfile_any@\"
 
 if HAVE_LIBBSD
 macros += -DHAVE_LIBBSD
@@ -75,6 +77,9 @@ macros += -DWALLPAPER
 endif
 if SYSLOG
 macros += -DSYSLOG
+endif
+if SECURE
+macros += -DSECURE
 endif
 
 bin_PROGRAMS = \
@@ -337,7 +342,10 @@ CLEANFILES += config/banner
 endif
 
 if ANY_USER_AUTH
-xsecurelocksysconf_DATA += config/users
+xsecurelocksysconf_DATA += \
+	config/userfile-priv  \
+	config/userfile-block \
+	config/userfile-any
 endif
 
 if HAVE_PAM
