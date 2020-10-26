@@ -53,6 +53,7 @@ steps:
       --enable-banner \
       --enable-wallpaper \
       --enable-no-blank \
+      --without-xss \
       --with-fontconfig \
       --with-htpasswd=no \
       --with-mplayer=/usr/bin/mplayer \
