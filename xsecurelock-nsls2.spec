@@ -61,7 +61,9 @@ make install DESTDIR=$RPM_BUILD_ROOT
 %{_sysconfdir}/pam.d/xsecurelock-nsls2
 %{_sysconfdir}/xdg/autostart/xsecurelock.desktop
 %{_sysconfdir}/xsecurelock/banner
-%{_sysconfdir}/xsecurelock/users
+%{_sysconfdir}/xsecurelock/userfile-any
+%{_sysconfdir}/xsecurelock/userfile-priv
+%{_sysconfdir}/xsecurelock/userfile-block
 %{_bindir}/xsecurelock
 %{_libexecdir}/xsecurelock/auth_x11
 %{_libexecdir}/xsecurelock/authproto_pam
