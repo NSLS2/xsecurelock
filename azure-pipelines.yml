@@ -112,7 +112,7 @@ steps:
       --prefix=xsecurelock-$(gitversion)-nsls2 \
       --output=${SOURCES}/xsecurelock-v$(gitversion).tar.gz \
       HEAD
-    rpmbuild -bb --define "version ${version}" xsecurelock-nsls2.spec
+    rpmbuild -bb --define "version $(gitversion)" xsecurelock-nsls2.spec
     rpmfile=$(ls -1 ~/rpmbuild/RPMS/x86_64/xsecurelock-nsls2*.rpm | head -1)
     echo "##vso[task.setvariable variable=releasefile]${rpmfile}"
   displayName: 'Build rpm Package'
