@@ -98,7 +98,6 @@ steps:
 
 - script: |
     set -e -x
-    spectool -g -R xsecurelock-nsls2.spec
     rpmbuild -bb --define 'version 1.7.5' xsecurelock-nsls2.spec
   displayName: 'Build rpm Package'
   condition: eq(variables.pkg_type, 'redhat')
