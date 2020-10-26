@@ -10,16 +10,23 @@
 In addition to these changes, CI is provided on Azure Pipelines and upstream
 changes are automatically included.
 
-Debian packaging is provided on the `debian` branch.
+Debian packaging is provided in the attached `debian` directory.
 
 ## Any User Authentication
 
-The screen locker can be configured to not pass the logged in username to the
-PAM stack, enabling the unlocking (authentication) by a user that is not the
-user running the screen locker process. This is governed by the use of a file
-`/etc/xsecurelock/users` which is set by the
-`--with-userfile-filename=<filename>` option passed to `configure`.
-An example of this file is shown below:
+The screen locker can be configured to prompt for login information to allow for any user to authenticate and unlock the screen. This is handled by passing the option `--with-any-user-auth` to the configure script.
+
+The unlocking of the screen is controlled by 3 userfiles.
+
+* A list of users and groups who are blocked from unlocking the screen
+  locker(blocked).
+* A list of users and groups who can always unlock the screen
+  locker (priv).
+* A list of users and groups from which, if they are the user
+  who locked the screen then any other authenticated user should be able to
+  unlock the screen.
+
+The file format is of the form:
 
 ```config
 # Userlist for xsecurelock
@@ -31,9 +38,12 @@ swilkins
 @blgroups
 ```
 
-This would cause _xsecurelock_ to ask for a username if the process is
-running as either the user _swilkins_ or if the process is running as a user
-who is in the _blgroups_ group. If restrictions on authentication are
+The filenames of these files are governed by the
+`--with-userfile-blocked=<filename>`, `--with-userfile-priv=<filename>` and
+`--with-userfile-any=<filename>` for the _blocked_, _privileged_ and _any_ users
+respectively.
+
+If further restrictions on authentication are
 required, this should be done via PAM by modifying the PAM service file For
 example, the PAM stack could contain the _pam_listfile_ module to restrict
 unlocking to a subset of users.
@@ -44,7 +54,7 @@ Using the configure options `--enable-banner` and `--with-banner-filename` a
 logon banner can be included at the unlock prompt. The color of that banner
 can be set using the environmental variable `XSECURELOCK_AUTH_BANNER_COLOR`
 to make it more (or less) prominent. Alternatively the environmental variable
-`XSECURELOCK_BANNER_FILENAME` can be used to override this. 
+`XSECURELOCK_BANNER_FILENAME` can be used to override this.
 
 ## Wallpaper
 
@@ -62,3 +72,9 @@ lock icon (for example) can be shown when the screensaver is run.
 Passing the option `--enable-syslog` will enable the syslog logging in the
 `authproto_pam.c` module. This adds some syslog messages (in the auth context)
 for logging the authentication.
+
+## Secure
+
+Passing the option `--enable-secure` causes the screen locker to ignore the
+environmental variables which can override the user files and the configuration
+for which PAM config to use.

@@ -210,7 +210,8 @@ endif
 doc_DATA = \
 	CONTRIBUTING \
 	LICENSE \
-	README.md
+	README.md \
+	README-NSLS2.md
 
 if HAVE_PANDOC
 man1_MANS = xsecurelock.1
@@ -270,6 +271,7 @@ EXTRA_DIST = \
 	CONTRIBUTING \
 	LICENSE \
 	README.md \
+	README-NSLS2.md \
 	autogen.sh \
 	doc/xsecurelock.1.md \
 	ensure-documented-settings.sh \
