@@ -105,6 +105,7 @@ steps:
     echo "##[debug] debfile = $(debfile)"
     echo "##[debug] gitdesc = $(gitdesc)"
   displayName: 'Debian Debug Output'
+  condition: eq(variables.pkg_type, 'debian')
 
 - task: GithubRelease@0
   displayName: 'Attach debian package to release'
