@@ -53,9 +53,9 @@ steps:
       --enable-banner \
       --enable-wallpaper \
       --enable-no-blank \
-      --without-xss \
-      --with-fontconfig \
+      --with-xss=no \
       --with-htpasswd=no \
+      --with-fontconfig \
       --with-mplayer=/usr/bin/mplayer \
       --with-mpv=/usr/bin/mpv \
       --with-pamtester=no \
