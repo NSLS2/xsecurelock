@@ -21,7 +21,6 @@ override_dh_auto_configure:
 			--enable-no-blank \
 			--with-fontconfig \
 			--with-htpasswd=no \
-			--with-xss=no \
 			--with-mplayer=/usr/bin/mplayer \
 			--with-mpv=/usr/bin/mpv \
 			--with-pamtester=no \
