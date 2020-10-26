@@ -23,8 +23,8 @@ override_dh_auto_configure:
 			--enable-no-blank \
 			--enable-secure \
 			--with-fontconfig \
-			--without-htpasswd \
-			--without-xss \
+			--with-htpasswd=no \
+			--with-xss=no \
 			--with-mplayer=/usr/bin/mplayer \
 			--with-mpv=/usr/bin/mpv \
 			--with-pamtester=no \

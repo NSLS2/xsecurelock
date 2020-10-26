@@ -58,6 +58,7 @@ steps:
       --enable-secure \
       --with-fontconfig \
       --with-htpasswd=no \
+      --with-fontconfig \
       --with-mplayer=/usr/bin/mplayer \
       --with-mpv=/usr/bin/mpv \
       --with-pamtester=no \
