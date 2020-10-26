@@ -5,7 +5,6 @@ Summary:  xsecurelock nsls2 version
 
 License:  apache
 URL:    https://github.com/NSLS-II/xsecurelock
-%undefine   _disable_source_fetch
 Source0:  https://github.com/NSLS-II/xsecurelock/archive/v%{version}-nsls2/xsecurelock-v%{version}-nsls2.tar.gz
 
 BuildRequires: autoconf automake libX11-devel libXmu-devel libXcomposite-devel pam-devel libXft-devel
