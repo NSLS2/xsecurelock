@@ -74,6 +74,8 @@ make install DESTDIR=$RPM_BUILD_ROOT
 %{_libexecdir}/xsecurelock/saver_blank
 %{_libexecdir}/xsecurelock/saver_multiplex
 %{_libexecdir}/xsecurelock/until_nonidle
+%{_libexecdir}/xsecurelock/saver_mplayer
+%{_libexecdir}/xsecurelock/saver_mpv
 %{_docdir}/xsecurelock/CONTRIBUTING
 %{_docdir}/xsecurelock/LICENSE
 %{_docdir}/xsecurelock/README.md
