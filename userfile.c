@@ -119,24 +119,36 @@ int UserInAuthListFile(const char * filename, const char* username, int *match) 
 
 int UserInAuthListPriv(const char* username, int *match) {
     int rtn;
+#ifdef SECURE
+    const char *filename = USERFILE_PRIV;
+#else
     const char *filename =
         GetStringSetting("XSECURELOCK_USERFILE_PRIV", USERFILE_PRIV);
+#endif
     rtn = UserInAuthListFile(filename, username, match);
     return rtn;
 }
 
 int UserInAuthListBlock(const char* username, int *match) {
     int rtn;
+#ifdef SECURE
+    const char *filename = USERFILE_BLOCK;
+#else
     const char *filename =
         GetStringSetting("XSECURELOCK_USERFILE_BLOCK", USERFILE_BLOCK);
+#endif
     rtn = UserInAuthListFile(filename, username, match);
     return rtn;
 }
 
 int UserInAuthListAny(const char* username, int *match) {
     int rtn;
+#ifdef SECURE
+    const char *filename = USERFILE_ANY;
+#else
     const char *filename =
         GetStringSetting("XSECURELOCK_USERFILE_ANY", USERFILE_ANY);
+#endif
     rtn = UserInAuthListFile(filename, username, match);
     return rtn;
 }

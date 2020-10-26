@@ -78,6 +78,9 @@ endif
 if SYSLOG
 macros += -DSYSLOG
 endif
+if SECURE
+macros += -DSECURE
+endif
 
 bin_PROGRAMS = \
 	xsecurelock

@@ -319,6 +319,13 @@ AC_ARG_ENABLE([syslog],
             [enable_syslog=$enableval],
             [enable_syslog=no])
 
+AC_ARG_ENABLE([secure],
+            AC_HELP_STRING([--enable-secure],
+                           [Enable secure mode where no config files are settable
+                            using environmental variables]),
+            [enable_secure=$enableval],
+            [enable_secure=no])
+
 AC_SUBST(auth)
 AC_SUBST(no_blank)
 AC_SUBST(banner)
@@ -354,6 +361,8 @@ AM_CONDITIONAL([WALLPAPER],
                [test x$enable_wallpaper = xyes])
 AM_CONDITIONAL([SYSLOG],
                [test x$enable_syslog = xyes])
+AM_CONDITIONAL([SECURE],
+               [test x$enable_secure = xyes])
 
 banner_filename=
 banner_width=

@@ -146,8 +146,12 @@ int CallPAMWithRetries(int (*pam_call)(pam_handle_t *, int), pam_handle_t *pam,
  *   anything else in case of error).
  */
 int Authenticate(struct pam_conv *conv, pam_handle_t **pam) {
+#ifdef SECURE
+  const char *service_name = PAM_SERVICE_NAME;
+#else
   const char *service_name =
       GetStringSetting("XSECURELOCK_PAM_SERVICE", PAM_SERVICE_NAME);
+#endif
   if (strchr(service_name, '/')) {
     // As this binary might be running with setuid privileges, we should better
     // refuse potentially dangerous parameters. This works around PAM
