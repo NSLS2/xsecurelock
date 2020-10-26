@@ -58,13 +58,13 @@ make install DESTDIR=$RPM_BUILD_ROOT
 
 
 %files
+%{_bindir}/xsecurelock
 %{_sysconfdir}/pam.d/xsecurelock-nsls2
 %{_sysconfdir}/xdg/autostart/xsecurelock.desktop
 %{_sysconfdir}/xsecurelock/banner
 %{_sysconfdir}/xsecurelock/userfile-any
 %{_sysconfdir}/xsecurelock/userfile-priv
 %{_sysconfdir}/xsecurelock/userfile-block
-%{_bindir}/xsecurelock
 %{_libexecdir}/xsecurelock/auth_x11
 %{_libexecdir}/xsecurelock/authproto_pam
 %{_libexecdir}/xsecurelock/dimmer
@@ -79,6 +79,7 @@ make install DESTDIR=$RPM_BUILD_ROOT
 %{_docdir}/xsecurelock/CONTRIBUTING
 %{_docdir}/xsecurelock/LICENSE
 %{_docdir}/xsecurelock/README.md
+%{_docdir}/xsecurelock/README-NSLS2.md
 %{_docdir}/xsecurelock/examples/saver_livestreams
 %{_datadir}/xsecurelock/lock.png
 
