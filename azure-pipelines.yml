@@ -73,10 +73,6 @@ steps:
     make
   displayName: Build
 
-  #- script: |
-  #    cd test && ./run-tests.sh
-  #  displayName: Run Tests
-
 - script: |
     GITDESC=`git describe`
     echo "##vso[task.setvariable variable=gitdesc]$GITDESC"
