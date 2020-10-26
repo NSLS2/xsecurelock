@@ -91,7 +91,7 @@ steps:
       -uc -us \
       --git-export-dir=build \
       --git-tarball-dir=build
-    old_debfile=$(ls build/xsecurelock-nsls2_*.deb | head -1)
+    old_debfile=$(ls -1 build/xsecurelock-nsls2_*.deb | head -1)
     new_debfile=$(echo ${old_debfile} | sed "s/\.deb/-$(debrelease).deb/")
     mv "${old_debfile}" "${new_debfile}"
     echo "##vso[task.setvariable variable=releasefile]${new_debfile}"
@@ -103,7 +103,7 @@ steps:
 - script: |
     set -e -x
     rpmbuild -bb --define 'version 1.7.5' xsecurelock-nsls2.spec
-    rpmfile=$(ls ~/rpmbuild/RPMS/x86_64/xsecurelock-nsls2*.rpm | head -1)
+    rpmfile=$(ls -1 ~/rpmbuild/RPMS/x86_64/xsecurelock-nsls2*.rpm | head -1)
     echo "##vso[task.setvariable variable=releasefile]${rpmfile}"
   displayName: 'Build rpm Package'
   condition: eq(variables.pkg_type, 'redhat')
