@@ -87,7 +87,7 @@ steps:
   displayName: Set Git Describe to Variable
 
 - script: |
-    set -e
+    set -e -x
     mkdir -p build
     gbp buildpackage \
       --git-ignore-new \
@@ -97,7 +97,7 @@ steps:
       --git-tarball-dir=build
     old_debfile=$(ls -1 build/xsecurelock-nsls2_*.deb | head -1)
     new_debfile=$(echo ${old_debfile} | sed "s/\.deb/-$(debrelease).deb/")
-    mv "${old_debfile}" "${new_debfile}"
+    cp "${old_debfile}" "$(Build.ArtifactStagingDirectory)/${new_debfile}"
     echo "##vso[task.setvariable variable=releasefile]${new_debfile}"
     echo "##[debug] old_debfile = ${old_debfile}"
     echo "##[debug] new_debfile = ${new_debfile}"
@@ -119,6 +119,7 @@ steps:
     rpmbuild -bb --define "version $(gitversion)" xsecurelock-nsls2.spec
     rpmbuild -bb xautolock.spec
     rpmbuild -bb feh.spec
+    cp ~/rpmbuild/RPMS/x86_64/*.rpm "$(Build.ArtifactStagingDirectory)"
     #rpmfile=$(ls -1 ~/rpmbuild/RPMS/x86_64/xsecurelock-nsls2*.rpm | head -1)
     #rpmfile="${rpmfile} $(ls -1 ~/rpmbuild/RPMS/x86_64/feh*.rpm | head -1)"
     #rpmfile="${rpmfile} $(ls -1 ~/rpmbuild/RPMS/x86_64/xautolock*.rpm | head -1)"
@@ -133,7 +134,7 @@ steps:
   inputs:
     gitHubConnection: github.com_stuwilkins
     repositoryName: NSLS-II/xsecurelock
-    assets: $(releasefile)
+#    assets: $(releasefile)
     action: edit
     target: '$(Build.SourceVersion)'
     tag: $(gitdesc)
