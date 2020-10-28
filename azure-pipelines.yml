@@ -127,6 +127,7 @@ steps:
     rpmbuild -bb xautolock.spec
     rpmbuild -bb feh.spec
     echo "##[debug] gitdesc = $(gitdesc)"
+    ls $(Agent.HomeDirectory)/rpmbuild/RPMS/x86_64/
   displayName: 'Build rpm Package'
   condition: and(succeeded(), eq(variables.pkg_type, 'redhat'))
 
