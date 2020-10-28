@@ -403,7 +403,7 @@ AS_IF([test x$enable_any_user_auth = xyes], [
                               configure blocked users
                               This flag is mandatory when the any user auth
                               is enabled.]),
-              [userfile_priv=$withval],
+              [userfile_block=$withval],
               [AC_MSG_ERROR([--with-userfile-priv is mandatory.])])
   AC_ARG_WITH([userfile_any],
               AC_HELP_STRING([--with-userfile-any],

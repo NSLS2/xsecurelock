@@ -101,8 +101,9 @@ steps:
     echo "##vso[task.setvariable variable=releasefile]${new_debfile}"
     echo "##[debug] old_debfile = ${old_debfile}"
     echo "##[debug] new_debfile = ${new_debfile}"
+    echo "##[debug] gitdesc = $(gitdesc)"
   displayName: 'Build Debian Package'
-  condition: eq(variables.pkg_type, 'debian')
+  condition: and(succeeded(), eq(variables.pkg_type, 'debian'))
 
 - script: |
     set -e -x
@@ -112,16 +113,20 @@ steps:
       --prefix=xsecurelock-$(gitversion)-nsls2/ \
       --output=${SOURCES}/xsecurelock-v$(gitversion)-nsls2.tar.gz \
       HEAD
+    spectool -g -R xautolock.spec
+    spectool -g -R feh.spec
+    cp xautolock.patch ${SOURCES}
     rpmbuild -bb --define "version $(gitversion)" xsecurelock-nsls2.spec
+    rpmbuild -bb xautolock.spec
+    rpmbuild -bb feh.spec
     rpmfile=$(ls -1 ~/rpmbuild/RPMS/x86_64/xsecurelock-nsls2*.rpm | head -1)
+    rpmfile="${rpmfile} $(ls -1 ~/rpmbuild/RPMS/x86_64/feh*.rpm | head -1)"
+    rpmfile="${rpmfile} $(ls -1 ~/rpmbuild/RPMS/x86_64/xautolock*.rpm | head -1)"
     echo "##vso[task.setvariable variable=releasefile]${rpmfile}"
-  displayName: 'Build rpm Package'
-  condition: eq(variables.pkg_type, 'redhat')
-
-- script: |
-    echo "##[debug] releasefile = $(releasefile)"
+    echo "##[debug] rpmfile = ${rpmfile}"
     echo "##[debug] gitdesc = $(gitdesc)"
-  displayName: 'Debug Output'
+  displayName: 'Build rpm Package'
+  condition: and(succeeded(), eq(variables.pkg_type, 'redhat'))
 
 - task: GithubRelease@0
   inputs:
@@ -134,4 +139,4 @@ steps:
     addChangeLog: false
     assetUploadMode: replace
   displayName: 'Attach package to release'
-  condition: startsWith(variables['Build.SourceBranch'], 'refs/tags/v')
+  condition: and(succeeded(), startsWith(variables['Build.SourceBranch'], 'refs/tags/v'))

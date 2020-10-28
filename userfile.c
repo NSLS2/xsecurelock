@@ -59,7 +59,7 @@ int IsMemberOfGroup(const char *username, const char *grname, int *match) {
 }
 
 int UserInAuthListFile(const char * filename, const char* username, int *match) {
-    int rtn = USERFILE_ERROR;
+    int rtn = USERFILE_SUCCESS;
     *match = 0;
 
     FILE *fp;

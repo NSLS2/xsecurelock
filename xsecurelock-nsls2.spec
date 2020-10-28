@@ -9,7 +9,6 @@ Source0:  https://github.com/NSLS-II/xsecurelock/archive/v%{version}-nsls2/xsecu
 
 BuildRequires: autoconf automake libX11-devel libXmu-devel libXcomposite-devel pam-devel libXft-devel
 Requires: libX11 libXmu libXcomposite pam libXft
-BuildRoot: ./rpmbuild
 
 %define debug_package %{nil}
 
