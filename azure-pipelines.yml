@@ -108,7 +108,7 @@ steps:
 - task: CopyFiles@2
   inputs:
     targetFolder: '$(Build.ArtifactStagingDirectory)'
-    contents: 'build/*.deb'
+    contents: '$(Agent.HomeDirectory)/build/*.deb'
     flattenFolders: true
   condition: and(succeeded(), eq(variables.pkg_type, 'debian'))
 
