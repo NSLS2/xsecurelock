@@ -119,9 +119,10 @@ steps:
     rpmbuild -bb --define "version $(gitversion)" xsecurelock-nsls2.spec
     rpmbuild -bb xautolock.spec
     rpmbuild -bb feh.spec
-    rpmfile=$(ls -1 ~/rpmbuild/RPMS/x86_64/xsecurelock-nsls2*.rpm | head -1)
-    rpmfile="${rpmfile} $(ls -1 ~/rpmbuild/RPMS/x86_64/feh*.rpm | head -1)"
-    rpmfile="${rpmfile} $(ls -1 ~/rpmbuild/RPMS/x86_64/xautolock*.rpm | head -1)"
+    #rpmfile=$(ls -1 ~/rpmbuild/RPMS/x86_64/xsecurelock-nsls2*.rpm | head -1)
+    #rpmfile="${rpmfile} $(ls -1 ~/rpmbuild/RPMS/x86_64/feh*.rpm | head -1)"
+    #rpmfile="${rpmfile} $(ls -1 ~/rpmbuild/RPMS/x86_64/xautolock*.rpm | head -1)"
+    rpmfile="$(ls ~/rpmbuild/RPMS/x86_64/*.rpm)"
     echo "##vso[task.setvariable variable=releasefile]${rpmfile}"
     echo "##[debug] rpmfile = ${rpmfile}"
     echo "##[debug] gitdesc = $(gitdesc)"
