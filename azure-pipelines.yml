@@ -114,7 +114,7 @@ steps:
 
 - script: |
     set -e -x
-    RPMDIR="`pwd`/rpmdir"
+    RPMDIR="`pwd`/rpmbuild"
     echo $RPMDIR
     SOURCES=${RPMDIR}/SOURCES
     mkdir -p ${SOURCES}
@@ -136,7 +136,7 @@ steps:
 - task: CopyFiles@2
   inputs:
     targetFolder: '$(Build.ArtifactStagingDirectory)'
-    contents: '$(Agent.BuildDirectory)/rpmbuild/RPMS/x86_64/*'
+    contents: rpmbuild/RPMS/x86_64/*'
     flattenFolders: true
   condition: and(succeeded(), eq(variables.pkg_type, 'redhat'))
 
