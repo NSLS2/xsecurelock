@@ -109,6 +109,7 @@ steps:
   inputs:
     targetFolder: '$(Build.ArtifactStagingDirectory)'
     contents: 'build/*.deb'
+    flattenFolders: true
   condition: and(succeeded(), eq(variables.pkg_type, 'debian'))
 
 - script: |
