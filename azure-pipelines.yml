@@ -119,7 +119,10 @@ steps:
     rpmbuild -bb xautolock.spec
     rpmbuild -bb feh.spec
     rpmfile=$(ls -1 ~/rpmbuild/RPMS/x86_64/xsecurelock-nsls2*.rpm | head -1)
+    rpmfile="${rpmfile} $(ls -1 ~/rpmbuild/RPMS/x86_64/feh*.rpm | head -1)"
+    rpmfile="${rpmfile} $(ls -1 ~/rpmbuild/RPMS/x86_64/xautolock*.rpm | head -1)"
     echo "##vso[task.setvariable variable=releasefile]${rpmfile}"
+    echo "##[debug] rpmfile = ${rpmfile}"
   displayName: 'Build rpm Package'
   condition: and(succeeded(), eq(variables.pkg_type, 'redhat'))
 
