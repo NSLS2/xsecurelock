@@ -127,14 +127,14 @@ steps:
     rpmbuild -bb xautolock.spec
     rpmbuild -bb feh.spec
     echo "##[debug] gitdesc = $(gitdesc)"
-    ls $(Agent.HomeDirectory)/rpmbuild/RPMS/x86_64/
+    ls $(Agent.BuildDirectory)/rpmbuild/RPMS/x86_64/
   displayName: 'Build rpm Package'
   condition: and(succeeded(), eq(variables.pkg_type, 'redhat'))
 
 - task: CopyFiles@2
   inputs:
     targetFolder: '$(Build.ArtifactStagingDirectory)'
-    contents: '$(Agent.HomeDirectory)/rpmbuild/RPMS/x86_64/*'
+    contents: '$(Agent.BuildDirectory)/rpmbuild/RPMS/x86_64/*'
     flattenFolders: true
   condition: and(succeeded(), eq(variables.pkg_type, 'redhat'))
 
