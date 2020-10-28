@@ -126,15 +126,15 @@ steps:
     rpmbuild -bb --define "version $(gitversion)" xsecurelock-nsls2.spec
     rpmbuild -bb xautolock.spec
     rpmbuild -bb feh.spec
-    cp ~/rpmbuild/RPMS/x86_64/*.rpm "$(Build.ArtifactStagingDirectory)"
-    #rpmfile=$(ls -1 ~/rpmbuild/RPMS/x86_64/xsecurelock-nsls2*.rpm | head -1)
-    #rpmfile="${rpmfile} $(ls -1 ~/rpmbuild/RPMS/x86_64/feh*.rpm | head -1)"
-    #rpmfile="${rpmfile} $(ls -1 ~/rpmbuild/RPMS/x86_64/xautolock*.rpm | head -1)"
-    rpmfile="$(ls ~/rpmbuild/RPMS/x86_64/*.rpm)"
-    echo "##vso[task.setvariable variable=releasefile]${rpmfile}"
-    echo "##[debug] rpmfile = ${rpmfile}"
     echo "##[debug] gitdesc = $(gitdesc)"
   displayName: 'Build rpm Package'
+  condition: and(succeeded(), eq(variables.pkg_type, 'redhat'))
+
+- task: CopyFiles@2
+  inputs:
+    targetFolder: '$(Build.ArtifactStagingDirectory)'
+    contents: 'rpmbuild/RPMS/x86_64/*.rpm'
+    flattenFolders: true
   condition: and(succeeded(), eq(variables.pkg_type, 'redhat'))
 
 - task: GithubRelease@0
