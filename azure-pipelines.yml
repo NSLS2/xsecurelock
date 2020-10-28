@@ -129,7 +129,7 @@ steps:
     rpmbuild -bb --undefine="_disable_source_fetch" --define "_topdir ${RPMDIR}" xautolock.spec
     rpmbuild -bb --undefine="_disable_source_fetch" --define "_topdir ${RPMDIR}" feh.spec
     echo "##[debug] gitdesc = $(gitdesc)"
-    ls $(Agent.BuildDirectory)/rpmbuild/RPMS/x86_64/
+    ls rpmbuild/RPMS/x86_64/
   displayName: 'Build rpm Package'
   condition: and(succeeded(), eq(variables.pkg_type, 'redhat'))
 
