@@ -101,6 +101,7 @@ steps:
     echo "##vso[task.setvariable variable=releasefile]${new_debfile}"
     echo "##[debug] old_debfile = ${old_debfile}"
     echo "##[debug] new_debfile = ${new_debfile}"
+    echo "##[debug] gitdesc = $(gitdesc)"
   displayName: 'Build Debian Package'
   condition: and(succeeded(), eq(variables.pkg_type, 'debian'))
 
@@ -123,13 +124,9 @@ steps:
     rpmfile="${rpmfile} $(ls -1 ~/rpmbuild/RPMS/x86_64/xautolock*.rpm | head -1)"
     echo "##vso[task.setvariable variable=releasefile]${rpmfile}"
     echo "##[debug] rpmfile = ${rpmfile}"
+    echo "##[debug] gitdesc = $(gitdesc)"
   displayName: 'Build rpm Package'
   condition: and(succeeded(), eq(variables.pkg_type, 'redhat'))
-
-- script: |
-    echo "##[debug] releasefile = $(releasefile)"
-    echo "##[debug] gitdesc = $(gitdesc)"
-  displayName: 'Debug Output'
 
 - task: GithubRelease@0
   inputs:
