@@ -1,6 +1,6 @@
 Name:    xsecurelock-nsls2
 Version:  %{version}
-Release:  6%{?dist}
+Release:  0%{?dist}
 Summary:  xsecurelock nsls2 version
 
 License:  apache
