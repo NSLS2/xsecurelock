@@ -97,13 +97,18 @@ steps:
       --git-tarball-dir=build
     old_debfile=$(ls -1 build/xsecurelock-nsls2_*.deb | head -1)
     new_debfile=$(echo ${old_debfile} | sed "s/\.deb/-$(debrelease).deb/")
-    cp "${old_debfile}" "$(Build.ArtifactStagingDirectory)/${new_debfile}"
+    mv "${old_debfile}" ${new_debfile}"
     echo "##vso[task.setvariable variable=releasefile]${new_debfile}"
     echo "##[debug] old_debfile = ${old_debfile}"
     echo "##[debug] new_debfile = ${new_debfile}"
     echo "##[debug] gitdesc = $(gitdesc)"
   displayName: 'Build Debian Package'
   condition: and(succeeded(), eq(variables.pkg_type, 'debian'))
+
+- task: CopyFiles@2
+  inputs:
+    targetFolder: '$(Build.ArtifactStagingDirectory)'
+    contents: 'build/*.deb'
 
 - script: |
     set -e -x
