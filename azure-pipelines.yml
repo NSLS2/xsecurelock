@@ -125,7 +125,7 @@ steps:
     #spectool -g -R xautolock.spec
     #spectool -g -R feh.spec
     cp xautolock.patch ${SOURCES}
-    rpmbuild -bb --undefine="_disable_source_fetch" --define "_topdir `pwd`" --define "version $(gitversion)" xsecurelock-nsls2.spec
+    rpmbuild -bb --define "_topdir `pwd`" --define "version $(gitversion)" xsecurelock-nsls2.spec
     rpmbuild -bb --undefine="_disable_source_fetch" --define "_topdir `pwd`" xautolock.spec
     rpmbuild -bb --undefine="_disable_source_fetch" --define "_topdir `pwd`" feh.spec
     echo "##[debug] gitdesc = $(gitdesc)"
