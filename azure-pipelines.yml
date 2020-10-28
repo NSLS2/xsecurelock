@@ -114,6 +114,7 @@ steps:
       HEAD
     spectool -g -R xautolock.spec
     spectool -g -R feh.spec
+    cp xautolock.patch ${SOURCES}
     rpmbuild -bb --define "version $(gitversion)" xsecurelock-nsls2.spec
     rpmbuild -bb xautolock.spec
     rpmbuild -bb feh.spec
