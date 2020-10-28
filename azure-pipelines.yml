@@ -108,7 +108,7 @@ steps:
 - task: CopyFiles@2
   inputs:
     targetFolder: '$(Build.ArtifactStagingDirectory)'
-    contents: '$(Agent.HomeDirectory)/build/*.deb'
+    contents: 'build/*.deb'
     flattenFolders: true
   condition: and(succeeded(), eq(variables.pkg_type, 'debian'))
 
@@ -133,7 +133,7 @@ steps:
 - task: CopyFiles@2
   inputs:
     targetFolder: '$(Build.ArtifactStagingDirectory)'
-    contents: 'rpmbuild/RPMS/x86_64/*'
+    contents: '$(Agent.HomeDirectory)/rpmbuild/RPMS/x86_64/*'
     flattenFolders: true
   condition: and(succeeded(), eq(variables.pkg_type, 'redhat'))
 
