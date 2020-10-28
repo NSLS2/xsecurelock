@@ -114,18 +114,20 @@ steps:
 
 - script: |
     set -e -x
-    SOURCES=${HOME}/rpmbuild/SOURCES
+    RPMDIR="`pwd`/rpmdir"
+    echo $RPMDIR
+    SOURCES=${RPMDIR}/rpmbuild/SOURCES
     mkdir -p ${SOURCES}
     git archive --format=tar \
       --prefix=xsecurelock-$(gitversion)-nsls2/ \
       --output=${SOURCES}/xsecurelock-v$(gitversion)-nsls2.tar.gz \
       HEAD
-    spectool -g -R xautolock.spec
-    spectool -g -R feh.spec
+    #spectool -g -R xautolock.spec
+    #spectool -g -R feh.spec
     cp xautolock.patch ${SOURCES}
-    rpmbuild -bb --define "version $(gitversion)" xsecurelock-nsls2.spec
-    rpmbuild -bb xautolock.spec
-    rpmbuild -bb feh.spec
+    rpmbuild -bb --undefine="_disable_source_fetch" --define "_topdir `pwd`" --define "version $(gitversion)" xsecurelock-nsls2.spec
+    rpmbuild -bb --undefine="_disable_source_fetch" --define "_topdir `pwd`" xautolock.spec
+    rpmbuild -bb --undefine="_disable_source_fetch" --define "_topdir `pwd`" feh.spec
     echo "##[debug] gitdesc = $(gitdesc)"
     ls $(Agent.BuildDirectory)/rpmbuild/RPMS/x86_64/
   displayName: 'Build rpm Package'
