@@ -14,8 +14,8 @@ BuildRequires:  libpng-devel
 BuildRequires:  libXt-devel
 BuildRequires:  libXinerama-devel
 BuildRequires:  libexif-devel
-#BuildRequires:  perl-Test-Command
-#BuildRequires:  perl-Test-Harness
+
+%define debug_package %{nil}
 
 %description
 Fast command line image viewer using Imlib2
