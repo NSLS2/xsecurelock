@@ -43,120 +43,120 @@ stages:
           pkg_type: redhat
           rpmrelease: centos8
 
-      container: $[ variables['containerImage'] ]
+    container: $[ variables['containerImage'] ]
 
-      steps:
-      - script: |
-          set -e -x
-          ./autogen.sh
-          ./configure \
-            --with-pam \
-            --with-pam-service-name=xsecurelock \
-            --with-userfile-priv=/etc/xsecurelock/userfile-priv \
-            --with-userfile-block=/etc/xsecurelock/userfile-block \
-            --with-userfile-any=/etc/xsecurelock/userfile-any \
-            --with-banner-filename=/etc/xsecurelock/banner \
-            --enable-any-user-auth \
-            --enable-banner \
-            --enable-wallpaper \
-            --enable-no-blank \
-            --enable-secure \
-            --with-fontconfig \
-            --without-htpasswd \
-            --with-fontconfig \
-            --with-mplayer=/usr/bin/mplayer \
-            --with-mpv=/usr/bin/mpv \
-            --with-pamtester=no \
-            --with-xcomposite \
-            --with-xf86misc=no \
-            --with-xrandr \
-            --with-xss \
-            --with-xsync \
-            --with-xfixes \
-            --with-xft \
-            --with-xkb
-        displayName: Run Configure
+    steps:
+    - script: |
+        set -e -x
+        ./autogen.sh
+        ./configure \
+          --with-pam \
+          --with-pam-service-name=xsecurelock \
+          --with-userfile-priv=/etc/xsecurelock/userfile-priv \
+          --with-userfile-block=/etc/xsecurelock/userfile-block \
+          --with-userfile-any=/etc/xsecurelock/userfile-any \
+          --with-banner-filename=/etc/xsecurelock/banner \
+          --enable-any-user-auth \
+          --enable-banner \
+          --enable-wallpaper \
+          --enable-no-blank \
+          --enable-secure \
+          --with-fontconfig \
+          --without-htpasswd \
+          --with-fontconfig \
+          --with-mplayer=/usr/bin/mplayer \
+          --with-mpv=/usr/bin/mpv \
+          --with-pamtester=no \
+          --with-xcomposite \
+          --with-xf86misc=no \
+          --with-xrandr \
+          --with-xss \
+          --with-xsync \
+          --with-xfixes \
+          --with-xft \
+          --with-xkb
+      displayName: Run Configure
 
-      - script: |
-          set -e
-          make
-        displayName: Build
+    - script: |
+        set -e
+        make
+      displayName: Build
 
-      - script: |
-          GITDESC=$(git describe --abbrev=0)
-          VERSION=$(git describe --abbrev=0 | sed -En 's/v([0-9]+\.)([0-9]+\.)?([0-9]+)-.*/\1\2\3/p')
-          echo "##vso[task.setvariable variable=gitdesc]$GITDESC"
-          echo "##vso[task.setvariable variable=gitversion]$VERSION"
-          echo "##[debug] GITDESC = $GITDESC"
-          echo "##[debug] VERSION = $VERSION"
-        displayName: Set Git Describe to Variable
+    - script: |
+        GITDESC=$(git describe --abbrev=0)
+        VERSION=$(git describe --abbrev=0 | sed -En 's/v([0-9]+\.)([0-9]+\.)?([0-9]+)-.*/\1\2\3/p')
+        echo "##vso[task.setvariable variable=gitdesc]$GITDESC"
+        echo "##vso[task.setvariable variable=gitversion]$VERSION"
+        echo "##[debug] GITDESC = $GITDESC"
+        echo "##[debug] VERSION = $VERSION"
+      displayName: Set Git Describe to Variable
 
-      - script: |
-          set -e -x
-          mkdir -p build
-          gbp buildpackage \
-            --git-ignore-new \
-            --git-ignore-branch \
-            -uc -us \
-            --git-export-dir=build \
-            --git-tarball-dir=build
-          old_debfile=$(ls -1 build/xsecurelock-nsls2_*.deb | head -1)
-          new_debfile=$(echo ${old_debfile} | sed "s/\.deb/-$(debrelease).deb/")
-          mv "${old_debfile}" "${new_debfile}"
-          echo "##vso[task.setvariable variable=releasefile]${new_debfile}"
-          echo "##[debug] old_debfile = ${old_debfile}"
-          echo "##[debug] new_debfile = ${new_debfile}"
-          echo "##[debug] gitdesc = $(gitdesc)"
-          echo `pwd`
-          ls build
-        displayName: 'Build Debian Package'
-        condition: and(succeeded(), eq(variables.pkg_type, 'debian'))
+    - script: |
+        set -e -x
+        mkdir -p build
+        gbp buildpackage \
+          --git-ignore-new \
+          --git-ignore-branch \
+          -uc -us \
+          --git-export-dir=build \
+          --git-tarball-dir=build
+        old_debfile=$(ls -1 build/xsecurelock-nsls2_*.deb | head -1)
+        new_debfile=$(echo ${old_debfile} | sed "s/\.deb/-$(debrelease).deb/")
+        mv "${old_debfile}" "${new_debfile}"
+        echo "##vso[task.setvariable variable=releasefile]${new_debfile}"
+        echo "##[debug] old_debfile = ${old_debfile}"
+        echo "##[debug] new_debfile = ${new_debfile}"
+        echo "##[debug] gitdesc = $(gitdesc)"
+        echo `pwd`
+        ls build
+      displayName: 'Build Debian Package'
+      condition: and(succeeded(), eq(variables.pkg_type, 'debian'))
 
-      - task: CopyFiles@2
-        inputs:
-          targetFolder: '$(Build.ArtifactStagingDirectory)'
-          contents: 'build/xsecurelock-nsls2_*.deb'
-          flattenFolders: true
-        condition: and(succeeded(), eq(variables.pkg_type, 'debian'))
+    - task: CopyFiles@2
+      inputs:
+        targetFolder: '$(Build.ArtifactStagingDirectory)'
+        contents: 'build/xsecurelock-nsls2_*.deb'
+        flattenFolders: true
+      condition: and(succeeded(), eq(variables.pkg_type, 'debian'))
 
-      - script: |
-          set -e -x
-          RPMDIR="`pwd`/rpmbuild"
-          echo $RPMDIR
-          SOURCES=${RPMDIR}/SOURCES
-          mkdir -p ${SOURCES}
-          git archive --format=tar \
-            --prefix=xsecurelock-$(gitversion)-nsls2/ \
-            --output=${SOURCES}/xsecurelock-v$(gitversion)-nsls2.tar.gz \
-            HEAD
-          #spectool -g -R xautolock.spec
-          #spectool -g -R feh.spec
-          cp xautolock.patch ${SOURCES}
-          rpmbuild -bb --define "_topdir ${RPMDIR}" --define "version $(gitversion)" xsecurelock-nsls2.spec
-          rpmbuild -bb --undefine="_disable_source_fetch" --define "_topdir ${RPMDIR}" xautolock.spec
-          rpmbuild -bb --undefine="_disable_source_fetch" --define "_topdir ${RPMDIR}" feh.spec
-          echo "##[debug] gitdesc = $(gitdesc)"
-          echo `pwd`
-          ls rpmbuild/RPMS/x86_64/
-        displayName: 'Build rpm Package'
-        condition: and(succeeded(), eq(variables.pkg_type, 'redhat'))
+    - script: |
+        set -e -x
+        RPMDIR="`pwd`/rpmbuild"
+        echo $RPMDIR
+        SOURCES=${RPMDIR}/SOURCES
+        mkdir -p ${SOURCES}
+        git archive --format=tar \
+          --prefix=xsecurelock-$(gitversion)-nsls2/ \
+          --output=${SOURCES}/xsecurelock-v$(gitversion)-nsls2.tar.gz \
+          HEAD
+        #spectool -g -R xautolock.spec
+        #spectool -g -R feh.spec
+        cp xautolock.patch ${SOURCES}
+        rpmbuild -bb --define "_topdir ${RPMDIR}" --define "version $(gitversion)" xsecurelock-nsls2.spec
+        rpmbuild -bb --undefine="_disable_source_fetch" --define "_topdir ${RPMDIR}" xautolock.spec
+        rpmbuild -bb --undefine="_disable_source_fetch" --define "_topdir ${RPMDIR}" feh.spec
+        echo "##[debug] gitdesc = $(gitdesc)"
+        echo `pwd`
+        ls rpmbuild/RPMS/x86_64/
+      displayName: 'Build rpm Package'
+      condition: and(succeeded(), eq(variables.pkg_type, 'redhat'))
 
-      - task: CopyFiles@2
-        inputs:
-          targetFolder: '$(Build.ArtifactStagingDirectory)'
-          contents: rpmbuild/RPMS/x86_64/*
-          flattenFolders: true
-        condition: and(succeeded(), eq(variables.pkg_type, 'redhat'))
+    - task: CopyFiles@2
+      inputs:
+        targetFolder: '$(Build.ArtifactStagingDirectory)'
+        contents: rpmbuild/RPMS/x86_64/*
+        flattenFolders: true
+      condition: and(succeeded(), eq(variables.pkg_type, 'redhat'))
 
-      - task: GithubRelease@0
-        inputs:
-          gitHubConnection: github.com_stuwilkins
-          repositoryName: NSLS-II/xsecurelock
-      #    assets: $(releasefile)
-          action: edit
-          target: '$(Build.SourceVersion)'
-          tag: $(gitdesc)
-          addChangeLog: false
-          assetUploadMode: replace
-        displayName: 'Attach package to release'
-        condition: and(succeeded(), startsWith(variables['Build.SourceBranch'], 'refs/tags/v'))
+    - task: GithubRelease@0
+      inputs:
+        gitHubConnection: github.com_stuwilkins
+        repositoryName: NSLS-II/xsecurelock
+    #    assets: $(releasefile)
+        action: edit
+        target: '$(Build.SourceVersion)'
+        tag: $(gitdesc)
+        addChangeLog: false
+        assetUploadMode: replace
+      displayName: 'Attach package to release'
+      condition: and(succeeded(), startsWith(variables['Build.SourceBranch'], 'refs/tags/v'))
