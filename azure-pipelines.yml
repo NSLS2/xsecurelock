@@ -112,8 +112,7 @@ stages:
       displayName: 'Build Debian Package'
       condition: and(succeeded(), eq(variables.pkg_type, 'debian'))
 
-    - upload:
-      - 'build/xsecurelock-nsls2_*.deb'
+    - upload: 'build/xsecurelock-nsls2_*.deb'
       artifact: releases
       seal: false
 
