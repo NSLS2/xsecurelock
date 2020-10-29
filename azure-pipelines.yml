@@ -127,7 +127,7 @@ stages:
 
     - task: PublishPipelineArtifact@1
       inputs:
-        targetPath: $(Build.SourcesDirectory)/build/xsecurelock-nsls2_*.deb
+        targetPath: $(Pipeline.Workspace)/s/build/xsecurelock-nsls2_*.deb
         artifactName: xsecurelock
       displayName: Publish Debian Packages
       condition: and(succeeded(), eq(variables.pkg_type, 'debian'))
