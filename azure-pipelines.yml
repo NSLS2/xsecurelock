@@ -168,6 +168,5 @@ stages:
   - job: Publish
     dependsOn: Build
     steps:
-      - download: releases
       - script: ls $(Pipeline.Workspace)
       - script: ls $(Build.ArtifactStagingDirectory)
