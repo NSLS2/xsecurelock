@@ -109,6 +109,9 @@ stages:
         echo "##[debug] gitdesc = $(gitdesc)"
         echo `pwd`
         ls build
+        echo $(Build.SourcesDirectory)
+        echo $(Pipeline.Workspace)
+        echo $(Agent.BuildDirectory)
       displayName: 'Build Debian Package'
       condition: and(succeeded(), eq(variables.pkg_type, 'debian'))
 
