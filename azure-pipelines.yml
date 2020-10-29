@@ -48,7 +48,7 @@ stages:
 
     container:
       image: $[ variables['containerImage'] ]
-      options: -v $[ variables['Build.SourcesDirectory'] ] :/bsd
+      options: $[ variables['Build.SourcesDirectory'] ]
 
     steps:
     - script: |
