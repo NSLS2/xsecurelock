@@ -127,9 +127,9 @@ stages:
 
     - task: PublishPipelineArtifact@1
       inputs:
-        targetFolder: '$(Build.ArtifactStagingDirectory)'
-        contents: 'build/xsecurelock-nsls2_*.deb'
-        flattenFolders: true
+        targetPath: $(Build.SourcesDirectory)/build/xsecurelock-nsls2_*.deb
+        artifactName: xsecurelock
+      displayName: Publish Debian Packages
       condition: and(succeeded(), eq(variables.pkg_type, 'debian'))
 
     - script: |
