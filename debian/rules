@@ -4,7 +4,6 @@
 include /usr/share/dpkg/pkg-info.mk
 
 export DH_VERBOSE=1
-export DEB_BUILD_OPTIONS=noddebs
 export DEB_BUILD_MAINT_OPTIONS = hardening=+all
 
 %:

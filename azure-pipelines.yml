@@ -46,7 +46,9 @@ stages:
           pkg_type: redhat
           rpmrelease: centos8
 
-    container: $[ variables['containerImage'] ]
+    container:
+      image: $[ variables['containerImage'] ]
+      options: -v $(Build.SourcesDirectory):/bsd
 
     steps:
     - script: |
@@ -120,7 +122,7 @@ stages:
 
     - task: CopyFiles@2
       inputs:
-        targetFolder: '$(Build.ArtifactStagingDirectory)'
+        targetFolder: '/bsd'
         contents: 'build/xsecurelock-nsls2_*.deb'
         flattenFolders: true
       condition: and(succeeded(), eq(variables.pkg_type, 'debian'))
