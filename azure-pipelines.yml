@@ -114,7 +114,6 @@ stages:
 
     - upload: 'build/xsecurelock-nsls2_*.deb'
       artifact: releases
-      seal: false
 
 #     - task: CopyFiles@2
 #       inputs:
