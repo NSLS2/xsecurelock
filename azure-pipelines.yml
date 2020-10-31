@@ -121,7 +121,7 @@ stages:
         flattenFolders: true
       condition: and(succeeded(), eq(variables.pkg_type, 'debian'))
 
-    - task: PublishBuildArtifact@1
+    - task: PublishBuildArtifacts@1
       inputs:
         pathToPublish: '$(Build.ArtifactStagingDirectory)'
         artifactName: '$(debrelease)'
