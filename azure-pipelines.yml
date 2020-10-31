@@ -51,7 +51,7 @@ stages:
 
     steps:
     - script: |
-        set -e -x
+        set -e
         ./autogen.sh
         ./configure \
           --with-pam \
@@ -96,7 +96,7 @@ stages:
       displayName: Set Git Describe to Variable
 
     - script: |
-        set -e -x
+        set -e
         mkdir -p build
         gbp buildpackage \
           --git-ignore-new \
@@ -129,7 +129,7 @@ stages:
       condition: and(succeeded(), eq(variables.pkg_type, 'debian'))
 
     - script: |
-        set -e -x
+        set -e
         RPMDIR="`pwd`/rpmbuild"
         echo $RPMDIR
         SOURCES=${RPMDIR}/SOURCES
@@ -155,6 +155,13 @@ stages:
         targetFolder: '$(Build.ArtifactStagingDirectory)'
         contents: rpmbuild/RPMS/x86_64/*
         flattenFolders: true
+      condition: and(succeeded(), eq(variables.pkg_type, 'redhat'))
+
+    - task: PublishPipelineArtifact@1
+      inputs:
+        pathToPublish: '$(Build.ArtifactStagingDirectory)'
+        artifactName: '$(rpmrelease)'
+      displayName: Publish Debian Packages
       condition: and(succeeded(), eq(variables.pkg_type, 'redhat'))
 
     - task: GithubRelease@0
