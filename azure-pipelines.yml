@@ -201,6 +201,13 @@ stages:
           artifactName: 'debian10'
           downloadPath: '$(System.ArtifactsDirectory)'
         displayName: Download Debian 10
+      - task: DownloadBuildArtifacts@0
+        inputs:
+          buildType: 'current'
+          downloadType: 'single'
+          artifactName: 'ubuntu-groovy'
+          downloadPath: '$(System.ArtifactsDirectory)'
+        displayName: Download Ubuntu Groovy
       - task: GithubRelease@0
         inputs:
           gitHubConnection: github.com_stuwilkins
