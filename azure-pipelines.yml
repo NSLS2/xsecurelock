@@ -121,7 +121,7 @@ stages:
         flattenFolders: true
       condition: and(succeeded(), eq(variables.pkg_type, 'debian'))
 
-    - task: PublishPipelineArtifact@1
+    - task: PublishBuildArtifact@1
       inputs:
         pathToPublish: '$(Build.ArtifactStagingDirectory)'
         artifactName: '$(debrelease)'
@@ -157,25 +157,12 @@ stages:
         flattenFolders: true
       condition: and(succeeded(), eq(variables.pkg_type, 'redhat'))
 
-    - task: PublishPipelineArtifact@1
+    - task: PublishBuildArtifacts@1
       inputs:
         pathToPublish: '$(Build.ArtifactStagingDirectory)'
         artifactName: '$(rpmrelease)'
       displayName: Publish Debian Packages
       condition: and(succeeded(), eq(variables.pkg_type, 'redhat'))
-
-    - task: GithubRelease@0
-      inputs:
-        gitHubConnection: github.com_stuwilkins
-        repositoryName: NSLS-II/xsecurelock
-    #    assets: $(releasefile)
-        action: edit
-        target: '$(Build.SourceVersion)'
-        tag: $(gitdesc)
-        addChangeLog: false
-        assetUploadMode: replace
-      displayName: 'Attach package to release'
-      condition: and(succeeded(), startsWith(variables['Build.SourceBranch'], 'refs/tags/v'))
 
   - job: Publish
     dependsOn: Build
@@ -189,3 +176,15 @@ stages:
           artifactName: 'centos8'
           downloadPath: '$(System.ArtifactsDirectory)'
       - script: ls '$(System.ArtifactsDirectory)'
+      - task: GithubRelease@0
+        inputs:
+          gitHubConnection: github.com_stuwilkins
+          repositoryName: NSLS-II/xsecurelock
+      #    assets: $(releasefile)
+          action: edit
+          target: '$(Build.SourceVersion)'
+          tag: $(gitdesc)
+          addChangeLog: false
+          assetUploadMode: replace
+        displayName: 'Attach package to release'
+        condition: and(succeeded(), startsWith(variables['Build.SourceBranch'], 'refs/tags/v'))
