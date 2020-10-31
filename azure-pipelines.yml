@@ -120,16 +120,16 @@ stages:
       displayName: 'Build Debian Package'
       condition: and(succeeded(), eq(variables.pkg_type, 'debian'))
 
-    # - task: CopyFiles@2
-    #   inputs:
-    #     targetFolder: '/bsd'
-    #     contents: 'build/xsecurelock-nsls2_*.deb'
-    #     flattenFolders: true
-    #   condition: and(succeeded(), eq(variables.pkg_type, 'debian'))
+    - task: CopyFiles@2
+      inputs:
+        targetFolder: '$(Build.ArtifactStagingDirectory)'
+        contents: 'build/xsecurelock-nsls2_*.deb'
+        flattenFolders: true
+      condition: and(succeeded(), eq(variables.pkg_type, 'debian'))
 
     - task: PublishPipelineArtifact@1
       inputs:
-        targetPath: $(Pipeline.Workspace)/s/build/xsecurelock-nsls2_*.deb
+        pathToPublish: '$(Build.ArtifactStagingDirectory)'
         artifactName: xsecurelock
       displayName: Publish Debian Packages
       condition: and(succeeded(), eq(variables.pkg_type, 'debian'))
