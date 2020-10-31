@@ -212,7 +212,7 @@ stages:
         inputs:
           gitHubConnection: github.com_stuwilkins
           repositoryName: NSLS-II/xsecurelock
-          assets: '$(System.ArtifactsDirectory)/*'
+          assets: '$(System.ArtifactsDirectory)/**/*'
           action: edit
           target: '$(Build.SourceVersion)'
           tag: $(gitdesc)
