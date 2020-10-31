@@ -111,12 +111,6 @@ stages:
         echo "##[debug] old_debfile = ${old_debfile}"
         echo "##[debug] new_debfile = ${new_debfile}"
         echo "##[debug] gitdesc = $(gitdesc)"
-        echo `pwd`
-        ls build
-        echo $(Build.SourcesDirectory)
-        echo $(Pipeline.Workspace)
-        echo $(Agent.BuildDirectory)
-        echo ASD $(Build.ArtifactStagingDirectory)
       displayName: 'Build Debian Package'
       condition: and(succeeded(), eq(variables.pkg_type, 'debian'))
 
@@ -130,7 +124,7 @@ stages:
     - task: PublishPipelineArtifact@1
       inputs:
         pathToPublish: '$(Build.ArtifactStagingDirectory)'
-        artifactName: xsecurelock
+        artifactName: '$(debrelease)'
       displayName: Publish Debian Packages
       condition: and(succeeded(), eq(variables.pkg_type, 'debian'))
 
