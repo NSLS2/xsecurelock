@@ -145,8 +145,6 @@ stages:
         rpmbuild -bb --undefine="_disable_source_fetch" --define "_topdir ${RPMDIR}" xautolock.spec
         rpmbuild -bb --undefine="_disable_source_fetch" --define "_topdir ${RPMDIR}" feh.spec
         echo "##[debug] gitdesc = $(gitdesc)"
-        echo `pwd`
-        ls rpmbuild/RPMS/x86_64/
       displayName: 'Build rpm Package'
       condition: and(succeeded(), eq(variables.pkg_type, 'redhat'))
 
@@ -167,20 +165,43 @@ stages:
   - job: Publish
     dependsOn: Build
     steps:
-      - script: ls $(Pipeline.Workspace)
-      - script: ls $(Build.ArtifactStagingDirectory)
+      - script: |
+          GITDESC=$(git describe --abbrev=0)
+          VERSION=$(git describe --abbrev=0 | sed -En 's/v([0-9]+\.)([0-9]+\.)?([0-9]+)-.*/\1\2\3/p')
+          echo "##vso[task.setvariable variable=gitdesc]$GITDESC"
+          echo "##vso[task.setvariable variable=gitversion]$VERSION"
+          echo "##[debug] GITDESC = $GITDESC"
+          echo "##[debug] VERSION = $VERSION"
+        displayName: Set Git Describe to Variable
       - task: DownloadBuildArtifacts@0
         inputs:
           buildType: 'current'
           downloadType: 'single'
           artifactName: 'centos8'
           downloadPath: '$(System.ArtifactsDirectory)'
-      - script: ls '$(System.ArtifactsDirectory)'
+      - task: DownloadBuildArtifacts@0
+        inputs:
+          buildType: 'current'
+          downloadType: 'single'
+          artifactName: 'debian8'
+          downloadPath: '$(System.ArtifactsDirectory)'
+      - task: DownloadBuildArtifacts@0
+        inputs:
+          buildType: 'current'
+          downloadType: 'single'
+          artifactName: 'debian9'
+          downloadPath: '$(System.ArtifactsDirectory)'
+      - task: DownloadBuildArtifacts@0
+        inputs:
+          buildType: 'current'
+          downloadType: 'single'
+          artifactName: 'debian10'
+          downloadPath: '$(System.ArtifactsDirectory)'
       - task: GithubRelease@0
         inputs:
           gitHubConnection: github.com_stuwilkins
           repositoryName: NSLS-II/xsecurelock
-      #    assets: $(releasefile)
+          assets: '$(System.ArtifactsDirectory)/*'
           action: edit
           target: '$(Build.SourceVersion)'
           tag: $(gitdesc)
