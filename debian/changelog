@@ -1,4 +1,4 @@
-xsecurelock-nsls2 (1.7.9) UNRELEASED; urgency=medium
+xsecurelock-nsls2 (1.7.11) UNRELEASED; urgency=medium
 
   [ Rudolf Polzer ]
   * Fix memory leak in authproto.
@@ -325,5 +325,41 @@ xsecurelock-nsls2 (1.7.9) UNRELEASED; urgency=medium
   * Removed copy of debug
   * Fixed build number
   * UNRELEASED
+  * REL: v1.7.9-nsls2
+  * Moved to job format
+  * Fixed indentation
+  * Add Publish Job
+  * Fix sequence
+  * Remove seal
+  * Add debug
+  * Add variable
+  * Try copy
+  * Remove download
+  * Set debug
+  * Add Publish Artifact
+  * Workspace
+  * Add mounted volume
+  * Try runtime variable
+  * Try space
+  * Try var
+  * Try static var
+  * Comment out
+  * Added debug
+  * Added Publish
+  * Added Fixed artifacts
+  * Added artifacts for redhat
+  * Consume Artifacts
+  * Move to build artifacts
+  * Fix typo
+  * Add gitdesc
+  * Added displayNames
+  * Added ubuntu groovy
+  * Fixed line width
+  * Fixed glob
+  * REL: v1.7.10-nsls2
+  * Test multi artifacts
+  * Add all artifacts
+  * Move condition to job
+  * Rmoved VERSION
 
- -- Stuart B. Wilkins <swilkins@catbert.nsls2.bnl.gov>  Wed, 28 Oct 2020 18:16:47 -0400
+ -- Stuart B. Wilkins <swilkins@catbert.nsls2.bnl.gov>  Sat, 31 Oct 2020 15:21:47 -0400
