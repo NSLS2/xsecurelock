@@ -48,7 +48,6 @@ stages:
 
     container:
       image: $[ variables['containerImage'] ]
-      options: ${{ variables['Build.SourcesDirectory'] }}
 
     steps:
     - script: |
@@ -117,6 +116,7 @@ stages:
         echo $(Build.SourcesDirectory)
         echo $(Pipeline.Workspace)
         echo $(Agent.BuildDirectory)
+        echo ASD $(Build.ArtifactStagingDirectory)
       displayName: 'Build Debian Package'
       condition: and(succeeded(), eq(variables.pkg_type, 'debian'))
 
