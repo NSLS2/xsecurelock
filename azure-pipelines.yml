@@ -124,7 +124,7 @@ stages:
     - task: PublishBuildArtifacts@1
       inputs:
         pathToPublish: '$(Build.ArtifactStagingDirectory)'
-        artifactName: '$(debrelease)'
+        artifactName: packages
       displayName: Publish Debian Packages
       condition: and(succeeded(), eq(variables.pkg_type, 'debian'))
 
@@ -158,56 +158,26 @@ stages:
     - task: PublishBuildArtifacts@1
       inputs:
         pathToPublish: '$(Build.ArtifactStagingDirectory)'
-        artifactName: '$(rpmrelease)'
-      displayName: Publish Debian Packages
+        artifactName: packages
+      displayName: Publish RedHat Packages
       condition: and(succeeded(), eq(variables.pkg_type, 'redhat'))
 
   - job: Publish
     dependsOn: Build
+    condition: startsWith(variables['Build.SourceBranch'], 'refs/tags/v')
     steps:
       - script: |
           GITDESC=$(git describe --abbrev=0)
-          VERSION=$(git describe --abbrev=0 | sed -En 's/v([0-9]+\.)([0-9]+\.)?([0-9]+)-.*/\1\2\3/p')
           echo "##vso[task.setvariable variable=gitdesc]$GITDESC"
-          echo "##vso[task.setvariable variable=gitversion]$VERSION"
           echo "##[debug] GITDESC = $GITDESC"
-          echo "##[debug] VERSION = $VERSION"
         displayName: Set Git Describe to Variable
       - task: DownloadBuildArtifacts@0
         inputs:
           buildType: 'current'
           downloadType: 'single'
-          artifactName: 'centos8'
+          artifactName: 'packages'
           downloadPath: '$(System.ArtifactsDirectory)'
-        displayName: Download CentOS 8
-      - task: DownloadBuildArtifacts@0
-        inputs:
-          buildType: 'current'
-          downloadType: 'single'
-          artifactName: 'debian8'
-          downloadPath: '$(System.ArtifactsDirectory)'
-        displayName: Download Debian 8
-      - task: DownloadBuildArtifacts@0
-        inputs:
-          buildType: 'current'
-          downloadType: 'single'
-          artifactName: 'debian9'
-          downloadPath: '$(System.ArtifactsDirectory)'
-        displayName: Download Debian 9
-      - task: DownloadBuildArtifacts@0
-        inputs:
-          buildType: 'current'
-          downloadType: 'single'
-          artifactName: 'debian10'
-          downloadPath: '$(System.ArtifactsDirectory)'
-        displayName: Download Debian 10
-      - task: DownloadBuildArtifacts@0
-        inputs:
-          buildType: 'current'
-          downloadType: 'single'
-          artifactName: 'ubuntu-groovy'
-          downloadPath: '$(System.ArtifactsDirectory)'
-        displayName: Download Ubuntu Groovy
+        displayName: Download Packages
       - task: GithubRelease@0
         inputs:
           gitHubConnection: github.com_stuwilkins
@@ -219,4 +189,3 @@ stages:
           addChangeLog: false
           assetUploadMode: replace
         displayName: 'Attach package to release'
-        condition: and(succeeded(), startsWith(variables['Build.SourceBranch'], 'refs/tags/v'))
