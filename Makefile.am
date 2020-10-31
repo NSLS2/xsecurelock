@@ -302,24 +302,24 @@ clean-local:
 endif
 
 scripts/run-xsecurelock: scripts/run-xsecurelock.in
-	@$(SED) \
+	$(SED) \
 		-e 's|[@]libexecdir@|$(libexecdir)|g' \
 		< "$<" > "$@"
 
 scripts/saver-xsecurelock: scripts/saver-xsecurelock.in
-	@$(SED) \
+	$(SED) \
 		-e 's|[@]datarootdir@|$(datarootdir)|g' \
 		< "$<" > "$@"
 
 autostart/xsecurelock.desktop: autostart/xsecurelock.desktop.in
-	@$(SED) \
+	$(SED) \
 		-e 's|[@]libexecdir@|$(libexecdir)|g' \
 		< "$<" > "$@"
 
 if BANNER
 config/banner: config/banner.in
-	@$(PAR) j1w@banner_width@ < "$<" | \
-			$(AWK) -v w=@banner_width@ '{if (NR>1) {printf "%-*s\n", $$w, $$0} else {printf "%s\n", $$0}}'  >\
+	$(PAR) j1w@banner_width@ < "$<" | \
+			$(AWK) -v w=@banner_width@ '{if (NR>1) {printf "%-*s\n", w, $$0} else {printf "%s\n", $$0}}'  >\
 			"$@"
 endif
 
