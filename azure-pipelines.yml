@@ -164,6 +164,7 @@ stages:
 
   - job: Publish
     dependsOn: Build
+    condition: startsWith(variables['Build.SourceBranch'], 'refs/tags/v')
     steps:
       - script: |
           GITDESC=$(git describe --abbrev=0)
@@ -191,4 +192,3 @@ stages:
           addChangeLog: false
           assetUploadMode: replace
         displayName: 'Attach package to release'
-        condition: and(succeeded(), startsWith(variables['Build.SourceBranch'], 'refs/tags/v'))
