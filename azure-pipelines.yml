@@ -124,7 +124,7 @@ stages:
     - task: PublishBuildArtifacts@1
       inputs:
         pathToPublish: '$(Build.ArtifactStagingDirectory)'
-        artifactName: '$(debrelease)'
+        artifactName: packages
       displayName: Publish Debian Packages
       condition: and(succeeded(), eq(variables.pkg_type, 'debian'))
 
@@ -177,37 +177,37 @@ stages:
         inputs:
           buildType: 'current'
           downloadType: 'single'
-          artifactName: 'centos8'
+          artifactName: 'packages'
           downloadPath: '$(System.ArtifactsDirectory)'
         displayName: Download CentOS 8
-      - task: DownloadBuildArtifacts@0
-        inputs:
-          buildType: 'current'
-          downloadType: 'single'
-          artifactName: 'debian8'
-          downloadPath: '$(System.ArtifactsDirectory)'
-        displayName: Download Debian 8
-      - task: DownloadBuildArtifacts@0
-        inputs:
-          buildType: 'current'
-          downloadType: 'single'
-          artifactName: 'debian9'
-          downloadPath: '$(System.ArtifactsDirectory)'
-        displayName: Download Debian 9
-      - task: DownloadBuildArtifacts@0
-        inputs:
-          buildType: 'current'
-          downloadType: 'single'
-          artifactName: 'debian10'
-          downloadPath: '$(System.ArtifactsDirectory)'
-        displayName: Download Debian 10
-      - task: DownloadBuildArtifacts@0
-        inputs:
-          buildType: 'current'
-          downloadType: 'single'
-          artifactName: 'ubuntu-groovy'
-          downloadPath: '$(System.ArtifactsDirectory)'
-        displayName: Download Ubuntu Groovy
+#      - task: DownloadBuildArtifacts@0
+#        inputs:
+#          buildType: 'current'
+#          downloadType: 'single'
+#          artifactName: 'debian8'
+#          downloadPath: '$(System.ArtifactsDirectory)'
+#        displayName: Download Debian 8
+#      - task: DownloadBuildArtifacts@0
+#        inputs:
+#          buildType: 'current'
+#          downloadType: 'single'
+#          artifactName: 'debian9'
+#          downloadPath: '$(System.ArtifactsDirectory)'
+#        displayName: Download Debian 9
+#      - task: DownloadBuildArtifacts@0
+#        inputs:
+#          buildType: 'current'
+#          downloadType: 'single'
+#          artifactName: 'debian10'
+#          downloadPath: '$(System.ArtifactsDirectory)'
+#        displayName: Download Debian 10
+#      - task: DownloadBuildArtifacts@0
+#        inputs:
+#          buildType: 'current'
+#          downloadType: 'single'
+#          artifactName: 'ubuntu-groovy'
+#          downloadPath: '$(System.ArtifactsDirectory)'
+#        displayName: Download Ubuntu Groovy
       - task: GithubRelease@0
         inputs:
           gitHubConnection: github.com_stuwilkins
