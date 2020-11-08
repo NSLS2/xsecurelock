@@ -1,35 +1,30 @@
 #!/bin/bash -
-set -o nounset
+set -a -u
 
 GSETTINGS=/usr/bin/gsettings
 XSET=/usr/bin/xset
+XAUTOLOCK_TIME=15
+XAUTOLOCK=/usr/bin/xautolock
+XSECURELOCK=@bindir@/xsecurelock
+
+if [ -f "@sysconfdir@/xsecurelock/config" ]; then
+  source @sysconfdir@/xsecurelock/config
+fi
 
 # Disable the built in screensaver and show wallpaper
-if command -v ${GSETTINGS}
+if command -v ${GSETTINGS} > /dev/null 2>&1
 then
-  ${GSETTINGS} set org.gnome.desktop.session idle-delay 0
-  ${GSETTINGS} set org.gnome.desktop.screensaver idle-activation-enabled false
-  ${GSETTINGS} set org.gnome.desktop.screensaver lock-enabled false
-  ${GSETTINGS} set org.cinnamon.desktop.session idle-delay 0
-  ${GSETTINGS} set org.mate.screensaver idle-activation-enabled false
+  ${GSETTINGS} set org.gnome.desktop.session idle-delay 0  > /dev/null 2>&1
+  ${GSETTINGS} set org.gnome.desktop.screensaver idle-activation-enabled false  > /dev/null 2>&1
+  ${GSETTINGS} set org.gnome.desktop.screensaver lock-enabled false  > /dev/null 2>&1
+  ${GSETTINGS} set org.cinnamon.desktop.session idle-delay 0  > /dev/null 2>&1
+  ${GSETTINGS} set org.mate.screensaver idle-activation-enabled false  > /dev/null 2>&1
 fi
 
-if command -v xset
+if command -v xset > /dev/null 2>&1
 then
-  sleep 10; ${XSET} s off
-  sleep 10; ${XSET} s noblank
+  sleep 10; ${XSET} s off  > /dev/null 2>&1
+  sleep 10; ${XSET} s noblank  > /dev/null 2>&1
 fi
 
-export XSECURELOCK_SHOW_USERNAME=1
-export XSECURELOCK_SHOW_DATETIME=0
-export XSECURELOCK_AUTH_TIMEOUT=5
-export XSECURELOCK_AUTH_SOUNDS=0
-export XSECURELOCK_BLANK_TIMEOUT=-1
-export XSECURELOCK_BLANK_DPMS_STATE="on"
-export XSECURELOCK_PASSWORD_PROMPT="asterisks"
-export XSECURELOCK_FONT="DejaVu Sans Mono:style=Bold:size=18"
-export XSECURELOCK_AUTH_BANNER_COLOR="Dark Grey"
-export XSECURELOCK_AUTH_FOREGROUND_COLOR="Yellow"
-export XSECURELOCK_SAVER=@libexecdir@/xsecurelock/saver-xsecurelock
-
-exec /usr/bin/xautolock -time 15 -secure -locker /usr/bin/xsecurelock
+exec ${XAUTOLOCK} -time ${XAUTOLOCK_TIME} -secure -locker ${XSECURELOCK}

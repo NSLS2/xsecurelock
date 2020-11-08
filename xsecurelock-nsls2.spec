@@ -33,6 +33,7 @@ Secure screen locker for X11 systems.
       --enable-wallpaper \
       --enable-no-blank \
       --enable-secure \
+      --enable-syslog \
       --with-fontconfig \
       --without-htpasswd \
       --with-mplayer=/usr/bin/mplayer \
@@ -64,6 +65,7 @@ make install DESTDIR=$RPM_BUILD_ROOT
 %{_sysconfdir}/xsecurelock/userfile-any
 %{_sysconfdir}/xsecurelock/userfile-priv
 %{_sysconfdir}/xsecurelock/userfile-block
+%{_sysconfdir}/xsecurelock/config
 %{_libexecdir}/xsecurelock/auth_x11
 %{_libexecdir}/xsecurelock/authproto_pam
 %{_libexecdir}/xsecurelock/dimmer
