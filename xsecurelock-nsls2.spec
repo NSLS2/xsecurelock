@@ -86,5 +86,6 @@ make install DESTDIR=$RPM_BUILD_ROOT
 
 
 %changelog
-* Sun Oct 26 2020 Stuart B. Wilkins <swilkins@bnl.gov> - 1.7.11
+* Sun Oct 26 2020 Stuart B. Wilkins <swilkins@bnl.gov> - 1.7.14
+- Fixed clobbering of user files
 - Added 3 userfiles to control auth

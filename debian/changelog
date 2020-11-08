@@ -1,4 +1,4 @@
-xsecurelock-nsls2 (1.7.13) UNRELEASED; urgency=medium
+xsecurelock-nsls2 (1.7.14) UNRELEASED; urgency=medium
 
   [ Rudolf Polzer ]
   * Fix memory leak in authproto.
@@ -366,5 +366,8 @@ xsecurelock-nsls2 (1.7.13) UNRELEASED; urgency=medium
   * Fix syslog
   * Add config to files
   * REL: v1.7.12-nsls2
+  * REL: v1.7.13-nsls2
+  * Fixed config paths and added BNL messages
+  * Fixed config files
 
- -- Stuart B. Wilkins <swilkins@catbert.nsls2.bnl.gov>  Sun, 08 Nov 2020 11:19:54 -0500
+ -- Stuart B. Wilkins <swilkins@catbert.nsls2.bnl.gov>  Sun, 08 Nov 2020 16:08:53 -0500
