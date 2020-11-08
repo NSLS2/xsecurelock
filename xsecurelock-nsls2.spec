@@ -33,6 +33,7 @@ Secure screen locker for X11 systems.
       --enable-wallpaper \
       --enable-no-blank \
       --enable-secure \
+      --enable-syslog \
       --with-fontconfig \
       --without-htpasswd \
       --with-mplayer=/usr/bin/mplayer \

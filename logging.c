@@ -29,7 +29,7 @@ void Log(const char *format, ...) {
   va_list args;
   va_start(args, format);
 #ifdef SYSLOG
-  openlog(SYSLOG_LOG_NAME, LOG_PID | LOG_NDELAY | LOG_PERROR, LOG_AUTH);
+  openlog(SYSLOG_LOG_NAME, LOG_PID | LOG_NDELAY | LOG_PERROR, LOG_AUTHPRIV);
   vsyslog(LOG_INFO, format, args);
   closelog();
 #else
@@ -47,7 +47,7 @@ void LogErrno(const char *format, ...) {
 #ifdef SYSLOG
   char buffer[256];
   vsnprintf(buffer, sizeof(buffer), format, args);
-  openlog(SYSLOG_LOG_NAME, LOG_PID | LOG_NDELAY | LOG_PERROR, LOG_AUTH);
+  openlog(SYSLOG_LOG_NAME, LOG_PID | LOG_NDELAY | LOG_PERROR, LOG_AUTHPRIV);
   syslog(LOG_INFO, "%s: %s", buffer, strerror(errno_save));
   closelog();
 #else
