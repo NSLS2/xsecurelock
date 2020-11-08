@@ -304,6 +304,8 @@ endif
 scripts/run-xsecurelock: scripts/run-xsecurelock.in
 	$(SED) \
 		-e 's|[@]libexecdir@|$(libexecdir)|g' \
+		-e 's|[@]bindir@|$(bindir)|g' \
+		-e 's|[@]sysconfdir@|$(sysconfdir)|g' \
 		< "$<" > "$@"
 
 scripts/saver-xsecurelock: scripts/saver-xsecurelock.in
@@ -336,7 +338,7 @@ CLEANFILES += scripts/run-xsecurelock \
 							scripts/saver-xsecurelock
 
 xsecurelocksysconfdir=$(sysconfdir)/xsecurelock
-xsecurelocksysconf_DATA =
+xsecurelocksysconf_DATA = config/config
 
 if BANNER
 xsecurelocksysconf_DATA += config/banner
