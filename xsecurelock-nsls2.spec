@@ -59,13 +59,13 @@ make install DESTDIR=$RPM_BUILD_ROOT
 
 %files
 %{_bindir}/xsecurelock
-%{_sysconfdir}/pam.d/xsecurelock-nsls2
 %{_sysconfdir}/xdg/autostart/xsecurelock.desktop
-%{_sysconfdir}/xsecurelock/banner
-%{_sysconfdir}/xsecurelock/userfile-any
-%{_sysconfdir}/xsecurelock/userfile-priv
-%{_sysconfdir}/xsecurelock/userfile-block
-%{_sysconfdir}/xsecurelock/config
+%config %{_sysconfdir}/xsecurelock/banner
+%config(noreplace) %{_sysconfdir}/pam.d/xsecurelock-nsls2
+%config(noreplace) %{_sysconfdir}/xsecurelock/userfile-any
+%config(noreplace) %{_sysconfdir}/xsecurelock/userfile-priv
+%config(noreplace) %{_sysconfdir}/xsecurelock/userfile-block
+%config(noreplace) %{_sysconfdir}/xsecurelock/config
 %{_libexecdir}/xsecurelock/auth_x11
 %{_libexecdir}/xsecurelock/authproto_pam
 %{_libexecdir}/xsecurelock/dimmer
@@ -77,11 +77,11 @@ make install DESTDIR=$RPM_BUILD_ROOT
 %{_libexecdir}/xsecurelock/until_nonidle
 %{_libexecdir}/xsecurelock/saver_mplayer
 %{_libexecdir}/xsecurelock/saver_mpv
-%{_docdir}/xsecurelock/CONTRIBUTING
-%{_docdir}/xsecurelock/LICENSE
-%{_docdir}/xsecurelock/README.md
-%{_docdir}/xsecurelock/README-NSLS2.md
-%{_docdir}/xsecurelock/examples/saver_livestreams
+%doc %{_docdir}/xsecurelock/CONTRIBUTING
+%doc %{_docdir}/xsecurelock/LICENSE
+%doc %{_docdir}/xsecurelock/README.md
+%doc %{_docdir}/xsecurelock/README-NSLS2.md
+%doc %{_docdir}/xsecurelock/examples/saver_livestreams
 %{_datadir}/xsecurelock/lock.png
 
 
