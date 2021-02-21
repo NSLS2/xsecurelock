@@ -29,7 +29,7 @@ void Log(const char *format, ...) {
   va_list args;
   va_start(args, format);
 #ifdef SYSLOG
-  openlog(SYSLOG_LOG_NAME, LOG_PID | LOG_NDELAY | LOG_AUTHPRIV);
+  openlog(SYSLOG_LOG_NAME, LOG_PID | LOG_NDELAY, LOG_AUTHPRIV);
   vsyslog(LOG_INFO, format, args);
   closelog();
 #else
