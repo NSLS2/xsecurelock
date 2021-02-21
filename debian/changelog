@@ -369,5 +369,11 @@ xsecurelock-nsls2 (1.7.14) UNRELEASED; urgency=medium
   * REL: v1.7.13-nsls2
   * Fixed config paths and added BNL messages
   * Fixed config files
+  * REL: v1.7.14-nsls2
+  * Avoid logging to PERROR
+  * Added CENTOS7 build
+  * [BUG] Fixed error in log open
+  * [BLD] Added build deps
+  * Removed autoreconf
 
- -- Stuart B. Wilkins <swilkins@catbert.nsls2.bnl.gov>  Sun, 08 Nov 2020 16:08:53 -0500
+ -- Stuart B. Wilkins <swilkins@dilbert.nsls2.bnl.gov.nsls2.bnl.gov>  Sun, 21 Feb 2021 15:04:06 -0500

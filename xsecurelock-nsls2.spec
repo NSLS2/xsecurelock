@@ -86,6 +86,7 @@ make install DESTDIR=$RPM_BUILD_ROOT
 
 
 %changelog
-* Sun Oct 26 2020 Stuart B. Wilkins <swilkins@bnl.gov> - 1.7.14
+* Sun Feb 21 2021 Stuart B. Wilkins <swilkins@bnl.gov> - 1.7.15
+- Fixed dependencies
 - Fixed clobbering of user files
 - Added 3 userfiles to control auth
