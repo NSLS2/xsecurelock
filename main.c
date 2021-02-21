@@ -70,6 +70,7 @@ limitations under the License.
 #include "version.h"        // for git_version
 #include "wait_pgrp.h"      // for WaitPgrp
 #include "wm_properties.h"  // for SetWMProperties
+#include "env_info.h"       // for GetHostName, GetUserName
 
 #ifdef WALLPAPER
 #include "wallpaper.xbm"
@@ -162,6 +163,9 @@ struct timeval time_to_blank;
 
 //! Whether the screen is currently blanked by us.
 int blanked = 0;
+
+//! Wether to set the no_blank option
+int no_blank = 1;
 
 #ifdef HAVE_DPMS_EXT
 //! Whether DPMS needs to be disabled when unblanking. Set when blanking.
@@ -787,6 +791,15 @@ int main(int argc, char **argv) {
     return 1;
   }
 
+  // Check if user is in blank list
+  char username[256];
+  if (GetUserName(username, sizeof(username))) {
+    int _no_blank = 0;
+    if(!UserInNoBlankList(username, &_no_blank)) {
+      no_blank = _no_blank;
+    }
+  }
+
   // Connect to X11.
   Display *display = XOpenDisplay(NULL);
   if (display == NULL) {
@@ -1070,24 +1083,24 @@ int main(int argc, char **argv) {
   // Map our windows.
   // This is done after grabbing so failure to grab does not blank the screen
   // yet, thereby "confirming" the screen lock.
-#ifdef NO_BLANK
-  XRaiseWindow(display, background_window);
-  XClearWindow(display, background_window);  // Workaround for bad drivers.
-  XRaiseWindow(display, saver_window);
-#else
-  XMapRaised(display, background_window);
-  XClearWindow(display, background_window);  // Workaround for bad drivers.
-  XMapRaised(display, saver_window);
-#endif
+  if (no_blank) {
+    XRaiseWindow(display, background_window);
+    XClearWindow(display, background_window);  // Workaround for bad drivers.
+    XRaiseWindow(display, saver_window);
+  } else {
+    XMapRaised(display, background_window);
+    XClearWindow(display, background_window);  // Workaround for bad drivers.
+    XMapRaised(display, saver_window);
+  }
   XRaiseWindow(display, auth_window);  // Don't map here.
 
-#ifndef NO_BLANK
 #ifdef HAVE_XCOMPOSITE_EXT
-  if (obscurer_window != None) {
-    // Map the obscurer window last so it should never become visible.
-    XMapRaised(display, obscurer_window);
+  if (!no_blank) {
+    if (obscurer_window != None) {
+      // Map the obscurer window last so it should never become visible.
+      XMapRaised(display, obscurer_window);
+    }
   }
-#endif
 #endif
 
   if (MLOCK_PAGE(&priv, sizeof(priv)) < 0) {
@@ -1296,9 +1309,9 @@ int main(int argc, char **argv) {
         case ButtonPress:
           // Mouse events launch the auth child.
           ScreenNoLongerBlanked(display);
-  #ifdef NO_BLANK
-          XMapRaised(display, background_window);
-  #endif
+          if (no_blank) {
+            XMapRaised(display, background_window);
+          }
           if (WakeUp(display, auth_window, saver_window, NULL)) {
             goto done;
           }
@@ -1306,9 +1319,9 @@ int main(int argc, char **argv) {
         case KeyPress: {
           // Keyboard events launch the auth child.
           ScreenNoLongerBlanked(display);
-  #ifdef NO_BLANK
-          XMapRaised(display, background_window);
-  #endif
+          if (no_blank) {
+            XMapRaised(display, background_window);
+          }
           Status status = XLookupNone;
           int have_key = 1;
           int do_wake_up = 1;
@@ -1444,10 +1457,10 @@ int main(int argc, char **argv) {
                          GrabModeAsync, GrabModeAsync, None, transparent_cursor,
                          CurrentTime);
 #endif
-#ifdef NO_BLANK
-          XUnmapWindow(display, saver_window);
-          XUnmapWindow(display, background_window);
-#else
+            if (no_blank) {
+              XUnmapWindow(display, saver_window);
+              XUnmapWindow(display, background_window);
+            }
           } else if (priv.ev.xmap.window == saver_window) {
             // This should never happen, but let's handle it anyway.
             Log("Someone unmapped the saver window. Undoing that");
@@ -1460,7 +1473,6 @@ int main(int argc, char **argv) {
             XMapRaised(display, background_window);
             XClearWindow(display,
                          background_window);  // Workaround for bad drivers.
-#endif
 #ifdef HAVE_XCOMPOSITE_EXT
           } else if (obscurer_window != None &&
                      priv.ev.xmap.window == obscurer_window) {
