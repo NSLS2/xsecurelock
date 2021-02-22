@@ -319,6 +319,8 @@ scripts/saver-xsecurelock: scripts/saver-xsecurelock.in
 autostart/xsecurelock.desktop: autostart/xsecurelock.desktop.in
 	$(SED) \
 		-e 's|[@]libexecdir@|$(libexecdir)|g' \
+		-e 's|[@]bindir@|$(bindir)|g' \
+		-e 's|[@]sysconfdir@|$(sysconfdir)|g' \
 		< "$<" > "$@"
 
 if BANNER
@@ -330,15 +332,18 @@ endif
 
 autolockdir = $(pkglibexecdir)
 autolock_SCRIPTS = \
-	scripts/run-xsecurelock \
 	scripts/saver-xsecurelock
+
+runscriptdir = $(bindir)
+runscript_SCRIPTS = \
+	scripts/run-xsecurelock 
 
 autostartdir = $(sysconfdir)/xdg/autostart
 autostart_DATA = \
 	autostart/xsecurelock.desktop
 
 CLEANFILES += scripts/run-xsecurelock \
-							scripts/saver-xsecurelock
+			  scripts/saver-xsecurelock
 
 xsecurelocksysconfdir=$(sysconfdir)/xsecurelock
 xsecurelocksysconf_DATA = config/config
