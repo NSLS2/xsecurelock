@@ -375,5 +375,12 @@ xsecurelock-nsls2 (1.7.14) UNRELEASED; urgency=medium
   * [BUG] Fixed error in log open
   * [BLD] Added build deps
   * Removed autoreconf
+  * Version v1.7.15-nsls2
+  * Updated status badges
+  * Updated debian status badges
+  * Added noblank config file option
+  * Added new build options for noblank
+  * Added noblank
+  * [BUG] Fixed macro name
 
- -- Stuart B. Wilkins <swilkins@dilbert.nsls2.bnl.gov.nsls2.bnl.gov>  Sun, 21 Feb 2021 15:04:06 -0500
+ -- Stuart B. Wilkins <swilkins@dilbert.nsls2.bnl.gov.nsls2.bnl.gov>  Sun, 21 Feb 2021 19:27:41 -0500

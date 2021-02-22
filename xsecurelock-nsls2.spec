@@ -88,7 +88,8 @@ make install DESTDIR=$RPM_BUILD_ROOT
 
 
 %changelog
-* Sun Feb 21 2021 Stuart B. Wilkins <swilkins@bnl.gov> - 1.7.15
+* Sun Feb 21 2021 Stuart B. Wilkins <swilkins@bnl.gov> - 1.7.16
+- Added noblank file option
 - Fixed dependencies
 - Fixed clobbering of user files
 - Added 3 userfiles to control auth
