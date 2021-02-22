@@ -336,6 +336,7 @@ AC_SUBST(banner_width)
 AC_SUBST(userfile_block)
 AC_SUBST(userfile_priv)
 AC_SUBST(userfile_any)
+AC_SUBST(userfile_noblank)
 
 AC_SUBST(pam_service_name)
 AC_SUBST(auth_executable)
@@ -388,6 +389,7 @@ AS_IF([test x$enable_banner = xyes], [
 userfile_priv=
 userfile_block=
 userfile_any=
+userfile_noblank=
 AS_IF([test x$enable_any_user_auth = xyes], [
   AC_ARG_WITH([userfile_priv],
               AC_HELP_STRING([--with-userfile-priv],
@@ -415,6 +417,15 @@ AS_IF([test x$enable_any_user_auth = xyes], [
               [userfile_any=$withval],
               [AC_MSG_ERROR([--with-userfile-any is mandatory.])])
 ])
+
+AC_ARG_WITH([userfile_noblank],
+            AC_HELP_STRING([--with-userfile-noblank],
+                        [The path for the userfile filename to
+                        configure users which will not have the screen
+                        blanked when the screensaver is activated
+                        This flag is mandatory.]),
+            [userfile_noblank=$withval],
+            [AC_MSG_ERROR([--with-userfile-noblank is mandatory.])])
 
 AC_CONFIG_FILES([Makefile])
 AC_CONFIG_FILES([helpers/authproto_htpasswd],

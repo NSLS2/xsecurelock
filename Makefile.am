@@ -25,7 +25,8 @@ macros = \
 	-DBANNER_FILENAME=\"@banner_filename@\" \
 	-DUSERFILE_BLOCK=\"@userfile_block@\" \
 	-DUSERFILE_PRIV=\"@userfile_priv@\" \
-	-DUSERFILE_ANY=\"@userfile_any@\"
+	-DUSERFILE_ANY=\"@userfile_any@\" \
+	-DUSERFILE_NOBLANK=\"@userfile_noblank@\"
 
 if HAVE_LIBBSD
 macros += -DHAVE_LIBBSD
@@ -87,6 +88,7 @@ bin_PROGRAMS = \
 xsecurelock_SOURCES = \
 	auth_child.c auth_child.h \
 	env_settings.c env_settings.h \
+	env_info.c env_info.h \
 	logging.c logging.h \
 	mlock_page.h \
 	main.c \
@@ -97,7 +99,8 @@ xsecurelock_SOURCES = \
 	wait_pgrp.c wait_pgrp.h \
 	wm_properties.c wm_properties.h \
 	xscreensaver_api.c xscreensaver_api.h \
-	incompatible_compositor.xbm
+	incompatible_compositor.xbm \
+	userfile.c userfile.h
 nodist_xsecurelock_SOURCES = \
 	env_helpstr.inc
 xsecurelock_CPPFLAGS = $(macros) $(LIBBSD_CFLAGS)
@@ -351,6 +354,9 @@ xsecurelocksysconf_DATA += \
 	config/userfile-block \
 	config/userfile-any
 endif
+
+xsecurelocksysconf_DATA += \
+	config/userfile-noblank
 
 if HAVE_PAM
 xsecurelockpamdir=$(sysconfdir)/pam.d

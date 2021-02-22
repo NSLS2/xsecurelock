@@ -17,5 +17,6 @@ extern const char *userfile_match_string[];
 int UserInAuthListPriv(const char* username, int *match);
 int UserInAuthListBlock(const char* username, int *match);
 int UserInAuthListAny(const char* username, int *match);
+int UserInNoBlankList(const char* username, int *match);
 
 #endif

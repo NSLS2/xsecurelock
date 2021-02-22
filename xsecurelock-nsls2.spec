@@ -28,6 +28,7 @@ Secure screen locker for X11 systems.
       --with-userfile-priv=/etc/xsecurelock/userfile-priv \
       --with-userfile-block=/etc/xsecurelock/userfile-block \
       --with-userfile-any=/etc/xsecurelock/userfile-any \
+      --with-userfile-noblank=/etc/xsecurelock/userfile-noblank \
       --enable-any-user-auth \
       --enable-banner \
       --enable-wallpaper \
@@ -65,6 +66,7 @@ make install DESTDIR=$RPM_BUILD_ROOT
 %config(noreplace) %{_sysconfdir}/xsecurelock/userfile-any
 %config(noreplace) %{_sysconfdir}/xsecurelock/userfile-priv
 %config(noreplace) %{_sysconfdir}/xsecurelock/userfile-block
+%config(noreplace) %{_sysconfdir}/xsecurelock/userfile-noblank
 %config(noreplace) %{_sysconfdir}/xsecurelock/config
 %{_libexecdir}/xsecurelock/auth_x11
 %{_libexecdir}/xsecurelock/authproto_pam
