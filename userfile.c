@@ -156,7 +156,7 @@ int UserInAuthListAny(const char* username, int *match) {
 int UserInNoBlankList(const char* username, int *match) {
     int rtn;
 #ifdef SECURE
-    const char *filename = USERFILE_BLANK;
+    const char *filename = USERFILE_NOBLANK;
 #else
     const char *filename =
         GetStringSetting("XSECURELOCK_USERFILE_BLANK", USERFILE_NOBLANK);
