@@ -1,4 +1,4 @@
-xsecurelock-nsls2 (1.7.16) UNRELEASED; urgency=medium
+xsecurelock-nsls2 (1.7.17) UNRELEASED; urgency=medium
 
   [ Rudolf Polzer ]
   * Fix memory leak in authproto.
@@ -382,5 +382,8 @@ xsecurelock-nsls2 (1.7.16) UNRELEASED; urgency=medium
   * Added new build options for noblank
   * Added noblank
   * [BUG] Fixed macro name
+  * Version v1.7.16-nsls2
+  * Moved start script to bindir
+  * Corrected runpath
 
- -- Stuart B. Wilkins <swilkins@dilbert.nsls2.bnl.gov.nsls2.bnl.gov>  Sun, 21 Feb 2021 19:27:41 -0500
+ -- Stuart B. Wilkins <swilkins@dilbert.nsls2.bnl.gov.nsls2.bnl.gov>  Mon, 22 Feb 2021 12:49:10 -0500
