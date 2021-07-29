@@ -372,4 +372,4 @@ iconsdir = $(datadir)/xsecurelock
 icons_DATA = icons/lock.png
 
 install-exec-hook:
-	chmod 4755 $(helpersdir)/authproto_pam
+	chmod 4755 $(DESTDIR)$(helpersdir)/authproto_pam
