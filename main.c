@@ -71,7 +71,7 @@ limitations under the License.
 #include "wait_pgrp.h"      // for WaitPgrp
 #include "wm_properties.h"  // for SetWMProperties
 #include "env_info.h"       // for GetHostName, GetUserName
-#include "userfile.h"
+#include "userfile.h"       // for UserInNoBlankList
 
 #ifdef WALLPAPER
 #include "wallpaper.xbm"
