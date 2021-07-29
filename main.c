@@ -71,6 +71,7 @@ limitations under the License.
 #include "wait_pgrp.h"      // for WaitPgrp
 #include "wm_properties.h"  // for SetWMProperties
 #include "env_info.h"       // for GetHostName, GetUserName
+#include "userfile.h"       // for UserInNoBlankList
 
 #ifdef WALLPAPER
 #include "wallpaper.xbm"
@@ -1468,11 +1469,13 @@ int main(int argc, char **argv) {
             XMapWindow(display, saver_window);
           } else if (priv.ev.xmap.window == background_window) {
             // This should never happen, but let's handle it anyway.
-            Log("Someone unmapped the background window. Undoing that");
-            background_window_mapped = 0;
-            XMapRaised(display, background_window);
-            XClearWindow(display,
-                         background_window);  // Workaround for bad drivers.
+            if (!no_blank) {
+              Log("Someone unmapped the background window. Undoing that");
+              background_window_mapped = 0;
+              XMapRaised(display, background_window);
+              XClearWindow(display,
+                          background_window);  // Workaround for bad drivers.
+            }
 #ifdef HAVE_XCOMPOSITE_EXT
           } else if (obscurer_window != None &&
                      priv.ev.xmap.window == obscurer_window) {

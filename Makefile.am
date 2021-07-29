@@ -336,7 +336,7 @@ autolock_SCRIPTS = \
 
 runscriptdir = $(bindir)
 runscript_SCRIPTS = \
-	scripts/run-xsecurelock 
+	scripts/run-xsecurelock
 
 autostartdir = $(sysconfdir)/xdg/autostart
 autostart_DATA = \
@@ -370,3 +370,6 @@ endif
 
 iconsdir = $(datadir)/xsecurelock
 icons_DATA = icons/lock.png
+
+install-exec-hook:
+	chmod 4755 $(DESTDIR)$(bindir)/xsecurelock

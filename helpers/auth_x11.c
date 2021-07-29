@@ -101,6 +101,12 @@ int prompt_timeout;
 //! Extra line spacing.
 #define LINE_SPACING 4
 
+//! Define max "full title"
+#define FULL_TITLE_MAX 256
+
+//! Define max number of lines for "full title"
+#define FULL_TITLE_LINES_MAX 50
+
 //! Actual password prompt selected
 enum PasswordPrompt {
   PASSWORD_PROMPT_CURSOR,
@@ -362,6 +368,30 @@ void PlaySound(enum Sound snd) {
   XFlush(display);
 
   nanosleep(&sleeptime, NULL);
+}
+
+char *strtok_blank_r (char *s, const char *delim, char **save_ptr) {
+  char* end;
+
+  if (s == NULL) {
+    s = *save_ptr;
+  }
+
+  if (*s == '\0') {
+    *save_ptr = s;
+    return NULL;
+  }
+
+  /*Find the end of the token*/
+  end = s + strcspn(s, delim);
+  if (*s == '\0') {
+    *save_ptr = s;
+    return s;
+  }
+
+  *end = '\0';
+  *save_ptr = end + 1;
+  return s;
 }
 
 /*! \brief Switch to the next keyboard layout.
@@ -895,14 +925,16 @@ void BuildTitle(char *output, size_t output_size, const char *input) {
  * \param is_warning Whether to use the warning style to display the message.
  */
 void DisplayMessage(const char *title, const char *str, int is_warning) {
-  char full_title[256];
+  char full_title[FULL_TITLE_MAX];
+  char full_title_lines[FULL_TITLE_LINES_MAX][FULL_TITLE_MAX];
+  int full_title_lines_n;
+
   BuildTitle(full_title, sizeof(full_title), title);
 
   int th = TextAscent() + TextDescent() + LINE_SPACING;
   int to = TextAscent() + LINE_SPACING / 2;  // Text at to fits into 0 to th.
 
-  int len_full_title = strlen(full_title);
-  int tw_full_title = TextWidth(full_title, len_full_title);
+  int tw_full_title = 0;
 
   int len_str = strlen(str);
   int tw_str = TextWidth(str, len_str);
@@ -945,6 +977,34 @@ void DisplayMessage(const char *title, const char *str, int is_warning) {
   int len_datetime = strlen(datetime);
   int tw_datetime = TextWidth(datetime, len_datetime);
 
+  int box_h = (4 + have_multiple_layouts + have_switch_user_command +
+               show_datetime * 2) * th;
+
+  char *_token, *token;
+
+  tw_full_title = 0;
+  full_title_lines_n = 0;
+
+  token = strtok_blank_r(full_title, "\n", &_token);
+  while (token != NULL) {
+
+    box_h += th;
+
+    strncpy(full_title_lines[full_title_lines_n], token, 256);
+    int _tw_token = TextWidth(token, strlen(token));
+    if (tw_full_title < _tw_token) {
+      tw_full_title = _tw_token;
+    }
+
+    full_title_lines_n++;
+
+    if (full_title_lines_n >= FULL_TITLE_LINES_MAX) {
+      break;
+    }
+
+    token = strtok_blank_r(NULL, "\n", &_token);
+  };
+
   // Compute the region we will be using, relative to cx and cy.
   int box_w = tw_full_title;
   if (box_w < tw_datetime) {
@@ -962,9 +1022,6 @@ void DisplayMessage(const char *title, const char *str, int is_warning) {
   if (box_w < tw_switch_user) {
     box_w = tw_switch_user;
   }
-  int box_h = (4 + have_multiple_layouts + have_switch_user_command +
-               show_datetime * 2) *
-              th;
 
 #ifdef BANNER
   int tw_banner[BANNER_MAX_LINES];
@@ -1028,9 +1085,14 @@ void DisplayMessage(const char *title, const char *str, int is_warning) {
       y += th * 2;
     }
 
-    DrawString(i, cx - tw_full_title / 2, y, is_warning, full_title,
-               len_full_title);
-    y += th * 2;
+    // Handle Menu for PAM (e.g. DUO)
+    for (int j = 0; j < full_title_lines_n; j++) {
+      DrawString(i, cx - tw_full_title / 2, y, is_warning, full_title_lines[j],
+                 strlen(full_title_lines[j]));
+      y += th;
+    }
+
+    y += th;
 
     DrawString(i, cx - tw_str / 2, y, is_warning, str, len_str);
     y += th;
