@@ -371,5 +371,5 @@ endif
 iconsdir = $(datadir)/xsecurelock
 icons_DATA = icons/lock.png
 
-install-exec-hook:
+install-data-hook:
 	chmod 4755 $(DESTDIR)$(helpersdir)/authproto_pam
