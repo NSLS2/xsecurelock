@@ -24,6 +24,7 @@ program launched need not be a screen locker such as xlock.
 %prep
 %setup
 %patch0 -p1
+%patch1 -p1
 xmkmf
 
 %build
