@@ -1,6 +1,6 @@
 Name:		xautolock
 Version:	2.2
-Release:	0%{?dist}
+Release:	1%{?dist}
 Summary:	Program launcher for idle X sessions
 
 License:	apache
