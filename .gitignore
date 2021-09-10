@@ -33,6 +33,7 @@ run.sh
 /config/banner
 /scripts/run-xsecurelock
 /scripts/saver-xsecurelock
+/scripts/lock-now
 /autostart/xsecurelock.desktop
 
 # Object files.

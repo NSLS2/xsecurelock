@@ -61,6 +61,7 @@ make install DESTDIR=$RPM_BUILD_ROOT
 %files
 %{_bindir}/xsecurelock
 %{_bindir}/run-xsecurelock
+%{_bindir}/lock-now
 %{_sysconfdir}/xdg/autostart/xsecurelock.desktop
 %config %{_sysconfdir}/xsecurelock/banner
 %config(noreplace) %{_sysconfdir}/pam.d/xsecurelock-nsls2

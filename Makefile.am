@@ -313,7 +313,16 @@ scripts/run-xsecurelock: scripts/run-xsecurelock.in
 
 scripts/saver-xsecurelock: scripts/saver-xsecurelock.in
 	$(SED) \
+		-e 's|[@]bindir@|$(bindir)|g' \
+		-e 's|[@]sysconfdir@|$(sysconfdir)|g' \
 		-e 's|[@]datarootdir@|$(datarootdir)|g' \
+		< "$<" > "$@"
+
+scripts/lock-now: scripts/lock-now.in
+	$(SED) \
+		-e 's|[@]libexecdir@|$(libexecdir)|g' \
+		-e 's|[@]bindir@|$(bindir)|g' \
+		-e 's|[@]sysconfdir@|$(sysconfdir)|g' \
 		< "$<" > "$@"
 
 autostart/xsecurelock.desktop: autostart/xsecurelock.desktop.in
@@ -334,6 +343,10 @@ autolockdir = $(pkglibexecdir)
 autolock_SCRIPTS = \
 	scripts/saver-xsecurelock
 
+lockscriptdir = $(bindir)
+lockscript_SCRIPTS = \
+	scripts/lock-now
+
 runscriptdir = $(bindir)
 runscript_SCRIPTS = \
 	scripts/run-xsecurelock
@@ -343,7 +356,8 @@ autostart_DATA = \
 	autostart/xsecurelock.desktop
 
 CLEANFILES += scripts/run-xsecurelock \
-			  scripts/saver-xsecurelock
+			  scripts/saver-xsecurelock \
+			  scripts/lock-now
 
 xsecurelocksysconfdir=$(sysconfdir)/xsecurelock
 xsecurelocksysconf_DATA = config/config

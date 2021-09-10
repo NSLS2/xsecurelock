@@ -4,7 +4,7 @@ set -a -u
 GSETTINGS=/usr/bin/gsettings
 XSET=/usr/bin/xset
 XAUTOLOCK_TIME=15
-XAUTOLOCK=/usr/bin/xautolock
+XAUTOLOCK=@bindir@/xautolock
 XSECURELOCK=@bindir@/xsecurelock
 
 if [ -f "@sysconfdir@/xsecurelock/config" ]; then

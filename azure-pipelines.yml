@@ -143,11 +143,10 @@ stages:
           --prefix=xsecurelock-$(gitversion)-nsls2/ \
           --output=${SOURCES}/xsecurelock-v$(gitversion)-nsls2.tar.gz \
           HEAD
-        #spectool -g -R xautolock.spec
-        #spectool -g -R feh.spec
         cp xautolock.patch ${SOURCES}
+        cp xautolock-allow-locknow.patch ${SOURCES}
         rpmbuild -bb --define "_topdir ${RPMDIR}" --define "version $(gitversion)" xsecurelock-nsls2.spec
-        rpmbuild -bb --undefine="_disable_source_fetch" --define "_topdir ${RPMDIR}" xautolock.spec
+        rpmbuild -bb --undefine="_disable_source_fetch" --define "_topdir ${RPMDIR}" xautolock-nsls2.spec
         rpmbuild -bb --undefine="_disable_source_fetch" --define "_topdir ${RPMDIR}" feh.spec
         echo "##[debug] gitdesc = $(gitdesc)"
       displayName: 'Build rpm Package'
