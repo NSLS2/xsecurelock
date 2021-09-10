@@ -4,9 +4,10 @@ Release:	0%{?dist}
 Summary:	Program launcher for idle X sessions
 
 License:	apache
-URL:		https://www.ibiblio.org/pub/Linux/X11/screensavers/
+URL:		  https://www.ibiblio.org/pub/Linux/X11/screensavers/
 Source0:	https://www.ibiblio.org/pub/Linux/X11/screensavers/xautolock-%{version}.tgz
 Patch0:		xautolock.patch
+Patch1:		xautolock-allow-locknow.patch
 
 BuildRequires: imake libXScrnSaver-devel
 Requires: libXScrnSaver
