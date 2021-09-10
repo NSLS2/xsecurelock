@@ -22,7 +22,7 @@ if you have left your computer unattended for some period of time.  The
 program launched need not be a screen locker such as xlock.
 
 %prep
-%setup -n xautolock-%{version}.tgz
+%setup -n xautolock-%{version}
 %patch0 -p1
 %patch1 -p1
 xmkmf
