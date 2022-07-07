@@ -244,6 +244,8 @@ Options to XSecureLock can be passed by environment variables:
     the screen saver.
 *   `XSECURELOCK_AUTH_WARNING_COLOR`: specifies the X11 color (see manpage of
     XParseColor) for the warning text of the auth dialog.
+*   `XSECURELOCK_BACKGROUND_COLOR`: specifies the X11 color (see manpage
+    of XParseColor) for the background of the main and saver windows.
 *   `XSECURELOCK_BLANK_TIMEOUT`: specifies the time (in seconds) before telling
     X11 to fully blank the screen; a negative value disables X11 blanking. The
     time is measured since the closing of the auth window or xsecurelock
@@ -510,7 +512,8 @@ The screen saver module is a separate executable, whose name must start with
 `saver_` and be installed together with the included `auth_` modules (default
 location: `/usr/local/libexec/xsecurelock/helpers`).
 
-*   Input: none.
+*   Input: receives the 0-based index of the screen saver (remember: one saver
+    is started per display by the multiplexer) via `$XSCREENSAVER_SAVER_INDEX`.
 *   Output: it may draw on or create windows below `$XSCREENSAVER_WINDOW`.
 *   Exit condition: the saver child will receive SIGTERM when the user wishes to
     unlock the screen. It should exit promptly.
