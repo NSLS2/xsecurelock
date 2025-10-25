@@ -1,6 +1,7 @@
 build
 .vscode
 run.sh
+rpmbuild
 
 # Dependency files.
 .deps
