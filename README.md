@@ -1,15 +1,5 @@
 # About XSecureLock
 
-| Distribution           | Build Status (master) |
-| ---------------------- | ----------------------| 
-| Overall Build          | [![Build Status](https://dev.azure.com/nsls-ii/xsecurelock/_apis/build/status/NSLS-II.xsecurelock?branchName=master)](https://dev.azure.com/nsls-ii/xsecurelock/_build/latest?definitionId=5&branchName=master)|
-| Centos 7               | [![Build Status](https://dev.azure.com/nsls-ii/xsecurelock/_apis/build/status/NSLS-II.xsecurelock?branchName=master&jobName=Build&configuration=Build%20centos7)](https://dev.azure.com/nsls-ii/xsecurelock/_build/latest?definitionId=5&branchName=master) |
-| Centos 8               | [![Build Status](https://dev.azure.com/nsls-ii/xsecurelock/_apis/build/status/NSLS-II.xsecurelock?branchName=master&jobName=Build&configuration=Build%20centos8)](https://dev.azure.com/nsls-ii/xsecurelock/_build/latest?definitionId=5&branchName=master) |
-| Debian 8  (Jessie)     | [![Build Status](https://dev.azure.com/nsls-ii/xsecurelock/_apis/build/status/NSLS-II.xsecurelock?branchName=master&jobName=Build&configuration=Build%20debian8)](https://dev.azure.com/nsls-ii/xsecurelock/_build/latest?definitionId=5&branchName=master) |
-| Debian 9  (Stretch)    | [![Build Status](https://dev.azure.com/nsls-ii/xsecurelock/_apis/build/status/NSLS-II.xsecurelock?branchName=master&jobName=Build&configuration=Build%20debian9)](https://dev.azure.com/nsls-ii/xsecurelock/_build/latest?definitionId=5&branchName=master) |
-| Debian 10 (Buster)     | [![Build Status](https://dev.azure.com/nsls-ii/xsecurelock/_apis/build/status/NSLS-II.xsecurelock?branchName=master&jobName=Build&configuration=Build%20debian10)](https://dev.azure.com/nsls-ii/xsecurelock/_build/latest?definitionId=5&branchName=master) |
-| Ubuntu 20.4 (groovy)   | [![Build Status](https://dev.azure.com/nsls-ii/xsecurelock/_apis/build/status/NSLS-II.xsecurelock?branchName=master&jobName=Build&configuration=Build%20ubuntu-groovy)](https://dev.azure.com/nsls-ii/xsecurelock/_build/latest?definitionId=5&branchName=master) |
-
 XSecureLock is an X11 screen lock utility designed with the primary goal of
 security.
 
