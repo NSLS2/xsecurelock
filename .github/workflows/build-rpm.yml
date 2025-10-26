@@ -11,7 +11,8 @@ jobs:
   build-rpm:
     runs-on: ubuntu-latest
     container:
-      image: fedora:latest
+      # image: fedora:latest
+      image: redhat/ubi:latest
 
     steps:
       - name: Checkout code
