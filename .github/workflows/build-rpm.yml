@@ -93,10 +93,10 @@ jobs:
           /usr/local/bin/par --version || echo "par installed successfully"
 
       - name: Make build script executable
-        run: chmod +x build_rpm.sh
+        run: chmod +x build-rpm.sh
 
       - name: Build RPMs
-        run: ./build_rpm.sh
+        run: ./build-rpm.sh
 
       - name: List built RPMs
         run: |
@@ -117,7 +117,13 @@ jobs:
           name: srpm-packages
           path: rpmbuild/SRPMS/*.rpm
           retention-days: 30
-        if: always()
+
+      - name: Upload SRPM artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: tarball
+          path: rpmbuild/SOURCES/xsecurelock*.tar.gz
+          retention-days: 30
 
   # Optional: Create a release if this is a tagged build
   create-release:
@@ -138,12 +144,19 @@ jobs:
           name: srpm-packages
           path: ./srpms
 
+      - name: Download tarball artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: tarball
+          path: ./tarball
+
       - name: Create Release
         uses: softprops/action-gh-release@v1
         with:
           files: |
             ./rpms/*.rpm
             ./srpms/*.rpm
+            ./tarball/*
           draft: false
           prerelease: false
         env:
