@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        os_version: [8, 9]
+        os_version: [9]
     container:
       image: almalinux:${{ matrix.os_version }}
 
@@ -23,9 +23,17 @@ jobs:
           fetch-depth: 0  # Fetch full history for git describe
           fetch-tags: true # Fetches all tags
 
-      - name: Install build dependencies
+      - name: Test git
+        run: git describe --always --dirty
+
+      - name: Enable repositories
         run: |
           dnf update -y
+          dnf install -y epel-release
+          dnf config-manager --set-enabled crb
+
+      - name: Install build dependencies
+        run: |
           dnf install -y \
             autoconf \
             automake \
@@ -52,9 +60,6 @@ jobs:
             libpng-devel \
             libexif-devel \
             wget
-
-      - name: Test git
-        run: git describe --always --dirty
 
       - name: Build and install par dependency
         run: |
