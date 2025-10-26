@@ -42,6 +42,7 @@ jobs:
             make \
             rpm-build \
             rpmdevtools \
+            sudo \
             libX11-devel \
             libXmu-devel \
             libXcomposite-devel \
