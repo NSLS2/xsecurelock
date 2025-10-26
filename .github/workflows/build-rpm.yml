@@ -23,14 +23,19 @@ jobs:
           fetch-depth: 0  # Fetch full history for git describe
           fetch-tags: true # Fetches all tags
 
-      - name: Test git
-        run: git describe --always --dirty
-
       - name: Enable repositories
+        if: matrix.os_version == '9'
         run: |
           dnf update -y
           dnf install -y epel-release
           dnf config-manager --set-enabled crb
+
+      - name: Enable repositories
+        if: matrix.os_version == '8'
+        run: |
+          dnf update -y
+          dnf install -y epel-release
+          dnf config-manager --set-enabled powertools
 
       - name: Install build dependencies
         run: |
@@ -60,6 +65,9 @@ jobs:
             libpng-devel \
             libexif-devel \
             wget
+
+      - name: Test git
+        run: git describe --always --dirty
 
       - name: Build and install par dependency
         run: |
