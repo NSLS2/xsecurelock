@@ -66,6 +66,9 @@ jobs:
             libexif-devel \
             wget
 
+      - name: List dir
+        run: ls -la
+
       - name: Test git
         run: |
           git config --global --add safe.directory "$GITHUB_WORKSPACE"
