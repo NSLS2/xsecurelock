@@ -1,4 +1,4 @@
-name: Build RPMs
+name: Build Packages
 
 on:
   push:
@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        os_version: [8, 9]
+        os_version: ['8', '9']
     container:
       image: almalinux:${{ matrix.os_version }}
 
@@ -93,7 +93,10 @@ jobs:
           /usr/local/bin/par --version || echo "par installed successfully"
 
       - name: Make build script executable
-        run: chmod +x build-rpm.sh
+        run: chmod +x build-rpm.sh build.sh
+
+      - name: Build
+        run: ./build.sh
 
       - name: Build RPMs
         run: ./build-rpm.sh
@@ -125,9 +128,107 @@ jobs:
           path: rpmbuild/SOURCES/xsecurelock*.tar.gz
           retention-days: 30
 
+  build-deb:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        ubuntu_version: ['22.04']
+    container:
+      image: ubuntu:${{ matrix.ubuntu_version }}
+
+    steps:
+      - name: Install base dependencies
+        run: |
+          apt-get update
+          apt-get install -y \
+            git \
+            git-buildpackage \
+            devscripts \
+            build-essential \
+            debhelper \
+            autoconf \
+            automake \
+            pkg-config \
+            libx11-dev \
+            libxmu-dev \
+            libxcomposite-dev \
+            libxss-dev \
+            libxrandr-dev \
+            libxt-dev \
+            libxinerama-dev \
+            libxft-dev \
+            libxfixes-dev \
+            libpam0g-dev \
+            libfontconfig1-dev \
+            libimlib2-dev \
+            libcurl4-openssl-dev \
+            libjpeg-dev \
+            libpng-dev \
+            libexif-dev \
+            wget \
+            sudo
+
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Fetch full history for git describe
+          fetch-tags: true # Fetches all tags
+
+      - name: Configure git
+        run: |
+          git config --global --add safe.directory "$GITHUB_WORKSPACE"
+          git config --global user.email "action@github.com"
+          git config --global user.name "GitHub Action"
+
+      - name: Build and install par dependency
+        run: |
+          # Download and build par
+          cd /tmp
+          wget http://www.nicemice.net/par/Par-1.53.0.tar.gz
+          tar -xzf Par-1.53.0.tar.gz
+          cd Par-1.53.0
+          # Build par using the recommended flags for GNU/Linux
+          make -f protoMakefile CC="gcc -c -ansi -pedantic -O3 -DDONTFREE" LINK1="gcc -s"
+          # Install par to /usr/local/bin
+          sudo install -m 755 par /usr/local/bin/par
+          # Verify installation
+          /usr/local/bin/par --version || echo "par installed successfully"
+
+      - name: Make build script executable
+        run: chmod +x build-deb.sh build.sh
+
+      - name: Build
+        run: ./build.sh
+
+      - name: Build DEBs
+        run: ./build-deb.sh
+
+      - name: List built DEBs
+        run: |
+          echo "Built DEB packages:"
+          find build -name "*.deb" -type f
+          ls -la build/*.deb || true
+
+      - name: Upload DEB artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: deb-packages-${{ matrix.ubuntu_version }}
+          path: build/*.deb
+          retention-days: 30
+
+      - name: Upload source packages
+        uses: actions/upload-artifact@v4
+        with:
+          name: deb-source-${{ matrix.ubuntu_version }}
+          path: |
+            build/*.tar.gz
+            build/*.dsc
+            build/*.changes
+          retention-days: 30
+
   # Optional: Create a release if this is a tagged build
   create-release:
-    needs: build-rpm
+    needs: [build-rpm, build-deb]
     runs-on: ubuntu-latest
     if: startsWith(github.ref, 'refs/tags/v')
 
@@ -147,6 +248,9 @@ jobs:
             ./artifacts/tarball-8/xsecurelock-*-nsls2.tar.gz
             ./artifacts/rpm-packages*/*/*.rpm
             ./artifacts/srpm-packages*/*.rpm
+            ./artifacts/deb-packages*/*.deb
+            ./artifacts/deb-source*/*.tar.gz
+            ./artifacts/deb-source*/*.dsc
           draft: false
           prerelease: false
         env:
