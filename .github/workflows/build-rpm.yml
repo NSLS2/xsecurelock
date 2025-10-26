@@ -166,6 +166,7 @@ jobs:
             libjpeg-dev \
             libpng-dev \
             libexif-dev \
+            libxmuu-dev \
             wget \
             sudo
 
@@ -174,12 +175,6 @@ jobs:
         with:
           fetch-depth: 0  # Fetch full history for git describe
           fetch-tags: true # Fetches all tags
-
-      - name: Configure git
-        run: |
-          git config --global --add safe.directory "$GITHUB_WORKSPACE"
-          git config --global user.email "action@github.com"
-          git config --global user.name "GitHub Action"
 
       - name: Build and install par dependency
         run: |

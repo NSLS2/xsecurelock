@@ -15,7 +15,6 @@ Build-Depends: debhelper (>= 9),
   libxrandr-dev,
   libxss-dev,
   x11proto-core-dev,
-  par,
 Homepage: https://github.com/NSLS-II/xsecurelock
 Vcs-Browser: https://github.com/NSLS-II/xsecurelock/tree/debian
 Vcs-Git: https://github.com/NSLS-II/xsecurelock.git -b debian
