@@ -196,6 +196,8 @@ jobs:
 
       - name: Build DEBs
         run: ./build-deb.sh
+        env:
+          debrelease: ${{ matrix.debrelease }}
 
       - name: List built DEBs
         run: |
