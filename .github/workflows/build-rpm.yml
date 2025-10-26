@@ -67,7 +67,9 @@ jobs:
             wget
 
       - name: Test git
-        run: git describe --always --dirty
+        run: |
+          git config --global --add safe.directory "$GITHUB_WORKSPACE"
+          git describe --always --dirty
 
       - name: Build and install par dependency
         run: |
