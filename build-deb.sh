@@ -9,8 +9,9 @@ gbp buildpackage \
   -uc -us \
   --git-export-dir=build \
   --git-tarball-dir=build
-echo $debrelease
 old_debfile=$(ls -1 build/xsecurelock-nsls2_*.deb | head -1)
 new_debfile=$(echo ${old_debfile} | sed "s/\.deb/-${debrelease}.deb/")
+echo ${old_debfile}
+echo ${new_debfile}
 mv "${old_debfile}" "${new_debfile}"
 
