@@ -1,6 +1,6 @@
 Name:           feh
 Version:        3.5
-Release:        0%{?dist}
+Release:        1%{?dist}
 Summary:        Fast command line image viewer using Imlib2
 License:        MIT
 URL:            http://feh.finalrewind.org

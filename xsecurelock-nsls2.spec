@@ -89,6 +89,8 @@ make install DESTDIR=$RPM_BUILD_ROOT
 
 
 %changelog
+* Sun Oct 26 2025 Stuart B. Wilkins <swilkins@bnl.gov> - 1.7.23
+- Build changes to allow github actions
 * Sun Feb 21 2021 Stuart B. Wilkins <swilkins@bnl.gov> - 1.7.17
 - Moved start script into bin directory
 - Added noblank file option

@@ -1,6 +1,6 @@
 Name:		xautolock-nsls2
 Version:	2.2
-Release:	1%{?dist}
+Release:	2%{?dist}
 Summary:	Program launcher for idle X sessions
 
 License:	apache
