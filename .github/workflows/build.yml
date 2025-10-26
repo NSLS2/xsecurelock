@@ -73,7 +73,7 @@ jobs:
           fetch-depth: 0  # Fetch full history for git describe
           fetch-tags: true # Fetches all tags
 
-      - name: Test git
+      - name: Configure git
         run: |
           git config --global --add safe.directory "$GITHUB_WORKSPACE"
           git describe --always --dirty
@@ -132,7 +132,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        ubuntu_version: ['22.04']
+        ubuntu_version: ['22.04', '24.04']
     container:
       image: ubuntu:${{ matrix.ubuntu_version }}
 
@@ -175,6 +175,11 @@ jobs:
         with:
           fetch-depth: 0  # Fetch full history for git describe
           fetch-tags: true # Fetches all tags
+
+      - name: Configure git
+        run: |
+          git config --global --add safe.directory "$GITHUB_WORKSPACE"
+          git describe --always --dirty
 
       - name: Build and install par dependency
         run: |
