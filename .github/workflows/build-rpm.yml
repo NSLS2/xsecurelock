@@ -69,6 +69,9 @@ jobs:
       - name: List dir
         run: ls -la
 
+      - name: Git version
+        run: git --version
+
       - name: Test git
         run: |
           git config --global --add safe.directory "$GITHUB_WORKSPACE"
