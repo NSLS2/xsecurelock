@@ -139,6 +139,8 @@ jobs:
             debrelease: 'lunar'
     container:
       image: ubuntu:${{ matrix.ubuntu_version }}
+    env:
+      debrelease: ${{ matrix.debrelease }}
 
     steps:
       - name: Install base dependencies
