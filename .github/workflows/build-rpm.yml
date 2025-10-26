@@ -146,8 +146,7 @@ jobs:
           files: |
             ./artifacts/tarball-8/xsecurelock-*-nsls2.tar.gz
             ./artifacts/rpm-packages*/*/*.rpm
-            ./artifacts/srpm-packages*/*/*.rpm
-            ./tarball/xsecurelock*.tar.gz
+            ./artifacts/srpm-packages*/*.rpm
           draft: false
           prerelease: false
         env:
