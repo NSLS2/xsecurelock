@@ -151,9 +151,9 @@ jobs:
         uses: softprops/action-gh-release@v1
         with:
           files: |
-            ./rpms/*
-            ./srpms/*
-            ./tarball/*
+            ./rpms/*/*.rpm
+            ./srpms/*.rpm
+            ./tarball/xsecurelock*.tar.gz
           draft: false
           prerelease: false
         env:
