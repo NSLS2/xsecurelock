@@ -10,9 +10,11 @@ on:
 jobs:
   build-rpm:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        os_version: [8, 9]
     container:
-      # image: fedora:latest
-      image: redhat/ubi:latest
+      image: almalinux:${{ matrix.os_version }}
 
     steps:
       - name: Checkout code
@@ -52,7 +54,7 @@ jobs:
             wget
 
       - name: Test git
-        run:  git describe --always --dirty
+        run: git describe --always --dirty
 
       - name: Build and install par dependency
         run: |
