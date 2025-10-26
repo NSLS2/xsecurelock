@@ -167,6 +167,7 @@ jobs:
             libpng-dev \
             libexif-dev \
             libxmuu-dev \
+            par \
             wget \
             sudo
 
@@ -180,20 +181,6 @@ jobs:
         run: |
           git config --global --add safe.directory "$GITHUB_WORKSPACE"
           git describe --always --dirty
-
-      - name: Build and install par dependency
-        run: |
-          # Download and build par
-          cd /tmp
-          wget http://www.nicemice.net/par/Par-1.53.0.tar.gz
-          tar -xzf Par-1.53.0.tar.gz
-          cd Par-1.53.0
-          # Build par using the recommended flags for GNU/Linux
-          make -f protoMakefile CC="gcc -c -ansi -pedantic -O3 -DDONTFREE" LINK1="gcc -s"
-          # Install par to /usr/local/bin
-          sudo install -m 755 par /usr/local/bin/par
-          # Verify installation
-          /usr/local/bin/par --version || echo "par installed successfully"
 
       - name: Make build script executable
         run: chmod +x build-deb.sh build.sh
