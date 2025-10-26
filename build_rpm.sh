@@ -47,6 +47,6 @@ git archive --format=tar \
 cp xautolock.patch ${SOURCES}
 cp xautolock-allow-locknow.patch ${SOURCES}
 rpmbuild -bb --define "_topdir ${RPMDIR}" --define "version $VERSION" xsecurelock-nsls2.spec
-rpmbuild -bb --undefine="_disable_source_fetch" --define "_topdir ${RPMDIR}" xautolock-nsls2.spec
+rpmbuild -bb --undefine="_disable_source_fetch" --define "_topdir ${RPMDIR}" xautolock.spec
 rpmbuild -bb --undefine="_disable_source_fetch" --define "_topdir ${RPMDIR}" feh.spec
 

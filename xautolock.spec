@@ -1,4 +1,4 @@
-Name:		xautolock-nsls2
+Name:		xautolock
 Version:	2.2
 Release:	1%{?dist}
 Summary:	Program launcher for idle X sessions
