@@ -204,16 +204,6 @@ jobs:
           path: build/*.deb
           retention-days: 30
 
-      - name: Upload source packages
-        uses: actions/upload-artifact@v4
-        with:
-          name: deb-source-${{ matrix.ubuntu_version }}
-          path: |
-            build/*.tar.gz
-            build/*.dsc
-            build/*.changes
-          retention-days: 30
-
   # Optional: Create a release if this is a tagged build
   create-release:
     needs: [build-rpm, build-deb]
@@ -237,8 +227,6 @@ jobs:
             ./artifacts/rpm-packages*/*/*.rpm
             ./artifacts/srpm-packages*/*.rpm
             ./artifacts/deb-packages*/*.deb
-            ./artifacts/deb-source*/*.tar.gz
-            ./artifacts/deb-source*/*.dsc
           draft: false
           prerelease: false
         env:
