@@ -13,5 +13,6 @@ old_debfile=$(ls -1 build/xsecurelock-nsls2_*.deb | head -1)
 new_debfile=$(echo ${old_debfile} | sed "s/\.deb/-${debrelease}.deb/")
 echo ${old_debfile}
 echo ${new_debfile}
+echo ${GITDESC}
+echo ${VERSION}
 mv "${old_debfile}" "${new_debfile}"
-
