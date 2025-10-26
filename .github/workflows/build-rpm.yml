@@ -17,12 +17,6 @@ jobs:
       image: almalinux:${{ matrix.os_version }}
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0  # Fetch full history for git describe
-          fetch-tags: true # Fetches all tags
-
       - name: Enable repositories
         if: matrix.os_version == '9'
         run: |
@@ -71,6 +65,12 @@ jobs:
 
       - name: Git version
         run: git --version
+
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Fetch full history for git describe
+          fetch-tags: true # Fetches all tags
 
       - name: Test git
         run: |
