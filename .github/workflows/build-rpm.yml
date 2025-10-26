@@ -50,6 +50,9 @@ jobs:
             libexif-devel \
             wget
 
+      - name: Test git
+        run:  git describe --always --dirty
+
       - name: Build and install par dependency
         run: |
           # Download and build par
