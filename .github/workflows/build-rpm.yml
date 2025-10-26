@@ -2,10 +2,10 @@ name: Build RPMs
 
 on:
   push:
-    branches: [ main ]
-    tags: [ 'v*' ]
+    branches: ['main']
+    tags: ['v*']
   pull_request:
-    branches: [ main ]
+    branches: ['main']
 
 jobs:
   build-rpm:
@@ -14,80 +14,81 @@ jobs:
       image: fedora:latest
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
-      with:
-        fetch-depth: 0  # Fetch full history for git describe
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Fetch full history for git describe
 
-    - name: Install build dependencies
-      run: |
-        dnf update -y
-        dnf install -y \
-          autoconf \
-          automake \
-          gcc \
-          git \
-          imake \
-          make \
-          rpm-build \
-          rpmdevtools \
-          libX11-devel \
-          libXmu-devel \
-          libXcomposite-devel \
-          libXScrnSaver-devel \
-          libXrandr-devel \
-          libXt-devel \
-          libXinerama-devel \
-          libXft-devel \
-          libXfixes-devel \
-          pam-devel \
-          fontconfig-devel \
-          imlib2-devel \
-          libcurl-devel \
-          libjpeg-devel \
-          libpng-devel \
-          libexif-devel
+      - name: Install build dependencies
+        run: |
+          dnf update -y
+          dnf install -y \
+            autoconf \
+            automake \
+            gcc \
+            git \
+            imake \
+            make \
+            rpm-build \
+            rpmdevtools \
+            libX11-devel \
+            libXmu-devel \
+            libXcomposite-devel \
+            libXScrnSaver-devel \
+            libXrandr-devel \
+            libXt-devel \
+            libXinerama-devel \
+            libXft-devel \
+            libXfixes-devel \
+            pam-devel \
+            fontconfig-devel \
+            imlib2-devel \
+            libcurl-devel \
+            libjpeg-devel \
+            libpng-devel \
+            libexif-devel \
+            wget
 
-    - name: Build and install par dependency
-      run: |
-        # Download and build par
-        cd /tmp
-        wget http://www.nicemice.net/par/Par-1.53.0.tar.gz
-        tar -xzf Par-1.53.0.tar.gz
-        cd Par-1.53.0
-        # Build par using the recommended flags for GNU/Linux
-        make -f protoMakefile CC="gcc -c -ansi -pedantic -O3 -DDONTFREE" LINK1="gcc -s"
-        # Install par to /usr/local/bin
-        sudo install -m 755 par /usr/local/bin/par
-        # Verify installation
-        /usr/local/bin/par --version || echo "par installed successfully"
+      - name: Build and install par dependency
+        run: |
+          # Download and build par
+          cd /tmp
+          wget http://www.nicemice.net/par/Par-1.53.0.tar.gz
+          tar -xzf Par-1.53.0.tar.gz
+          cd Par-1.53.0
+          # Build par using the recommended flags for GNU/Linux
+          make -f protoMakefile CC="gcc -c -ansi -pedantic -O3 -DDONTFREE" LINK1="gcc -s"
+          # Install par to /usr/local/bin
+          sudo install -m 755 par /usr/local/bin/par
+          # Verify installation
+          /usr/local/bin/par --version || echo "par installed successfully"
 
-    - name: Make build script executable
-      run: chmod +x build_rpm.sh
+      - name: Make build script executable
+        run: chmod +x build_rpm.sh
 
-    - name: Build RPMs
-      run: ./build_rpm.sh
+      - name: Build RPMs
+        run: ./build_rpm.sh
 
-    - name: List built RPMs
-      run: |
-        echo "Built RPM packages:"
-        find rpmbuild/RPMS -name "*.rpm" -type f
-        ls -la rpmbuild/RPMS/*/*.rpm || true
+      - name: List built RPMs
+        run: |
+          echo "Built RPM packages:"
+          find rpmbuild/RPMS -name "*.rpm" -type f
+          ls -la rpmbuild/RPMS/*/*.rpm || true
 
-    - name: Upload RPM artifacts
-      uses: actions/upload-artifact@v4
-      with:
-        name: rpm-packages
-        path: rpmbuild/RPMS/*/*.rpm
-        retention-days: 30
+      - name: Upload RPM artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: rpm-packages
+          path: rpmbuild/RPMS/*/*.rpm
+          retention-days: 30
 
-    - name: Upload SRPM artifacts
-      uses: actions/upload-artifact@v4
-      with:
-        name: srpm-packages
-        path: rpmbuild/SRPMS/*.rpm
-        retention-days: 30
-      if: always()
+      - name: Upload SRPM artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: srpm-packages
+          path: rpmbuild/SRPMS/*.rpm
+          retention-days: 30
+        if: always()
 
   # Optional: Create a release if this is a tagged build
   create-release:
@@ -96,25 +97,25 @@ jobs:
     if: startsWith(github.ref, 'refs/tags/v')
 
     steps:
-    - name: Download RPM artifacts
-      uses: actions/download-artifact@v4
-      with:
-        name: rpm-packages
-        path: ./rpms
+      - name: Download RPM artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: rpm-packages
+          path: ./rpms
 
-    - name: Download SRPM artifacts
-      uses: actions/download-artifact@v4
-      with:
-        name: srpm-packages
-        path: ./srpms
+      - name: Download SRPM artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: srpm-packages
+          path: ./srpms
 
-    - name: Create Release
-      uses: softprops/action-gh-release@v1
-      with:
-        files: |
-          ./rpms/*.rpm
-          ./srpms/*.rpm
-        draft: false
-        prerelease: false
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Create Release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: |
+            ./rpms/*.rpm
+            ./srpms/*.rpm
+          draft: false
+          prerelease: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
